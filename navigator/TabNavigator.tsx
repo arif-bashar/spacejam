@@ -10,6 +10,11 @@ const HomeStack = createStackNavigator({
   Home: HomeScreen,
 });
 
+HomeStack.navigationOptions = {
+  tabBarLabel: "Home",
+  // tabBarIcon:
+};
+
 const SearchStack = createStackNavigator({
   Search: SearchScreen,
 });
@@ -18,10 +23,18 @@ const ProfileStack = createStackNavigator({
   Home: ProfileScreen,
 });
 
-const TabNavigator = createBottomTabNavigator({
-  HomeStack,
-  SearchStack,
-  ProfileStack,
-});
+const TabNavigator = createBottomTabNavigator(
+  {
+    HomeStack,
+    SearchStack,
+    ProfileStack,
+  },
+  {
+    tabBarOptions: {
+      inactiveBackgroundColor: "red",
+      activeBackgroundColor: "red",
+    },
+  }
+);
 
 export default TabNavigator;

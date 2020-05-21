@@ -22,6 +22,10 @@ if (Platform.OS == "ios") {
 }
 
 class HomeScreen extends React.Component {
+  static navigationOptions = {
+    headerShown: false,
+  };
+
   render() {
     return (
       <SafeAreaView style={{ backgroundColor: "#191b23", flex: 1 }}>
@@ -48,7 +52,11 @@ class HomeScreen extends React.Component {
             </TouchableOpacity>
           </Container>
 
-          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+          <ScrollView
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            style={{ marginLeft: 20 }}
+          >
             <SpaceContainer>
               <TouchableOpacity>
                 <Space2
@@ -127,6 +135,6 @@ const ButtonContainer = styled.View`
 
 const SpaceContainer = styled.View`
   flex-direction: row;
-  padding-left: 20px;
-  padding-right: 20px;
+  /* padding-left: 20px; */
+  padding-right: 15px;
 `;
