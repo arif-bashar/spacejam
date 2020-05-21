@@ -42,9 +42,13 @@ const TabNavigator = createBottomTabNavigator(
   },
   {
     tabBarOptions: {
-      inactiveBackgroundColor: "black",
-      activeBackgroundColor: "black",
+      inactiveBackgroundColor: "#242733",
+      activeBackgroundColor: "#242733",
       showLabel: false,
+      style: {
+        borderTopWidth: 0,
+        elevation: 10,
+      },
     },
   }
 );
