@@ -21,69 +21,73 @@ if (Platform.OS == "ios") {
   safeMargin = 40;
 }
 
-export default function HomeScreen() {
-  return (
-    <SafeAreaView style={{ backgroundColor: "#191b23", flex: 1 }}>
-      <ScrollView>
-        <Container>
-          <TitleBar style={{ marginTop: safeMargin, marginBottom: 57 }}>
-            <IconBar>
-              <Logo />
-              <TouchableOpacity>
-                <ProfileIcon style={{ marginTop: 20 }} />
-              </TouchableOpacity>
-            </IconBar>
-            <WelcomeView>
-              <WelcomeText>Welcome back, </WelcomeText>
-              <Name>Arif</Name>
-            </WelcomeView>
-          </TitleBar>
-          <TouchableOpacity>
-            <Space
-              num="01"
-              spaceName="Josiah's Car"
-              spacePattern={require("../assets/spacePattern.png")}
-            />
-          </TouchableOpacity>
-        </Container>
+class HomeScreen extends React.Component {
+  render() {
+    return (
+      <SafeAreaView style={{ backgroundColor: "#191b23", flex: 1 }}>
+        <ScrollView>
+          <Container>
+            <TitleBar style={{ marginTop: safeMargin, marginBottom: 57 }}>
+              <IconBar>
+                <Logo />
+                <TouchableOpacity>
+                  <ProfileIcon style={{ marginTop: 20 }} />
+                </TouchableOpacity>
+              </IconBar>
+              <WelcomeView>
+                <WelcomeText>Welcome back, </WelcomeText>
+                <Name>Arif</Name>
+              </WelcomeView>
+            </TitleBar>
+            <TouchableOpacity>
+              <Space
+                num="01"
+                spaceName="Josiah's Car"
+                spacePattern={require("../assets/spacePattern.png")}
+              />
+            </TouchableOpacity>
+          </Container>
 
-        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-          <SpaceContainer>
+          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+            <SpaceContainer>
+              <TouchableOpacity>
+                <Space2
+                  color="#FFCF73"
+                  num="02"
+                  spaceName="George's Stinky Room"
+                  spacePattern={require("../assets/spacePattern.png")}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <Space2
+                  color="#A9BAFF"
+                  num="03"
+                  spaceName="Eli's Headphones"
+                  spacePattern={require("../assets/spacePattern.png")}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <Space2
+                  color="#BB9BFF"
+                  num="04"
+                  spaceName="Nibro's Playlist"
+                  spacePattern={require("../assets/spacePattern.png")}
+                />
+              </TouchableOpacity>
+            </SpaceContainer>
+          </ScrollView>
+          <ButtonContainer>
             <TouchableOpacity>
-              <Space2
-                color="#FFCF73"
-                num="02"
-                spaceName="George's Stinky Room"
-                spacePattern={require("../assets/spacePattern.png")}
-              />
+              <AddButton />
             </TouchableOpacity>
-            <TouchableOpacity>
-              <Space2
-                color="#A9BAFF"
-                num="03"
-                spaceName="Eli's Headphones"
-                spacePattern={require("../assets/spacePattern.png")}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Space2
-                color="#BB9BFF"
-                num="04"
-                spaceName="Nibro's Playlist"
-                spacePattern={require("../assets/spacePattern.png")}
-              />
-            </TouchableOpacity>
-          </SpaceContainer>
+          </ButtonContainer>
         </ScrollView>
-        <ButtonContainer>
-          <TouchableOpacity>
-            <AddButton />
-          </TouchableOpacity>
-        </ButtonContainer>
-      </ScrollView>
-    </SafeAreaView>
-  );
+      </SafeAreaView>
+    );
+  }
 }
+
+export default HomeScreen;
 
 const Container = styled.View`
   background: #191b23;
