@@ -24,4 +24,4 @@ const TabNavigator = createBottomTabNavigator({
   ProfileStack,
 });
 
-export default createAppContainer(TabNavigator);
+export default TabNavigator;

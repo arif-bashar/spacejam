@@ -1,6 +1,6 @@
 import * as React from "react";
-import TabNavigator from "./navigator/TabNavigator";
+import AppNavigator from "./navigator/AppNavigator";
 
 export default function App() {
-  return <TabNavigator />;
+  return <AppNavigator />;
 }
