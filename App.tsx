@@ -68,7 +68,7 @@ export default function App() {
             <TouchableOpacity>
               <Space2
                 color="#BB9BFF"
-                num="03"
+                num="04"
                 spaceName="Nibro's Playlist"
                 spacePattern={require("./assets/spacePattern.png")}
               />
