@@ -37,12 +37,33 @@ export const Logo = () => (
   </Svg>
 );
 
-export const ProfileIcon = (props: any) => (
-  <Svg width={32} height={32} viewBox="0 0 32 32" fill="none" {...props}>
+export const ProfileIcon = () => (
+  <Svg width={32} height={32} viewBox="0 0 32 32" fill="none">
     <Circle cx={16} cy={16} r={16} fill="#313544" fillOpacity={1} />
     <Path
       d="M16 3.692C9.206 3.692 3.692 9.206 3.692 16S9.206 28.308 16 28.308 28.308 22.794 28.308 16 22.794 3.692 16 3.692zm0 3.693a3.687 3.687 0 013.692 3.692A3.687 3.687 0 0116 14.769a3.687 3.687 0 01-3.692-3.692A3.687 3.687 0 0116 7.385zm0 17.476a8.862 8.862 0 01-7.385-3.963c.037-2.449 4.924-3.79 7.385-3.79 2.45 0 7.348 1.341 7.385 3.79A8.862 8.862 0 0116 24.861z"
       fill="#fff"
+    />
+  </Svg>
+);
+
+export const AddButton = () => (
+  <Svg width={87} height={87} viewBox="0 0 87 87" fill="none">
+    <Rect width={87} height={87} rx={35} fill="#362D1E" />
+    <Rect
+      x={12.732}
+      y={12.732}
+      width={61.537}
+      height={61.537}
+      rx={15}
+      fill="#E08700"
+    />
+    <Path
+      d="M43.5 31.122v24.756M31.122 43.5h24.756"
+      stroke="#fff"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
   </Svg>
 );

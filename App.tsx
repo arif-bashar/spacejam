@@ -7,7 +7,7 @@ import {
   SafeAreaView,
 } from "react-native";
 import styled from "styled-components/native";
-import { Logo, ProfileIcon } from "./components/Icons";
+import { Logo, ProfileIcon, AddButton } from "./components/Icons";
 import { Space } from "./components/Space";
 import { Space2 } from "./components/Space2";
 
@@ -77,6 +77,11 @@ export default function App() {
             />
           </TouchableOpacity>
         </ScrollView>
+        <ButtonContainer>
+          <TouchableOpacity>
+            <AddButton />
+          </TouchableOpacity>
+        </ButtonContainer>
       </ScrollView>
     </SafeAreaView>
   );
@@ -107,4 +112,12 @@ const WelcomeText = styled.Text`
 
 const Name = styled.Text`
   color: #e08700;
+`;
+
+const ButtonContainer = styled.View`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  margin-top: 50px;
 `;
