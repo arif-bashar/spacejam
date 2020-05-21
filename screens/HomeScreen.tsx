@@ -21,7 +21,7 @@ if (Platform.OS == "ios") {
   safeMargin = 40;
 }
 
-export default function App() {
+export default function HomeScreen() {
   return (
     <SafeAreaView style={{ backgroundColor: "#191b23", flex: 1 }}>
       <ScrollView>
