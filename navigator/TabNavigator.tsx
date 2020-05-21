@@ -47,7 +47,6 @@ const TabNavigator = createBottomTabNavigator(
       showLabel: false,
       style: {
         borderTopWidth: 0,
-        elevation: 10,
       },
     },
   }
