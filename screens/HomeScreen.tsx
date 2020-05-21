@@ -136,5 +136,5 @@ const ButtonContainer = styled.View`
 const SpaceContainer = styled.View`
   flex-direction: row;
   /* padding-left: 20px; */
-  padding-right: 15px;
+  padding-right: 13px;
 `;
