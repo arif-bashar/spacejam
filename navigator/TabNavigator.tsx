@@ -5,6 +5,7 @@ import { createBottomTabNavigator } from "react-navigation-tabs";
 import HomeScreen from "../screens/HomeScreen";
 import SearchScreen from "../screens/SearchScreen";
 import ProfileScreen from "../screens/ProfileScreen";
+import { HomeIcon, TabProfileIcon, SearchIcon } from "../components/Icons";
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
@@ -12,16 +13,26 @@ const HomeStack = createStackNavigator({
 
 HomeStack.navigationOptions = {
   tabBarLabel: "Home",
-  // tabBarIcon:
+  tabBarIcon: () => <HomeIcon />,
 };
 
 const SearchStack = createStackNavigator({
   Search: SearchScreen,
 });
 
+SearchStack.navigationOptions = {
+  tabBarLabel: "Search",
+  tabBarIcon: () => <SearchIcon />,
+};
+
 const ProfileStack = createStackNavigator({
   Home: ProfileScreen,
 });
+
+ProfileStack.navigationOptions = {
+  tabBarLabel: "Profile",
+  tabBarIcon: () => <TabProfileIcon />,
+};
 
 const TabNavigator = createBottomTabNavigator(
   {
@@ -31,8 +42,9 @@ const TabNavigator = createBottomTabNavigator(
   },
   {
     tabBarOptions: {
-      inactiveBackgroundColor: "red",
-      activeBackgroundColor: "red",
+      inactiveBackgroundColor: "black",
+      activeBackgroundColor: "black",
+      showLabel: false,
     },
   }
 );
