@@ -47,35 +47,33 @@ export default function App() {
           </TouchableOpacity>
         </Container>
 
-        <ScrollView
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
-          style={{ paddingLeft: 20 }}
-        >
-          <TouchableOpacity>
-            <Space2
-              color="#FFCF73"
-              num="02"
-              spaceName="George's Stinky Room"
-              spacePattern={require("./assets/spacePattern.png")}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Space2
-              color="#A9BAFF"
-              num="03"
-              spaceName="Eli's Headphones"
-              spacePattern={require("./assets/spacePattern.png")}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Space2
-              color="#A9BAFF"
-              num="03"
-              spaceName="Eli's Headphones"
-              spacePattern={require("./assets/spacePattern.png")}
-            />
-          </TouchableOpacity>
+        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+          <SpaceContainer>
+            <TouchableOpacity>
+              <Space2
+                color="#FFCF73"
+                num="02"
+                spaceName="George's Stinky Room"
+                spacePattern={require("./assets/spacePattern.png")}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <Space2
+                color="#A9BAFF"
+                num="03"
+                spaceName="Eli's Headphones"
+                spacePattern={require("./assets/spacePattern.png")}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <Space2
+                color="#BB9BFF"
+                num="03"
+                spaceName="Nibro's Playlist"
+                spacePattern={require("./assets/spacePattern.png")}
+              />
+            </TouchableOpacity>
+          </SpaceContainer>
         </ScrollView>
         <ButtonContainer>
           <TouchableOpacity>
@@ -102,6 +100,7 @@ const IconBar = styled.View`
 `;
 
 const WelcomeView = styled.Text`
+  margin-top: -10px;
   font-weight: 700;
   font-size: 17px;
 `;
@@ -120,4 +119,10 @@ const ButtonContainer = styled.View`
   align-items: center;
   height: 100%;
   margin-top: 50px;
+`;
+
+const SpaceContainer = styled.View`
+  flex-direction: row;
+  padding-left: 20px;
+  padding-right: 20px;
 `;
