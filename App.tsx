@@ -49,8 +49,8 @@ export default function App() {
           headerShown: false,
         })}
       >
-        <Stack.Screen name="Home" component={HomeTabs} />
         <Stack.Screen name="Welcome" component={WelcomeScreen} />
+        <Stack.Screen name="Home" component={HomeTabs} />
       </Stack.Navigator>
     </NavigationContainer>
   );
