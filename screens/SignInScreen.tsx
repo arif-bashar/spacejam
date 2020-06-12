@@ -3,6 +3,7 @@ import styled from "styled-components/native";
 import { SafeAreaView } from "react-native";
 import { BackIcon } from "../components/Icons";
 import { InputField } from "../components/InputField";
+import { SignButton } from "../components/SignButton";
  
 class SignInScreen extends React.Component {
   static navigationOptions = {
@@ -29,6 +30,9 @@ class SignInScreen extends React.Component {
             <InputField field="Password" />
           </InputView>
           <ForgotP>Forgot your password?</ForgotP>
+          <SignInView>
+            <SignButton title="Sign In" />
+          </SignInView>
         </Container>
       </SafeAreaView>
     );
@@ -84,12 +88,18 @@ const Creds = styled.Text`
 const InputView = styled.View`
   align-items: center;
   margin-bottom: 15px;
+  padding-left: 15px;
+  padding-right: 15px;
 `;
 
 const ForgotP = styled.Text`
   color: #E08700;
   font-size: 10px;
   margin-left: 17px;
-  margin-bottom: 94px;
-  font-weight: 800;
+  margin-bottom: 24px;
+`;
+
+const SignInView = styled.View`
+  padding-left: 15px;
+  padding-right: 15px;
 `;

@@ -14,7 +14,7 @@ export const InputField: React.FC<Field> = (props) => {
 };
 
 const Container = styled.View`
-  width: 92%;
+  width: 100%;
   height: 51px;
   background: #2B2F3E;
   border-radius: 10px;
