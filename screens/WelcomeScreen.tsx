@@ -4,6 +4,7 @@ import styled from "styled-components/native";
 import { SafeAreaView } from "react-native";
 import { SignButton } from "../components/SignButton";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { useNavigation } from "@react-navigation/native"
 
 let safeMargin: number;
 
@@ -14,6 +15,8 @@ if (Platform.OS == "ios") {
 }
 
 class WelcomeScreen extends React.Component {
+  let navigation = useNavigation();
+
   render() {
     return (
       <SafeAreaView style={{ backgroundColor: "#191b23", flex: 1 }}>
@@ -29,7 +32,8 @@ class WelcomeScreen extends React.Component {
             resizeMode="contain"
           />
         </LogoView>
-        <TouchableOpacity>
+        <TouchableOpacity
+        onPress={() => this.navigation.navigate()}>
           <ButtonContainer>
             <SignButton title="Sign In" />
           </ButtonContainer>
