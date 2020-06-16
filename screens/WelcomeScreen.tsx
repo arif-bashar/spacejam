@@ -3,6 +3,7 @@ import { Platform } from "react-native";
 import styled from "styled-components/native";
 import { SafeAreaView } from "react-native";
 import { SignButton } from "../components/SignButton";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 let safeMargin: number;
 
@@ -28,9 +29,15 @@ class WelcomeScreen extends React.Component {
             resizeMode="contain"
           />
         </LogoView>
-        <ButtonContainer>
-          <SignButton title="Sign In" />
-        </ButtonContainer>
+        <TouchableOpacity>
+          <ButtonContainer>
+            <SignButton title="Sign In" />
+          </ButtonContainer>
+        </TouchableOpacity>
+        <RegisterView>
+          <Context>Don't have an account?</Context>
+          <RegisterText>Register</RegisterText>
+        </RegisterView>
         <ShapeView>
           <ShapeArtifacts source={require("../assets/shape-artifacts.png")} />
         </ShapeView>
@@ -39,13 +46,6 @@ class WelcomeScreen extends React.Component {
   }
 }
 
-const ButtonContainer = styled.View`
-  flex: 1;
-  padding-left: 15px;
-  padding-right: 15px;
-  margin-top: 300px;
-  z-index: 1;
-`;
 const ArtifactView = styled.View`
   flex: 1;
   position: absolute;
@@ -55,17 +55,27 @@ const ArtifactView = styled.View`
 const GridArtifacts = styled.Image`
   width: 340px;
   height: 477px;
+  opacity: 0.5;
 `;
 
 const LogoView = styled.View`
-  flex: 1;
   align-items: center;
   margin-top: 65px;
+  width: 100%;
+  height: 94px;
 `;
 
 const Logo = styled.Image`
   width: 208px;
   height: 94px;
+`;
+
+const ButtonContainer = styled.View`
+  height: 55px;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-top: 450px;
+  z-index: 1;
 `;
 
 const ShapeView = styled.View`
@@ -74,11 +84,34 @@ const ShapeView = styled.View`
   margin-top: 65px;
   position: absolute;
   bottom: 5px;
+  z-index: -1;
 `;
 
 const ShapeArtifacts = styled.Image`
   width: 466px;
   height: 251px;
+  opacity: 0.4;
+`;
+
+const RegisterView = styled.View`
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  margin-top: 15px;
+  z-index: 1;
+`;
+
+const Context = styled.Text`
+  font-size: 14px;
+  font-weight: 700;
+  color: white;
+`;
+
+const RegisterText = styled.Text`
+  margin-left: 5px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #e08700;
 `;
 
 export default WelcomeScreen;
