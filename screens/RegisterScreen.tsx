@@ -4,48 +4,38 @@ import { SafeAreaView } from "react-native";
 import { BackIcon } from "../components/Icons";
 import { InputField } from "../components/InputField";
 import { SignButton } from "../components/SignButton";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import { StackNavigationProp } from "@react-navigation/stack";
-import { AuthParamList } from "../AuthParamList";
+import { LeftInputField } from "../components/LeftInputField";
+import { RightInputField } from "../components/RightInputField";
 
-export function SignInScreen({
-  navigation,
-}: {
-  navigation: StackNavigationProp<AuthParamList, "Sign In">;
-}) {
+export function RegisterScreen() {
+
   return (
     <SafeAreaView style={{ backgroundColor: "#191b23", flex: 1 }}>
       <Container>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.goBack();
-          }}
-        >
-          <BackView>
-            <BackIcon />
-            <BackText>Back</BackText>
-          </BackView>
-        </TouchableOpacity>
+        <BackView>
+          <BackIcon />
+          <BackText>Back</BackText>
+        </BackView>
         <GreetingView>
-          <Title>Yay, you're back!</Title>
-          <Subtitle>Sign in with your credentials and start jamming</Subtitle>
+          <Title>Make your account!</Title>
+          <Subtitle>Register with your credentials and start jamming</Subtitle>
         </GreetingView>
         <Creds>SPACEJAM CREDENTIALS</Creds>
         <InputView>
           <InputField field="Email / Phone" />
         </InputView>
+        <FirstLastView>  
+          <LeftInputField field="First Name" />
+          <RightInputField field="Last Name" />
+        </FirstLastView>
         <InputView>
           <InputField field="Password" />
         </InputView>
-        <ForgotP>Forgot your password?</ForgotP>
+        <InputView>
+          <InputField field="Confirm Password" />
+        </InputView>
         <SignInView>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("Home");
-            }}
-          >
-            <SignButton title="Sign In" />
-          </TouchableOpacity>
+          <SignButton title="Register" />
         </SignInView>
       </Container>
     </SafeAreaView>
@@ -62,7 +52,7 @@ const Title = styled.Text`
   color: #ffffff;
   font-size: 24px;
   font-weight: 800;
-  margin-bottom: 15px;
+  padding-bottom: 15px;
 `;
 
 const Subtitle = styled.Text`
@@ -103,14 +93,16 @@ const InputView = styled.View`
   padding-right: 15px;
 `;
 
-const ForgotP = styled.Text`
-  color: #e08700;
-  font-size: 10px;
-  margin-left: 17px;
-  margin-bottom: 24px;
+const SignInView = styled.View`
+  padding-top: 33px;
+  padding-left: 15px;
+  padding-right: 15px;
 `;
 
-const SignInView = styled.View`
+const FirstLastView = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 15px;
   padding-left: 15px;
   padding-right: 15px;
 `;
