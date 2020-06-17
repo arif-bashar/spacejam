@@ -18,7 +18,7 @@ export function SignInScreen({
       <Container>
         <TouchableOpacity
           onPress={() => {
-            navigation.goBack();
+            navigation.navigate("Welcome");
           }}
         >
           <BackView>

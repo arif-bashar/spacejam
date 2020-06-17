@@ -1,21 +1,32 @@
 import * as React from "react";
 import styled from "styled-components/native";
-import { SafeAreaView } from "react-native";
+import { SafeAreaView, TouchableOpacity } from "react-native";
 import { BackIcon } from "../components/Icons";
 import { InputField } from "../components/InputField";
 import { SignButton } from "../components/SignButton";
 import { LeftInputField } from "../components/LeftInputField";
 import { RightInputField } from "../components/RightInputField";
+import { NavigationProp } from "@react-navigation/native";
+import { AuthParamList } from "../AuthParamList";
 
-export function RegisterScreen() {
-
+export function RegisterScreen({
+  navigation,
+}: {
+  navigation: NavigationProp<AuthParamList, "Register">;
+}) {
   return (
     <SafeAreaView style={{ backgroundColor: "#191b23", flex: 1 }}>
       <Container>
-        <BackView>
-          <BackIcon />
-          <BackText>Back</BackText>
-        </BackView>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.goBack();
+          }}
+        >
+          <BackView>
+            <BackIcon />
+            <BackText>Back</BackText>
+          </BackView>
+        </TouchableOpacity>
         <GreetingView>
           <Title>Make your account!</Title>
           <Subtitle>Register with your credentials and start jamming</Subtitle>
@@ -24,7 +35,7 @@ export function RegisterScreen() {
         <InputView>
           <InputField field="Email / Phone" />
         </InputView>
-        <FirstLastView>  
+        <FirstLastView>
           <LeftInputField field="First Name" />
           <RightInputField field="Last Name" />
         </FirstLastView>
@@ -34,9 +45,15 @@ export function RegisterScreen() {
         <InputView>
           <InputField field="Confirm Password" />
         </InputView>
-        <SignInView>
-          <SignButton title="Register" />
-        </SignInView>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("Home");
+          }}
+        >
+          <SignInView>
+            <SignButton title="Register" />
+          </SignInView>
+        </TouchableOpacity>
       </Container>
     </SafeAreaView>
   );

@@ -45,7 +45,13 @@ export function WelcomeScreen({
       </TouchableOpacity>
       <RegisterView>
         <Context>Don't have an account?</Context>
-        <RegisterText>Register</RegisterText>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("Register");
+          }}
+        >
+          <RegisterText>Register</RegisterText>
+        </TouchableOpacity>
       </RegisterView>
       <ShapeView>
         <ShapeArtifacts source={require("../assets/shape-artifacts.png")} />

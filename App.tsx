@@ -52,7 +52,7 @@ export default function App() {
           headerShown: false,
         })}
       >
-        <Stack.Screen name="Sign Up" component={RegisterScreen} />
+        <Stack.Screen name="Register" component={RegisterScreen} />
         <Stack.Screen name="Sign In" component={SignInScreen} />
         <Stack.Screen name="Home" component={HomeTabs} />
         <Stack.Screen name="Welcome" component={WelcomeScreen} />
