@@ -52,7 +52,7 @@ const Title = styled.Text`
   color: #ffffff;
   font-size: 24px;
   font-weight: 800;
-  padding-bottom: 15px;
+  margin-bottom: 15px;
 `;
 
 const Subtitle = styled.Text`
@@ -94,7 +94,7 @@ const InputView = styled.View`
 `;
 
 const SignInView = styled.View`
-  padding-top: 33px;
+  margin-top: 33px;
   padding-left: 15px;
   padding-right: 15px;
 `;
