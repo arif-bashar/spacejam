@@ -52,8 +52,6 @@ export function SignInScreen({
   );
 }
 
-export default SignInScreen;
-
 const Container = styled.View`
   background: #191b23;
   flex: 1;

@@ -6,8 +6,8 @@ import { HomeScreen } from "./screens/HomeScreen";
 import SearchScreen from "./screens/SearchScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import { HomeIcon, SearchIcon, TabProfileIcon } from "./components/Icons";
-import WelcomeScreen from "./screens/WelcomeScreen";
-import SignInScreen from "./screens/SignInScreen";
+import { WelcomeScreen } from "./screens/WelcomeScreen";
+import { SignInScreen } from "./screens/SignInScreen";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();

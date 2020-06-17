@@ -121,5 +121,3 @@ const RegisterText = styled.Text`
   font-weight: 700;
   color: #e08700;
 `;
-
-export default WelcomeScreen;
