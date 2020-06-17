@@ -4,39 +4,52 @@ import { SafeAreaView } from "react-native";
 import { BackIcon } from "../components/Icons";
 import { InputField } from "../components/InputField";
 import { SignButton } from "../components/SignButton";
- 
-class SignInScreen extends React.Component {
-  static navigationOptions = {
-    headerShown: false,
-  };
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { AuthParamList } from "../AuthParamList";
 
-  render() {
-    return (
-      <SafeAreaView style={{ backgroundColor: "#191b23", flex: 1 }}>
-        <Container>
+export function SignInScreen({
+  navigation,
+}: {
+  navigation: StackNavigationProp<AuthParamList, "Sign In">;
+}) {
+  return (
+    <SafeAreaView style={{ backgroundColor: "#191b23", flex: 1 }}>
+      <Container>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.goBack();
+          }}
+        >
           <BackView>
             <BackIcon />
             <BackText>Back</BackText>
           </BackView>
-          <GreetingView>
-            <Title>Yay, you're back!</Title>
-            <Subtitle>Sign in with your credentials and start jamming</Subtitle>
-          </GreetingView>
-          <Creds>SPACEJAM CREDENTIALS</Creds>
-          <InputView>
-            <InputField field="Email / Phone" />
-          </InputView>
-          <InputView>
-            <InputField field="Password" />
-          </InputView>
-          <ForgotP>Forgot your password?</ForgotP>
-          <SignInView>
+        </TouchableOpacity>
+        <GreetingView>
+          <Title>Yay, you're back!</Title>
+          <Subtitle>Sign in with your credentials and start jamming</Subtitle>
+        </GreetingView>
+        <Creds>SPACEJAM CREDENTIALS</Creds>
+        <InputView>
+          <InputField field="Email / Phone" />
+        </InputView>
+        <InputView>
+          <InputField field="Password" />
+        </InputView>
+        <ForgotP>Forgot your password?</ForgotP>
+        <SignInView>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("Home");
+            }}
+          >
             <SignButton title="Sign In" />
-          </SignInView>
-        </Container>
-      </SafeAreaView>
-    );
-  }
+          </TouchableOpacity>
+        </SignInView>
+      </Container>
+    </SafeAreaView>
+  );
 }
 
 export default SignInScreen;
@@ -93,7 +106,7 @@ const InputView = styled.View`
 `;
 
 const ForgotP = styled.Text`
-  color: #E08700;
+  color: #e08700;
   font-size: 10px;
   margin-left: 17px;
   margin-bottom: 24px;

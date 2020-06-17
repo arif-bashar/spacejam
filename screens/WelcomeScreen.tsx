@@ -4,7 +4,8 @@ import styled from "styled-components/native";
 import { SafeAreaView } from "react-native";
 import { SignButton } from "../components/SignButton";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { useNavigation } from "@react-navigation/native"
+import { StackNavigationProp } from "@react-navigation/stack";
+import { AuthParamList } from "../AuthParamList";
 
 let safeMargin: number;
 
@@ -14,40 +15,43 @@ if (Platform.OS == "ios") {
   safeMargin = 110;
 }
 
-class WelcomeScreen extends React.Component {
-  let navigation = useNavigation();
-
-  render() {
-    return (
-      <SafeAreaView style={{ backgroundColor: "#191b23", flex: 1 }}>
-        <ArtifactView>
-          <GridArtifacts
-            source={require("../assets/xgrid-artifacts.png")}
-            resizeMode="contain"
-          />
-        </ArtifactView>
-        <LogoView style={{ marginTop: safeMargin }}>
-          <Logo
-            source={require("../assets/welcome-logo.png")}
-            resizeMode="contain"
-          />
-        </LogoView>
-        <TouchableOpacity
-        onPress={() => this.navigation.navigate()}>
-          <ButtonContainer>
-            <SignButton title="Sign In" />
-          </ButtonContainer>
-        </TouchableOpacity>
-        <RegisterView>
-          <Context>Don't have an account?</Context>
-          <RegisterText>Register</RegisterText>
-        </RegisterView>
-        <ShapeView>
-          <ShapeArtifacts source={require("../assets/shape-artifacts.png")} />
-        </ShapeView>
-      </SafeAreaView>
-    );
-  }
+export function WelcomeScreen({
+  navigation,
+}: {
+  navigation: StackNavigationProp<AuthParamList, "Welcome">;
+}) {
+  return (
+    <SafeAreaView style={{ backgroundColor: "#191b23", flex: 1 }}>
+      <ArtifactView>
+        <GridArtifacts
+          source={require("../assets/xgrid-artifacts.png")}
+          resizeMode="contain"
+        />
+      </ArtifactView>
+      <LogoView style={{ marginTop: safeMargin }}>
+        <Logo
+          source={require("../assets/welcome-logo.png")}
+          resizeMode="contain"
+        />
+      </LogoView>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate("Sign In");
+        }}
+      >
+        <ButtonContainer>
+          <SignButton title="Sign In" />
+        </ButtonContainer>
+      </TouchableOpacity>
+      <RegisterView>
+        <Context>Don't have an account?</Context>
+        <RegisterText>Register</RegisterText>
+      </RegisterView>
+      <ShapeView>
+        <ShapeArtifacts source={require("../assets/shape-artifacts.png")} />
+      </ShapeView>
+    </SafeAreaView>
+  );
 }
 
 const ArtifactView = styled.View`

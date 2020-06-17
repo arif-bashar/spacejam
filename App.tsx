@@ -46,6 +46,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
+        initialRouteName="Welcome"
         screenOptions={({ route }) => ({
           headerShown: false,
         })}
