@@ -10,6 +10,8 @@ import styled from "styled-components/native";
 import { Logo, ProfileIcon, AddButton } from "../components/Icons";
 import { Space } from "../components/Space";
 import { Space2 } from "../components/Space2";
+import { NavigationProp } from "@react-navigation/native";
+import { AuthParamList } from "../AuthParamList";
 
 let safeMargin: number;
 
@@ -21,7 +23,11 @@ if (Platform.OS == "ios") {
   safeMargin = 40;
 }
 
-export function HomeScreen() {
+export function HomeScreen({
+  navigation,
+}: {
+  navigation: NavigationProp<AuthParamList, "Home">;
+}) {
   return (
     <SafeAreaView style={{ backgroundColor: "#191b23", flex: 1 }}>
       <ScrollView>
@@ -29,7 +35,11 @@ export function HomeScreen() {
           <TitleBar style={{ marginTop: safeMargin, marginBottom: 57 }}>
             <IconBar>
               <Logo />
-              <TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate("Sign In");
+                }}
+              >
                 <ProfileIcon style={{ marginTop: 20 }} />
               </TouchableOpacity>
             </IconBar>
