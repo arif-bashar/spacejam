@@ -38,6 +38,7 @@ export function WelcomeScreen({
         onPress={() => {
           navigation.navigate("Sign In");
         }}
+        style={{ marginTop: 450, height: 55 }}
       >
         <ButtonContainer>
           <SignButton title="Sign In" />
@@ -88,7 +89,7 @@ const ButtonContainer = styled.View`
   height: 55px;
   padding-left: 15px;
   padding-right: 15px;
-  margin-top: 450px;
+  /* margin-top: 450px; */
   z-index: 1;
 `;
 
