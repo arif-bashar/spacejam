@@ -1,9 +1,9 @@
 import * as React from "react";
 import styled from "styled-components/native";
 
-interface ButtonProps {
+type ButtonProps = {
   title: string;
-}
+};
 
 export const SignButton: React.FC<ButtonProps> = (props) => {
   return (

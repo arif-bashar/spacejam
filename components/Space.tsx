@@ -2,11 +2,11 @@ import * as React from "react";
 import styled from "styled-components/native";
 import { ImageSourcePropType } from "react-native";
 
-interface SpaceProps {
+type SpaceProps = {
   num: string;
   spaceName: string;
   spacePattern: ImageSourcePropType;
-}
+};
 
 export const Space: React.FC<SpaceProps> = (props) => {
   return (

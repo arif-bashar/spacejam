@@ -2,12 +2,12 @@ import * as React from "react";
 import styled from "styled-components/native";
 import { ImageSourcePropType } from "react-native";
 
-interface SpaceProps {
+type SpaceProps = {
   color: string;
   num: string;
   spaceName: string;
   spacePattern: ImageSourcePropType;
-}
+};
 
 export const Space2: React.FC<SpaceProps> = (props) => {
   return (
