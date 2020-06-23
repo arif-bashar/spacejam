@@ -9,6 +9,7 @@ import { HomeIcon, SearchIcon, TabProfileIcon } from "./components/Icons";
 import { WelcomeScreen } from "./screens/WelcomeScreen";
 import { SignInScreen } from "./screens/SignInScreen";
 import { RegisterScreen } from "./screens/RegisterScreen";
+import { Provider } from "react-redux";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -45,18 +46,20 @@ function HomeTabs() {
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName="Welcome"
-        screenOptions={({ route }) => ({
-          headerShown: false,
-        })}
-      >
-        <Stack.Screen name="Register" component={RegisterScreen} />
-        <Stack.Screen name="Sign In" component={SignInScreen} />
-        <Stack.Screen name="Home" component={HomeTabs} />
-        <Stack.Screen name="Welcome" component={WelcomeScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Provider>
+      <NavigationContainer>
+        <Stack.Navigator
+          initialRouteName="Welcome"
+          screenOptions={({ route }) => ({
+            headerShown: false,
+          })}
+        >
+          <Stack.Screen name="Register" component={RegisterScreen} />
+          <Stack.Screen name="Sign In" component={SignInScreen} />
+          <Stack.Screen name="Home" component={HomeTabs} />
+          <Stack.Screen name="Welcome" component={WelcomeScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 }
