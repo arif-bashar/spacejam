@@ -1,7 +1,12 @@
-import { createStore } from "redux";
+import { configureStore, Action } from "@reduxjs/toolkit";
+import rootReducer, { RootState } from "./reducers/rootReducer";
+import { ThunkAction } from "redux-thunk";
 
-const initialState = {};
+const store = configureStore({
+  reducer: rootReducer,
+});
 
-const store = createStore(rootReducer, initialState);
+
+export type AppThunk = ThunkAction<void, RootState, unknown, Action<string>>
 
 export default store;
