@@ -28,7 +28,7 @@ export function WelcomeScreen({
           resizeMode="contain"
         />
       </ArtifactView>
-      <LogoView style={{ marginTop: safeMargin }}>
+      <LogoView style={{ marginTop: safeMargin, marginBottom: 450 }}>
         <Logo
           source={require("../assets/welcome-logo.png")}
           resizeMode="contain"
@@ -38,7 +38,6 @@ export function WelcomeScreen({
         onPress={() => {
           navigation.navigate("Sign In");
         }}
-        style={{ marginTop: 450, height: 55 }}
       >
         <ButtonContainer>
           <SignButton title="Sign In" />
