@@ -67,21 +67,19 @@ function HomeTabs() {
 export default function App() {
   return (
     <Provider store={store}>
-      <ReactReduxFirebaseProvider {...rrfProps}>
-        <NavigationContainer>
-          <Stack.Navigator
-            initialRouteName="Welcome"
-            screenOptions={({ route }) => ({
-              headerShown: false,
-            })}
-          >
-            <Stack.Screen name="Register" component={RegisterScreen} />
-            <Stack.Screen name="Sign In" component={SignInScreen} />
-            <Stack.Screen name="Home" component={HomeTabs} />
-            <Stack.Screen name="Welcome" component={WelcomeScreen} />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </ReactReduxFirebaseProvider>
+      <NavigationContainer>
+        <Stack.Navigator
+          initialRouteName="Welcome"
+          screenOptions={({ route }) => ({
+            headerShown: false,
+          })}
+        >
+          <Stack.Screen name="Register" component={RegisterScreen} />
+          <Stack.Screen name="Sign In" component={SignInScreen} />
+          <Stack.Screen name="Home" component={HomeTabs} />
+          <Stack.Screen name="Welcome" component={WelcomeScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
     </Provider>
   );
 }
