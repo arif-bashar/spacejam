@@ -6,14 +6,15 @@ import { HomeScreen } from "./screens/HomeScreen";
 import SearchScreen from "./screens/SearchScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import { HomeIcon, SearchIcon, TabProfileIcon } from "./components/Icons";
-import { WelcomeScreen } from "./screens/WelcomeScreen";
-import { SignInScreen } from "./screens/SignInScreen";
-import { RegisterScreen } from "./screens/RegisterScreen";
+import WelcomeScreen from "./screens/WelcomeScreen";
+import SignInScreen from "./screens/SignInScreen";
+import RegisterScreen from "./screens/RegisterScreen";
 import { Provider } from "react-redux";
 import store from "./store";
+import { StackParams } from "./StackNavigatorTypes";
 
 const Tab = createBottomTabNavigator();
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<StackParams>();
 
 function HomeTabs() {
   return (
@@ -53,10 +54,11 @@ export default function App() {
           initialRouteName="Welcome"
           screenOptions={({ route }) => ({
             headerShown: false,
+            gestureEnabled: route.name == "Home" ? false : true,
           })}
         >
           <Stack.Screen name="Register" component={RegisterScreen} />
-          <Stack.Screen name="Sign In" component={SignInScreen} />
+          <Stack.Screen name="SignIn" component={SignInScreen} />
           <Stack.Screen name="Home" component={HomeTabs} />
           <Stack.Screen name="Welcome" component={WelcomeScreen} />
         </Stack.Navigator>

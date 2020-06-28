@@ -1,19 +1,30 @@
 import * as React from "react";
 import styled from "styled-components/native";
-import { SafeAreaView, TouchableOpacity } from "react-native";
+import { SafeAreaView, TouchableOpacity, Alert } from "react-native";
 import { BackIcon } from "../components/Icons";
-import { InputField } from "../components/InputField";
 import { SignButton } from "../components/SignButton";
-import { LeftInputField } from "../components/LeftInputField";
-import { RightInputField } from "../components/RightInputField";
-import { NavigationProp } from "@react-navigation/native";
-import { AuthParamList } from "../AuthParamList";
+import { RegisterProps } from "../StackNavigatorTypes";
+import firebase from "../components/Firebase";
 
-export function RegisterScreen({
-  navigation,
-}: {
-  navigation: NavigationProp<AuthParamList, "Register">;
-}) {
+function RegisterScreen({ navigation }: RegisterProps) {
+  const [email, setEmail] = React.useState("");
+  const [firstName, setFirstName] = React.useState("");
+  const [lastName, setLastName] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [confirmPass, setConfirmPass] = React.useState("");
+
+  const onRegister = () => {
+    firebase
+      .auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then((response) => {
+        navigation.navigate("Home");
+      })
+      .catch((error) => {
+        Alert.alert("Error", error.message);
+      });
+  };
+
   return (
     <SafeAreaView style={{ backgroundColor: "#191b23", flex: 1 }}>
       <Container>
@@ -33,23 +44,42 @@ export function RegisterScreen({
         </GreetingView>
         <Creds>SPACEJAM CREDENTIALS</Creds>
         <InputView>
-          <InputField field="Email / Phone" />
+          <InputField
+            onChangeText={(email) => setEmail(email)}
+            placeholder="Email"
+            keyboardType="email-address"
+            placeholderTextColor="#697295"
+          />
         </InputView>
         <FirstLastView>
-          <LeftInputField field="First Name" />
-          <RightInputField field="Last Name" />
+          <LeftInputField
+            onChangeText={(firstName) => setFirstName(firstName)}
+            placeholder="First Name"
+            placeholderTextColor="#697295"
+          />
+          <RightInputField
+            onChangeText={(lastName) => setLastName(lastName)}
+            placeholder="Last Name"
+            placeholderTextColor="#697295"
+          />
         </FirstLastView>
         <InputView>
-          <InputField field="Password" />
+          <InputField
+            onChangeText={(password) => setPassword(password)}
+            placeholder="Password"
+            secureTextEntry={true}
+            placeholderTextColor="#697295"
+          />
         </InputView>
         <InputView>
-          <InputField field="Confirm Password" />
+          <InputField
+            onChangeText={(confirmPass) => setConfirmPass(confirmPass)}
+            placeholder="Confirm Password"
+            secureTextEntry={true}
+            placeholderTextColor="#697295"
+          />
         </InputView>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate("Home");
-          }}
-        >
+        <TouchableOpacity onPress={() => onRegister()}>
           <SignInView>
             <SignButton title="Register" />
           </SignInView>
@@ -58,6 +88,8 @@ export function RegisterScreen({
     </SafeAreaView>
   );
 }
+
+export default RegisterScreen;
 
 const Container = styled.View`
   background: #191b23;
@@ -110,16 +142,47 @@ const InputView = styled.View`
   padding-right: 15px;
 `;
 
-const SignInView = styled.View`
-  margin-top: 33px;
-  padding-left: 15px;
-  padding-right: 15px;
+const InputField = styled.TextInput`
+  width: 100%;
+  height: 51px;
+  background: #2b2f3e;
+  border-radius: 10px;
+  justify-content: center;
+  padding-left: 16px;
+  color: #697295;
+  font-size: 14px;
 `;
 
 const FirstLastView = styled.View`
   flex-direction: row;
   justify-content: space-between;
   margin-bottom: 15px;
+  padding-left: 15px;
+  padding-right: 15px;
+`;
+
+const LeftInputField = styled.TextInput`
+  width: 49%;
+  height: 51px;
+  background: #2b2f3e;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  justify-content: center;
+  padding-left: 16px;
+`;
+
+const RightInputField = styled.TextInput`
+  width: 49%;
+  height: 51px;
+  background: #2b2f3e;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  justify-content: center;
+  padding-left: 16px;
+`;
+
+const SignInView = styled.View`
+  margin-top: 33px;
   padding-left: 15px;
   padding-right: 15px;
 `;

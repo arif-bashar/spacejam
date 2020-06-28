@@ -5,13 +5,14 @@ import {
   TouchableOpacity,
   ScrollView,
   SafeAreaView,
+  Alert,
 } from "react-native";
 import styled from "styled-components/native";
 import { Logo, ProfileIcon, AddButton } from "../components/Icons";
 import { Space } from "../components/Space";
 import { Space2 } from "../components/Space2";
-import { NavigationProp } from "@react-navigation/native";
-import { AuthParamList } from "../AuthParamList";
+import { HomeProps } from "../StackNavigatorTypes";
+import firebase from "../components/Firebase";
 
 let safeMargin: number;
 
@@ -23,11 +24,19 @@ if (Platform.OS == "ios") {
   safeMargin = 40;
 }
 
-export function HomeScreen({
-  navigation,
-}: {
-  navigation: NavigationProp<AuthParamList, "Home">;
-}) {
+export function HomeScreen({ navigation }: HomeProps) {
+  const onSignOut = () => {
+    firebase
+      .auth()
+      .signOut()
+      .then((response) => {
+        navigation.navigate("Welcome");
+      })
+      .catch((error) => {
+        Alert.alert("Error", error.message);
+      });
+  };
+
   return (
     <SafeAreaView style={{ backgroundColor: "#191b23", flex: 1 }}>
       <ScrollView>
@@ -37,7 +46,7 @@ export function HomeScreen({
               <Logo />
               <TouchableOpacity
                 onPress={() => {
-                  navigation.navigate("Sign In");
+                  navigation.popToTop();
                 }}
               >
                 <ProfileIcon style={{ marginTop: 20 }} />

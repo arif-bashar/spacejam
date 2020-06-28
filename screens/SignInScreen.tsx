@@ -4,32 +4,27 @@ import { SafeAreaView, Alert } from "react-native";
 import { BackIcon } from "../components/Icons";
 import { SignButton } from "../components/SignButton";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { StackNavigationProp } from "@react-navigation/stack";
-import { AuthParamList } from "../AuthParamList";
+import { SignInProps } from "../StackNavigatorTypes";
 import firebase from "../components/Firebase";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  addEmail,
-  addPassword,
-  inputEmail,
-  inputPassword,
-} from "../store/reducers/signInReducer";
+import { signInAction } from "../slices/authReducer";
 
-export function SignInScreen({
-  navigation,
-}: {
-  navigation: StackNavigationProp<AuthParamList, "Sign In">;
-}) {
+function SignInScreen({ navigation }: SignInProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const dispatch = useDispatch();
 
-  let onSignIn = () => {
+  const onSignIn = () => {
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then((response) => {
+        dispatch(
+          signInAction({
+            signedIn: true,
+          })
+        );
         navigation.navigate("Home");
       })
       .catch((error) => {
@@ -42,7 +37,7 @@ export function SignInScreen({
       <Container>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate("Welcome");
+            navigation.goBack();
           }}
         >
           <BackView>
@@ -73,11 +68,7 @@ export function SignInScreen({
         </InputView>
         <ForgotP>Forgot your password?</ForgotP>
         <SignInView>
-          <TouchableOpacity
-            onPress={() => {
-              onSignIn();
-            }}
-          >
+          <TouchableOpacity onPress={() => onSignIn()}>
             <SignButton title="Sign In" />
           </TouchableOpacity>
         </SignInView>
@@ -85,6 +76,8 @@ export function SignInScreen({
     </SafeAreaView>
   );
 }
+
+export default SignInScreen;
 
 const Container = styled.View`
   background: #191b23;
