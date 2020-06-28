@@ -11,16 +11,16 @@ import { WelcomeScreen } from "./screens/WelcomeScreen";
 import { SignInScreen } from "./screens/SignInScreen";
 import { RegisterScreen } from "./screens/RegisterScreen";
 import { Provider } from "react-redux";
-import { rrfProps, firebaseConfig } from "./components/Firebase";
+//import { rrfProps, firebaseConfig } from "./components/Firebase";
 import store from "./store/store"
 import { ReactReduxFirebaseProvider } from "react-redux-firebase";
 
 
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-const docRef = db.collection("users").doc("user-1");
+//firebase.initializeApp(firebaseConfig);
+//const db = firebase.firestore();
+//const docRef = db.collection("users").doc("user-1");
 
-
+/*
 // Get a document, forcing the SDK to fetch from the offline cache.
 docRef.get({source: 'server'}).then(function(doc) {
   // Document was found in the cache. If no cached document exists,
@@ -29,7 +29,7 @@ docRef.get({source: 'server'}).then(function(doc) {
 }).catch(function(error) {
   console.log("Error getting cached document:", error);
 });
-
+*/
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
