@@ -1,31 +1,73 @@
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components/native";
 import { SafeAreaView, Alert } from "react-native";
+import AsyncStorage from "@react-native-community/async-storage";
 import { BackIcon } from "../components/Icons";
 import { SignButton } from "../components/SignButton";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { SignInProps } from "../StackNavigatorTypes";
 import firebase from "../components/Firebase";
-import { useDispatch, useSelector } from "react-redux";
 import { signInAction } from "../slices/authReducer";
+import { RootState } from "../slices/rootReducer";
 
 function SignInScreen({ navigation }: SignInProps) {
+  const db = firebase.firestore();
+
+  // Redux dispatcher and selection from state
+  const dispatch = useDispatch();
+
+  // Grabs email and pass fields from input fields
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const dispatch = useDispatch();
+  let userName: string;
+  let userToken: string;
+
+  /* 
+  - Firebase doesn't have generic type for its Reference Doc, so use any
+  - Uses the userRef passed from onSignIn to get the user's firstName
+  - Dispatches signIn action to the auth state and saves firstName and token in Async
+  */
+  const storeDataUsingRef = async (userRef: any) => {
+    const doc = await userRef.get();
+    if (doc.exists) {
+      userName = doc.data().firstName;
+      dispatch(
+        signInAction({
+          isLoading: false,
+          userName: userName,
+          userToken: userToken,
+        })
+      );
+
+      try {
+        await AsyncStorage.setItem("userToken", userToken);
+        await AsyncStorage.setItem("userName", userName);
+        console.log("Added name and token to AsyncStorage");
+      } catch (error) {
+        console.log("Unable to store into AsyncStorage", error);
+      }
+    }
+  };
 
   const onSignIn = () => {
+    // Pass in the email and pass to authorize with Firebase
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
-      .then((response) => {
-        dispatch(
-          signInAction({
-            signedIn: true,
-          })
-        );
-        navigation.navigate("Home");
+      .then((credentials) => {
+        /* If credentials.user exist
+        - grab the reference to the document annd
+        - store the user's data including token */
+
+        if (credentials.user) {
+          const userRef = db.collection("users").doc(credentials.user.uid);
+          credentials.user.getIdToken().then((token) => (userToken = token));
+
+          // Using userRef, grab the user's first name
+          storeDataUsingRef(userRef).then(() => navigation.navigate("Home"));
+        }
       })
       .catch((error) => {
         Alert.alert("Error", error.message);

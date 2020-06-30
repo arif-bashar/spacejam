@@ -1,16 +1,25 @@
-import { RootState } from "./rootReducer";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-const initialState = {
-  signedIn: false,
+type currentState = {
+  isLoading: boolean;
+  userName: string | null;
+  userToken: string | null;
+};
+
+let initialState: currentState = {
+  isLoading: true,
+  userName: null,
+  userToken: null,
 };
 
 const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    signIn(state, action: PayloadAction<{ signedIn: boolean }>) {
-      state.signedIn = action.payload.signedIn;
+    signIn(state, action: PayloadAction<currentState>) {
+      state.isLoading = action.payload.isLoading;
+      state.userName = action.payload.userName;
+      state.userToken = action.payload.userToken;
     },
   },
 });

@@ -1,4 +1,5 @@
-import * as React from "react";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import {
   Platform,
   StatusBar,
@@ -7,12 +8,14 @@ import {
   SafeAreaView,
   Alert,
 } from "react-native";
+import AsyncStorage from "@react-native-community/async-storage";
 import styled from "styled-components/native";
 import { Logo, ProfileIcon, AddButton } from "../components/Icons";
 import { Space } from "../components/Space";
 import { Space2 } from "../components/Space2";
 import { HomeProps } from "../StackNavigatorTypes";
 import firebase from "../components/Firebase";
+import { RootState } from "../slices/rootReducer";
 
 let safeMargin: number;
 
@@ -25,15 +28,48 @@ if (Platform.OS == "ios") {
 }
 
 export function HomeScreen({ navigation }: HomeProps) {
+  const [userName, setUserName] = useState("");
+  // let userName: string = "";
+
+  useEffect(() => {
+    console.log("Fetching name");
+
+    getData();
+  }, []);
+
+  const getData = async () => {
+    try {
+      const name = await AsyncStorage.getItem("userName");
+      if (name != null) setUserName(name);
+      else console.log("name is null!");
+    } catch (error) {
+      console.log("Was not able to fetch name");
+    }
+  };
+
+  const removeData = async () => {
+    try {
+      await AsyncStorage.removeItem("userName");
+      await AsyncStorage.removeItem("userToken");
+      console.log("Items removed from AsyncStorage");
+    } catch (error) {
+      console.log("Unable to remove user's name and token", error);
+    }
+  };
+
   const onSignOut = () => {
     firebase
       .auth()
       .signOut()
-      .then((response) => {
-        navigation.navigate("Welcome");
-      })
-      .catch((error) => {
-        Alert.alert("Error", error.message);
+      .then(() => {
+        removeData()
+          .then(() => {
+            console.log("Signing Out");
+            navigation.popToTop();
+          })
+          .catch((error) => {
+            console.log("Error", error.message);
+          });
       });
   };
 
@@ -44,17 +80,13 @@ export function HomeScreen({ navigation }: HomeProps) {
           <TitleBar style={{ marginTop: safeMargin, marginBottom: 57 }}>
             <IconBar>
               <Logo />
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.popToTop();
-                }}
-              >
+              <TouchableOpacity onPress={() => onSignOut()}>
                 <ProfileIcon style={{ marginTop: 20 }} />
               </TouchableOpacity>
             </IconBar>
             <WelcomeView>
               <WelcomeText>Welcome back, </WelcomeText>
-              <Name>Arif</Name>
+              <Name>{userName}</Name>
             </WelcomeView>
           </TitleBar>
           <TouchableOpacity>

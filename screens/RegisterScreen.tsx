@@ -1,24 +1,77 @@
-import * as React from "react";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import AsyncStorage from "@react-native-community/async-storage";
 import styled from "styled-components/native";
 import { SafeAreaView, TouchableOpacity, Alert } from "react-native";
 import { BackIcon } from "../components/Icons";
 import { SignButton } from "../components/SignButton";
 import { RegisterProps } from "../StackNavigatorTypes";
 import firebase from "../components/Firebase";
+import { RootState } from "../slices/rootReducer";
+import { signInAction } from "../slices/authReducer";
 
 function RegisterScreen({ navigation }: RegisterProps) {
-  const [email, setEmail] = React.useState("");
-  const [firstName, setFirstName] = React.useState("");
-  const [lastName, setLastName] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const [confirmPass, setConfirmPass] = React.useState("");
+  const db = firebase.firestore();
 
+  // Redux dispatcher and selection from state
+  const dispatch = useDispatch();
+  const signedIn = useSelector((state: RootState) => state.auth);
+
+  const [email, setEmail] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPass, setConfirmPass] = useState("");
+
+  let userToken: string;
+
+  // Dispatches signIn action to the auth state and saves firstName and token in AsyncStorage
+  const storeData = async () => {
+    dispatch(
+      signInAction({
+        isLoading: false,
+        userName: firstName,
+        userToken: userToken,
+      })
+    );
+
+    try {
+      await AsyncStorage.setItem("userToken", userToken);
+      await AsyncStorage.setItem("userName", firstName);
+      console.log("Registered name and token to AsyncStorage");
+    } catch (error) {
+      console.log("Unable to store into AsyncStorage", error);
+    }
+  };
+
+  // Called by pressing register button
+  // Creates new auth user in Firebase and in users collection and navigates Home
   const onRegister = () => {
+    // Pass email and pass to Firebase to authorize new user creation
     firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
-      .then((response) => {
-        navigation.navigate("Home");
+      .then((credentials) => {
+        /* If credentials.user exist,
+         - grab the user's token
+         - grab the user's ID from auth 
+         - store additional fields about the user in the 'users' firestore collection */
+        if (credentials.user) {
+          credentials.user.getIdToken().then((token) => {
+            userToken = token;
+          });
+          db.collection("users")
+            .doc(credentials.user.uid)
+            .set({
+              email: email,
+              firstName: firstName,
+              lastName: lastName,
+            })
+            .then(() => {
+              // Store the user's first name and token in AsyncStorage
+              storeData().then(() => navigation.navigate("Home"));
+            });
+        }
       })
       .catch((error) => {
         Alert.alert("Error", error.message);
@@ -111,7 +164,7 @@ const Subtitle = styled.Text`
 const GreetingView = styled.View`
   justify-content: center;
   align-items: center;
-  margin-top: 51px;
+  margin-top: 27px;
 `;
 
 const BackView = styled.View`
@@ -169,6 +222,7 @@ const LeftInputField = styled.TextInput`
   border-bottom-left-radius: 10px;
   justify-content: center;
   padding-left: 16px;
+  color: #697295;
 `;
 
 const RightInputField = styled.TextInput`
@@ -179,6 +233,7 @@ const RightInputField = styled.TextInput`
   border-bottom-right-radius: 10px;
   justify-content: center;
   padding-left: 16px;
+  color: #697295;
 `;
 
 const SignInView = styled.View`
