@@ -1,18 +1,42 @@
-import * as React from "react";
+import React, { useState } from "react";
 import styled from "styled-components/native";
-import { SafeAreaView } from "react-native";
+import { SafeAreaView, Alert } from "react-native";
 import { BackIcon } from "../components/Icons";
-import { InputField } from "../components/InputField";
 import { SignButton } from "../components/SignButton";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { AuthParamList } from "../AuthParamList";
+import firebase from "../components/Firebase";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addEmail,
+  addPassword,
+  inputEmail,
+  inputPassword,
+} from "../reducers/signInReducer";
 
 export function SignInScreen({
   navigation,
 }: {
   navigation: StackNavigationProp<AuthParamList, "Sign In">;
 }) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const dispatch = useDispatch();
+
+  let onSignIn = () => {
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password)
+      .then((response) => {
+        navigation.navigate("Home");
+      })
+      .catch((error) => {
+        Alert.alert("Error", error.message);
+      });
+  };
+
   return (
     <SafeAreaView style={{ backgroundColor: "#191b23", flex: 1 }}>
       <Container>
@@ -32,16 +56,26 @@ export function SignInScreen({
         </GreetingView>
         <Creds>SPACEJAM CREDENTIALS</Creds>
         <InputView>
-          <InputField field="Email / Phone" />
+          <InputField
+            onChangeText={(email) => setEmail(email)}
+            placeholder="Email"
+            keyboardType="email-address"
+            placeholderTextColor="#697295"
+          />
         </InputView>
         <InputView>
-          <InputField field="Password" />
+          <InputField
+            onChangeText={(password) => setPassword(password)}
+            placeholder="Password"
+            secureTextEntry={true}
+            placeholderTextColor="#697295"
+          />
         </InputView>
         <ForgotP>Forgot your password?</ForgotP>
         <SignInView>
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate("Home");
+              onSignIn();
             }}
           >
             <SignButton title="Sign In" />
@@ -101,6 +135,17 @@ const InputView = styled.View`
   margin-bottom: 15px;
   padding-left: 15px;
   padding-right: 15px;
+`;
+
+const InputField = styled.TextInput`
+  width: 100%;
+  height: 51px;
+  background: #2b2f3e;
+  border-radius: 10px;
+  justify-content: center;
+  padding-left: 16px;
+  color: #697295;
+  font-size: 14px;
 `;
 
 const ForgotP = styled.Text`
