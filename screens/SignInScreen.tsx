@@ -23,6 +23,7 @@ function SignInScreen({ navigation }: SignInProps) {
 
   let userName: string;
   let userToken: string;
+  let userID: string;
 
   /* 
   - Firebase doesn't have generic type for its Reference Doc, so use any
@@ -38,6 +39,7 @@ function SignInScreen({ navigation }: SignInProps) {
           isLoading: false,
           userName: userName,
           userToken: userToken,
+          userID: userID,
         })
       );
 
@@ -62,7 +64,8 @@ function SignInScreen({ navigation }: SignInProps) {
         - store the user's data including token */
 
         if (credentials.user) {
-          const userRef = db.collection("users").doc(credentials.user.uid);
+          userID = credentials.user.uid;
+          const userRef = db.collection("users").doc(userID);
           credentials.user.getIdToken().then((token) => (userToken = token));
 
           // Using userRef, grab the user's first name

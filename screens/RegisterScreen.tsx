@@ -24,6 +24,7 @@ function RegisterScreen({ navigation }: RegisterProps) {
   const [confirmPass, setConfirmPass] = useState("");
 
   let userToken: string;
+  let userID: string;
 
   // Dispatches signIn action to the auth state and saves firstName and token in AsyncStorage
   const storeData = async () => {
@@ -32,6 +33,7 @@ function RegisterScreen({ navigation }: RegisterProps) {
         isLoading: false,
         userName: firstName,
         userToken: userToken,
+        userID: userID,
       })
     );
 
@@ -57,11 +59,12 @@ function RegisterScreen({ navigation }: RegisterProps) {
          - grab the user's ID from auth 
          - store additional fields about the user in the 'users' firestore collection */
         if (credentials.user) {
+          userID = credentials.user.uid;
           credentials.user.getIdToken().then((token) => {
             userToken = token;
           });
           db.collection("users")
-            .doc(credentials.user.uid)
+            .doc(userID)
             .set({
               email: email,
               firstName: firstName,
