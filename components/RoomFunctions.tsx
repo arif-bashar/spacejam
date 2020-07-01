@@ -22,3 +22,5 @@ const addRoom = () => {
     host: user.get().then(function(doc))
   });*/
 }
+
+export default addRoom;

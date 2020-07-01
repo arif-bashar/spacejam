@@ -5,7 +5,9 @@ import { SafeAreaView } from "react-native";
 import { SignButton } from "../components/SignButton";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { AuthParamList } from "../AuthParamList";
+// import { AuthParamList } from "../AuthParamList";
+import firebase from "../components/Firebase";
+import { WelcomeProps } from "../StackNavigatorTypes";
 
 let safeMargin: number;
 
@@ -15,11 +17,7 @@ if (Platform.OS == "ios") {
   safeMargin = 110;
 }
 
-export function WelcomeScreen({
-  navigation,
-}: {
-  navigation: StackNavigationProp<AuthParamList, "Welcome">;
-}) {
+function WelcomeScreen({ navigation }: WelcomeProps) {
   return (
     <SafeAreaView style={{ backgroundColor: "#191b23", flex: 1 }}>
       <ArtifactView>
@@ -36,7 +34,8 @@ export function WelcomeScreen({
       </LogoView>
       <TouchableOpacity
         onPress={() => {
-          navigation.navigate("Sign In");
+          firebase.auth().signOut();
+          navigation.navigate("SignIn");
         }}
       >
         <ButtonContainer>
@@ -59,6 +58,8 @@ export function WelcomeScreen({
     </SafeAreaView>
   );
 }
+
+export default WelcomeScreen;
 
 const ArtifactView = styled.View`
   flex: 1;
