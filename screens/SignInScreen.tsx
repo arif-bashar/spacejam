@@ -21,60 +21,27 @@ function SignInScreen({ navigation }: SignInProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  let userName: string;
-  let userToken: string;
-  let userID: string;
+  const onSignIn = async () => {
+    try {
+      const credentials = await firebase
+        .auth()
+        .signInWithEmailAndPassword(email, password);
+      const token = await credentials.user?.getIdToken();
+      const id = credentials.user?.uid;
 
-  /* 
-  - Firebase doesn't have generic type for its Reference Doc, so use any
-  - Uses the userRef passed from onSignIn to get the user's firstName
-  - Dispatches signIn action to the auth state and saves firstName and token in Async
-  */
-  const storeDataUsingRef = async (userRef: any) => {
-    const doc = await userRef.get();
-    if (doc.exists) {
-      userName = doc.data().firstName;
-      dispatch(
-        signInAction({
-          isLoading: false,
-          userName: userName,
-          userToken: userToken,
-          userID: userID,
-        })
-      );
-
-      try {
-        await AsyncStorage.setItem("userToken", userToken);
-        await AsyncStorage.setItem("userName", userName);
-        console.log("Added name and token to AsyncStorage");
-      } catch (error) {
-        console.log("Unable to store into AsyncStorage", error);
+      if (token != undefined && id != undefined) {
+        await AsyncStorage.setItem("userToken", token);
+        await AsyncStorage.setItem("userID", id);
+        console.log(
+          "In SignInScreen, token & id is saved in storage and is",
+          id
+        );
+        dispatch(signInAction({ userToken: token, userID: id }));
       }
+    } catch (error) {
+      if (error.message) Alert.alert("Error", error.message);
+      else console.log(error);
     }
-  };
-
-  const onSignIn = () => {
-    // Pass in the email and pass to authorize with Firebase
-    firebase
-      .auth()
-      .signInWithEmailAndPassword(email, password)
-      .then((credentials) => {
-        /* If credentials.user exist
-        - grab the reference to the document annd
-        - store the user's data including token */
-
-        if (credentials.user) {
-          userID = credentials.user.uid;
-          const userRef = db.collection("users").doc(userID);
-          credentials.user.getIdToken().then((token) => (userToken = token));
-
-          // Using userRef, grab the user's first name
-          storeDataUsingRef(userRef).then(() => navigation.navigate("Home"));
-        }
-      })
-      .catch((error) => {
-        Alert.alert("Error", error.message);
-      });
   };
 
   return (

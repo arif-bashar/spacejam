@@ -15,7 +15,6 @@ function RegisterScreen({ navigation }: RegisterProps) {
 
   // Redux dispatcher and selection from state
   const dispatch = useDispatch();
-  const signedIn = useSelector((state: RootState) => state.auth);
 
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -23,62 +22,33 @@ function RegisterScreen({ navigation }: RegisterProps) {
   const [password, setPassword] = useState("");
   const [confirmPass, setConfirmPass] = useState("");
 
-  let userToken: string;
-  let userID: string;
-
-  // Dispatches signIn action to the auth state and saves firstName and token in AsyncStorage
-  const storeData = async () => {
-    dispatch(
-      signInAction({
-        isLoading: false,
-        userName: firstName,
-        userToken: userToken,
-        userID: userID,
-      })
-    );
-
+  const onRegister = async () => {
     try {
-      await AsyncStorage.setItem("userToken", userToken);
-      await AsyncStorage.setItem("userName", firstName);
-      console.log("Registered name and token to AsyncStorage");
-    } catch (error) {
-      console.log("Unable to store into AsyncStorage", error);
-    }
-  };
+      const credentials = await firebase
+        .auth()
+        .createUserWithEmailAndPassword(email, password);
+      const id = credentials.user?.uid;
+      const token = await credentials.user?.getIdToken();
 
-  // Called by pressing register button
-  // Creates new auth user in Firebase and in users collection and navigates Home
-  const onRegister = () => {
-    // Pass email and pass to Firebase to authorize new user creation
-    firebase
-      .auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then((credentials) => {
-        /* If credentials.user exist,
-         - grab the user's token
-         - grab the user's ID from auth 
-         - store additional fields about the user in the 'users' firestore collection */
-        if (credentials.user) {
-          userID = credentials.user.uid;
-          credentials.user.getIdToken().then((token) => {
-            userToken = token;
-          });
-          db.collection("users")
-            .doc(userID)
-            .set({
-              email: email,
-              firstName: firstName,
-              lastName: lastName,
-            })
-            .then(() => {
-              // Store the user's first name and token in AsyncStorage
-              storeData().then(() => navigation.navigate("Home"));
-            });
-        }
-      })
-      .catch((error) => {
-        Alert.alert("Error", error.message);
-      });
+      if (token != undefined && id != undefined) {
+        await db.collection("users").doc(id).set({
+          email: email,
+          firstName: firstName,
+          lastName: lastName,
+        });
+
+        await AsyncStorage.setItem("userToken", token);
+        await AsyncStorage.setItem("userID", id);
+        console.log(
+          "In RegisterScreen, token is saved in storage and is",
+          token
+        );
+        dispatch(signInAction({ userToken: token, userID: id }));
+      }
+    } catch (error) {
+      if (error.message) Alert.alert("Error", error.message);
+      else console.log(error);
+    }
   };
 
   return (

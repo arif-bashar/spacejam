@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import {
   Platform,
   StatusBar,
@@ -16,6 +16,7 @@ import { Space2 } from "../components/Space2";
 import { HomeProps } from "../StackNavigatorTypes";
 import firebase from "../components/Firebase";
 import { RootState } from "../slices/rootReducer";
+import { signOutAction } from "../slices/authReducer";
 
 let safeMargin: number;
 
@@ -27,50 +28,38 @@ if (Platform.OS == "ios") {
   safeMargin = 40;
 }
 
-export function HomeScreen({ navigation }: HomeProps) {
+export function HomeScreen({ navigation, route }: HomeProps) {
+  const db = firebase.firestore();
+  const dispatch = useDispatch();
   const [userName, setUserName] = useState("");
-  // let userName: string = "";
+  const { userToken } = useSelector((state: RootState) => state.auth);
 
   useEffect(() => {
-    console.log("Fetching name");
+    const getUserName = async () => {
+      const id = await AsyncStorage.getItem("userID");
+      if (id != null) {
+        const doc = await db.collection("users").doc(id).get();
+        if (doc.exists) {
+          const data = doc.data();
+          if (data != undefined) {
+            setUserName(data.firstName);
+          }
+        }
+      }
+    };
 
-    getData();
+    getUserName();
   }, []);
 
-  const getData = async () => {
+  const onSignOut = async () => {
     try {
-      const name = await AsyncStorage.getItem("userName");
-      if (name != null) setUserName(name);
-      else console.log("name is null!");
-    } catch (error) {
-      console.log("Was not able to fetch name");
-    }
-  };
-
-  const removeData = async () => {
-    try {
-      await AsyncStorage.removeItem("userName");
+      await firebase.auth().signOut();
       await AsyncStorage.removeItem("userToken");
-      console.log("Items removed from AsyncStorage");
+      await AsyncStorage.removeItem("userID");
+      dispatch(signOutAction());
     } catch (error) {
       console.log("Unable to remove user's name and token", error);
     }
-  };
-
-  const onSignOut = () => {
-    firebase
-      .auth()
-      .signOut()
-      .then(() => {
-        removeData()
-          .then(() => {
-            console.log("Signing Out");
-            navigation.popToTop();
-          })
-          .catch((error) => {
-            console.log("Error", error.message);
-          });
-      });
   };
 
   return (
