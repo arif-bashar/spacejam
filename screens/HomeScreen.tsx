@@ -16,7 +16,6 @@ import { Space2 } from "../components/Space2";
 import { HomeProps } from "../StackNavigatorTypes";
 import firebase from "../components/Firebase";
 import { RootState } from "../slices/rootReducer";
-import { addRoom } from "../components/RoomFunctions";
 
 let safeMargin: number;
 
@@ -29,8 +28,38 @@ if (Platform.OS == "ios") {
 }
 
 export function HomeScreen({ navigation }: HomeProps) {
+
+  const db = firebase.firestore();
   const [userName, setUserName] = useState("");
   // let userName: string = "";
+
+  const { userID } = useSelector((state: RootState) => state.auth)
+
+  // under construction
+  const addRoom = () => {
+    let user = db.collection("users").doc(userID);
+    user.get().then(function(doc) {
+      if(doc.exists){
+        console.log(doc.data());
+        let data = doc.data();
+        if(data != undefined){
+        //  firstName = data.firstName;
+          console.log(userName);
+        }
+      } else {
+        console.log("No document");
+      }
+    }).catch(function(error) {
+      console.log("Error getting document: ", error);
+    });
+
+    db.collection("rooms").doc(userID).set({
+      roomName: userName+"'s Room",
+      roomId: 12345678910,
+      inviteCode: 123,
+      host: userName,
+    }).then(() => {}).catch((error) => console.log(error));
+  }
 
   useEffect(() => {
     console.log("Fetching name");
@@ -132,7 +161,7 @@ export function HomeScreen({ navigation }: HomeProps) {
           </SpaceContainer>
         </ScrollView>
         <ButtonContainer>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => addRoom()} >
             <AddButton />
           </TouchableOpacity>
         </ButtonContainer>

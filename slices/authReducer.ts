@@ -4,14 +4,14 @@ type currentState = {
   isLoading: boolean;
   userName: string | null;
   userToken: string | null;
-  userID: string | null;
+  userID: string | undefined;
 };
 
 let initialState: currentState = {
   isLoading: true,
   userName: null,
   userToken: null,
-  userID: null,
+  userID: undefined,
 };
 
 const authSlice = createSlice({
