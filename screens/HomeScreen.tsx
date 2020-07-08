@@ -17,6 +17,7 @@ import { HomeProps } from "../StackNavigatorTypes";
 import firebase from "../components/Firebase";
 import { RootState } from "../slices/rootReducer";
 import { signOutAction } from "../slices/authReducer";
+import AddOption from "../components/AddOption";
 
 let safeMargin: number;
 
@@ -64,67 +65,69 @@ export function HomeScreen({ navigation, route }: HomeProps) {
 
   return (
     <SafeAreaView style={{ backgroundColor: "#191b23", flex: 1 }}>
-      <ScrollView>
-        <Container>
-          <TitleBar style={{ marginTop: safeMargin, marginBottom: 57 }}>
-            <IconBar>
-              <Logo />
-              <TouchableOpacity onPress={() => onSignOut()}>
-                <ProfileIcon style={{ marginTop: 20 }} />
-              </TouchableOpacity>
-            </IconBar>
-            <WelcomeView>
-              <WelcomeText>Welcome back, </WelcomeText>
-              <Name>{userName}</Name>
-            </WelcomeView>
-          </TitleBar>
+      <Container>
+        <TitleBar style={{ marginTop: safeMargin, marginBottom: 57 }}>
+          <IconBar>
+            <Logo />
+            <TouchableOpacity onPress={() => onSignOut()}>
+              <ProfileIcon style={{ marginTop: 20 }} />
+            </TouchableOpacity>
+          </IconBar>
+          <WelcomeView>
+            <WelcomeText>Welcome back, </WelcomeText>
+            <Name>{userName}</Name>
+          </WelcomeView>
+        </TitleBar>
+        <TouchableOpacity>
+          <Space
+            num="01"
+            spaceName="Josiah's Car"
+            spacePattern={require("../assets/spacePattern.png")}
+          />
+        </TouchableOpacity>
+      </Container>
+
+      <ScrollView
+        horizontal={true}
+        showsHorizontalScrollIndicator={false}
+        style={{ marginLeft: 20, height: 50 }}
+      >
+        <SpaceContainer>
           <TouchableOpacity>
-            <Space
-              num="01"
-              spaceName="Josiah's Car"
+            <Space2
+              color="#FFCF73"
+              num="02"
+              spaceName="George's Stinky Room"
               spacePattern={require("../assets/spacePattern.png")}
             />
           </TouchableOpacity>
-        </Container>
-
-        <ScrollView
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
-          style={{ marginLeft: 20 }}
-        >
-          <SpaceContainer>
-            <TouchableOpacity>
-              <Space2
-                color="#FFCF73"
-                num="02"
-                spaceName="George's Stinky Room"
-                spacePattern={require("../assets/spacePattern.png")}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Space2
-                color="#A9BAFF"
-                num="03"
-                spaceName="Eli's Headphones"
-                spacePattern={require("../assets/spacePattern.png")}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Space2
-                color="#BB9BFF"
-                num="04"
-                spaceName="Nibro's Playlist"
-                spacePattern={require("../assets/spacePattern.png")}
-              />
-            </TouchableOpacity>
-          </SpaceContainer>
-        </ScrollView>
-        <ButtonContainer>
           <TouchableOpacity>
-            <AddButton />
+            <Space2
+              color="#A9BAFF"
+              num="03"
+              spaceName="Eli's Headphones"
+              spacePattern={require("../assets/spacePattern.png")}
+            />
           </TouchableOpacity>
-        </ButtonContainer>
+          <TouchableOpacity>
+            <Space2
+              color="#BB9BFF"
+              num="04"
+              spaceName="Nibro's Playlist"
+              spacePattern={require("../assets/spacePattern.png")}
+            />
+          </TouchableOpacity>
+        </SpaceContainer>
       </ScrollView>
+      <ButtonContainer>
+        <TouchableOpacity>
+          <AddButton />
+        </TouchableOpacity>
+      </ButtonContainer>
+      <AddOptionContainer>
+        <AddOption title="Create a space" desc="Just for your friendos" />
+        <AddOption title="Join a space" desc="Just for your friendos" />
+      </AddOptionContainer>
     </SafeAreaView>
   );
 }
@@ -169,4 +172,12 @@ const SpaceContainer = styled.View`
   flex-direction: row;
   /* padding-left: 20px; */
   padding-right: 13px;
+`;
+
+const AddOptionContainer = styled.View`
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  padding-left: 20px;
+  padding-right: 20px;
 `;

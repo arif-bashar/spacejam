@@ -106,3 +106,15 @@ export const BackIcon = () => (
     />
   </Svg>
 );
+
+export const NextIcon = () => (
+  <Svg width={8} height={14} viewBox="0 0 8 14" fill="none">
+    <Path
+      d="M1 13l6-6-6-6"
+      stroke="#fff"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </Svg>
+);
