@@ -125,8 +125,8 @@ export function HomeScreen({ navigation, route }: HomeProps) {
         </TouchableOpacity>
       </ButtonContainer>
       <AddOptionContainer>
-        <AddOption title="Create a space" desc="Just for your friendos" />
-        <AddOption title="Join a space" desc="Just for your friendos" />
+        {/* <AddOption title="Create a space" desc="Just for your friendos" />
+        <AddOption title="Join a space" desc="Just for your friendos" /> */}
       </AddOptionContainer>
     </SafeAreaView>
   );
