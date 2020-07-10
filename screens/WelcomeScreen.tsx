@@ -17,7 +17,7 @@ if (Platform.OS == "ios") {
   safeMargin = 110;
 }
 
-function WelcomeScreen({ navigation }: WelcomeProps) {
+function WelcomeScreen({ navigation, route }: WelcomeProps) {
   return (
     <SafeAreaView style={{ backgroundColor: "#191b23", flex: 1 }}>
       <ArtifactView>

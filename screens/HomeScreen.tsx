@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import {
   Platform,
   StatusBar,
@@ -16,6 +16,7 @@ import { Space2 } from "../components/Space2";
 import { HomeProps } from "../StackNavigatorTypes";
 import firebase from "../components/Firebase";
 import { RootState } from "../slices/rootReducer";
+import { signOutAction } from "../slices/authReducer";
 
 let safeMargin: number;
 
@@ -27,80 +28,112 @@ if (Platform.OS == "ios") {
   safeMargin = 40;
 }
 
-export function HomeScreen({ navigation }: HomeProps) {
-
+export function HomeScreen({ navigation, route }: HomeProps) {
   const db = firebase.firestore();
+  const dispatch = useDispatch();
   const [userName, setUserName] = useState("");
-  // let userName: string = "";
-
-  const { userID } = useSelector((state: RootState) => state.auth)
+  //const { userID } = useSelector((state: RootState) => state.auth);
+  //console.log(userID);
+  
+  const ID = () => {
+    return '_' + Math.random().toString(36).substr(2, 9);
+  };
 
   // under construction
-  const addRoom = () => {
-    let user = db.collection("users").doc(userID);
-    user.get().then(function(doc) {
-      if(doc.exists){
-        console.log(doc.data());
-        let data = doc.data();
-        if(data != undefined){
-        //  firstName = data.firstName;
-          console.log(userName);
-        }
-      } else {
-        console.log("No document");
-      }
-    }).catch(function(error) {
-      console.log("Error getting document: ", error);
-    });
-
-    db.collection("rooms").doc(userID).set({
-      roomName: userName+"'s Room",
-      roomId: 12345678910,
-      inviteCode: 123,
-      host: userName,
-    }).then(() => {}).catch((error) => console.log(error));
-  }
-
-  useEffect(() => {
-    console.log("Fetching name");
-
-    getData();
-  }, []);
-
-  const getData = async () => {
+  const addRoom = async () => {
     try {
-      const name = await AsyncStorage.getItem("userName");
-      if (name != null) setUserName(name);
-      else console.log("name is null!");
-    } catch (error) {
-      console.log("Was not able to fetch name");
+      const userID = await AsyncStorage.getItem("userID");
+      if (userID != null) {
+        let user = db.collection("users").doc(userID).collection("rooms").doc("Dma59lD2obvJvjpyQ9xC");
+        const doc = await user.get();
+        if(doc.exists){
+          console.log(doc.data());
+          let data = doc.data();
+          if(data != undefined){
+          //  firstName = data.firstName;
+            console.log(userName);
+          }
+        } else {
+          console.log("No document");
+        }
+        
+        await db.collection("users").doc(userID).collection("rooms").add({
+          roomName: userName+"'s Room",
+          roomId: 12345678910,
+          inviteCode: 123,
+          host: userName,
+        })
+      }
+    }catch(error) {
+      console.log("Error getting document: ", error);
+    };
+  };
+
+  const deleteRoom = async () => {
+    try {
+      const userID = await AsyncStorage.getItem("userID"); 
+      if (userID != null) {
+        await db.collection("users").doc(userID).collection("rooms").doc("Dma59lD2obvJvjpyQ9xC").delete();
+      }
+    }catch(error) {
+      console.log("Error deleting document: ", error);
     }
   };
 
-  const removeData = async () => {
+  const updateRoom = async () => {
     try {
-      await AsyncStorage.removeItem("userName");
+      const userID = await AsyncStorage.getItem("userID");
+      if (userID != null) {
+        await db.collection("users").doc(userID).collection("rooms").doc("D7YrJK82c3cIoJzVFhZ3").update({
+          roomName: "Arif's Car"
+        })
+      }
+    }catch(error) {
+      console.log("Error updating document: ", error);
+    }
+  };
+
+  const getRooms = async () => {
+    try {
+      const userID = await AsyncStorage.getItem("userID");
+      if (userID != null) {
+        const doc = await db.collection("users").doc(userID).collection("rooms").get().then(function(querySnapshot) {
+          querySnapshot.forEach(function(doc) {
+            console.log(doc.id, " => ", doc.data());
+          })
+        })
+      }
+    }catch(error) {
+      console.log("Error getting rooms: ", error);
+    }
+  };
+
+  useEffect(() => {
+    const getUserName = async () => {
+      const id = await AsyncStorage.getItem("userID");
+      if (id != null) {
+        const doc = await db.collection("users").doc(id).get();
+        if (doc.exists) {
+          const data = doc.data();
+          if (data != undefined) {
+            setUserName(data.firstName);
+          }
+        }
+      }
+    };
+
+    getUserName();
+  }, []);
+
+  const onSignOut = async () => {
+    try {
+      await firebase.auth().signOut();
       await AsyncStorage.removeItem("userToken");
-      console.log("Items removed from AsyncStorage");
+      await AsyncStorage.removeItem("userID");
+      dispatch(signOutAction());
     } catch (error) {
       console.log("Unable to remove user's name and token", error);
     }
-  };
-
-  const onSignOut = () => {
-    firebase
-      .auth()
-      .signOut()
-      .then(() => {
-        removeData()
-          .then(() => {
-            console.log("Signing Out");
-            navigation.popToTop();
-          })
-          .catch((error) => {
-            console.log("Error", error.message);
-          });
-      });
   };
 
   return (
@@ -161,7 +194,7 @@ export function HomeScreen({ navigation }: HomeProps) {
           </SpaceContainer>
         </ScrollView>
         <ButtonContainer>
-          <TouchableOpacity onPress={() => addRoom()} >
+          <TouchableOpacity onPress={() => getRooms()} >
             <AddButton />
           </TouchableOpacity>
         </ButtonContainer>

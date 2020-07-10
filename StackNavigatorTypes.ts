@@ -4,7 +4,7 @@ export type StackParams = {
   Welcome: undefined;
   SignIn: undefined;
   Register: undefined;
-  Home: { user: string } | undefined;
+  Home: undefined;
 };
 
 export type WelcomeProps = StackScreenProps<StackParams, "Welcome">;
