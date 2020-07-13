@@ -10,6 +10,11 @@ import {
 } from "react-native";
 import AsyncStorage from "@react-native-community/async-storage";
 import styled from "styled-components/native";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
+import Animated from "react-native-reanimated";
 import { Logo, ProfileIcon, AddButton } from "../components/Icons";
 import { Space } from "../components/Space";
 import { Space2 } from "../components/Space2";
@@ -18,6 +23,7 @@ import firebase from "../components/Firebase";
 import { RootState } from "../slices/rootReducer";
 import { signOutAction } from "../slices/authReducer";
 import AddOption from "../components/AddOption";
+import { onAddPress } from "../slices/addSpaceReducer";
 
 let safeMargin: number;
 
@@ -33,7 +39,7 @@ export function HomeScreen({ navigation, route }: HomeProps) {
   const db = firebase.firestore();
   const dispatch = useDispatch();
   const [userName, setUserName] = useState("");
-  const { userToken } = useSelector((state: RootState) => state.auth);
+  const { show } = useSelector((state: RootState) => state.addSpace);
 
   useEffect(() => {
     const getUserName = async () => {
@@ -90,43 +96,37 @@ export function HomeScreen({ navigation, route }: HomeProps) {
       <ScrollView
         horizontal={true}
         showsHorizontalScrollIndicator={false}
-        style={{ marginLeft: 20, height: 50 }}
+        style={{
+          marginLeft: 20,
+          flexGrow: 0,
+        }}
       >
         <SpaceContainer>
-          <TouchableOpacity>
-            <Space2
-              color="#FFCF73"
-              num="02"
-              spaceName="George's Stinky Room"
-              spacePattern={require("../assets/spacePattern.png")}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Space2
-              color="#A9BAFF"
-              num="03"
-              spaceName="Eli's Headphones"
-              spacePattern={require("../assets/spacePattern.png")}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Space2
-              color="#BB9BFF"
-              num="04"
-              spaceName="Nibro's Playlist"
-              spacePattern={require("../assets/spacePattern.png")}
-            />
-          </TouchableOpacity>
+          <Space2
+            color="#FFCF73"
+            num="02"
+            spaceName="George's Stinky Room"
+            spacePattern={require("../assets/spacePattern.png")}
+          />
+          <Space2
+            color="#A9BAFF"
+            num="03"
+            spaceName="Eli's Headphones"
+            spacePattern={require("../assets/spacePattern.png")}
+          />
+          <Space2
+            color="#BB9BFF"
+            num="04"
+            spaceName="Nibro's Playlist"
+            spacePattern={require("../assets/spacePattern.png")}
+          />
         </SpaceContainer>
       </ScrollView>
-      <ButtonContainer>
-        <TouchableOpacity>
-          <AddButton />
-        </TouchableOpacity>
-      </ButtonContainer>
-      <AddOptionContainer>
-        {/* <AddOption title="Create a space" desc="Just for your friendos" />
-        <AddOption title="Join a space" desc="Just for your friendos" /> */}
+      <AddOptionContainer
+        style={{ opacity: show ? 0 : 1, zIndex: show ? 0 : 5 }}
+      >
+        <AddOption title="Create a space" desc="Just for your friendos" />
+        <AddOption title="Join a space" desc="Just for your friendos" />
       </AddOptionContainer>
     </SafeAreaView>
   );
@@ -160,17 +160,9 @@ const Name = styled.Text`
   color: #e08700;
 `;
 
-const ButtonContainer = styled.View`
-  flex: 1;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  margin-top: 50px;
-`;
-
 const SpaceContainer = styled.View`
   flex-direction: row;
-  /* padding-left: 20px; */
+  height: 240px;
   padding-right: 13px;
 `;
 

@@ -5,7 +5,12 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { HomeScreen } from "./screens/HomeScreen";
 import SearchScreen from "./screens/SearchScreen";
 import ProfileScreen from "./screens/ProfileScreen";
-import { HomeIcon, SearchIcon, TabProfileIcon } from "./components/Icons";
+import {
+  HomeIcon,
+  SearchIcon,
+  TabProfileIcon,
+  TabAddIcon,
+} from "./components/Icons";
 import WelcomeScreen from "./screens/WelcomeScreen";
 import SignInScreen from "./screens/SignInScreen";
 import RegisterScreen from "./screens/RegisterScreen";
@@ -16,6 +21,7 @@ import firebase from "./components/Firebase";
 import { getTokenAction } from "./slices/authReducer";
 import { RootState } from "./slices/rootReducer";
 import SplashScreen from "./screens/SplashScreen";
+import TabAddButton from "./components/TabAddButton";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator<StackParams>();
@@ -24,13 +30,15 @@ function HomeTabs() {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
-        tabBarIcon: () => {
+        tabBarIcon: ({ focused }) => {
           if (route.name === "Home") {
-            return <HomeIcon />;
+            if (focused) return <HomeIcon color="#fff" />;
+            else return <HomeIcon color="#5A5C64" />;
+          } else if (route.name === "AddSpace") {
+            return <TabAddButton />;
           } else if (route.name === "Search") {
-            return <SearchIcon />;
-          } else if (route.name === "Profile") {
-            return <TabProfileIcon />;
+            if (focused) return <SearchIcon color="#fff" />;
+            else return <SearchIcon color="#5A5C64" />;
           }
         },
       })}
@@ -44,8 +52,8 @@ function HomeTabs() {
       }}
     >
       <Tab.Screen name="Home" component={HomeScreen} />
+      <Tab.Screen name="AddSpace" component={ProfileScreen} />
       <Tab.Screen name="Search" component={SearchScreen} />
-      <Tab.Screen name="Profile" component={ProfileScreen} />
     </Tab.Navigator>
   );
 }

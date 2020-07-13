@@ -19,12 +19,10 @@ export const Space2: React.FC<SpaceProps> = (props) => {
   );
 };
 
-const Container = styled.View`
-  margin-bottom: 8px;
+const Container = styled.TouchableOpacity`
   margin-right: 8px;
   width: 170px;
   height: 240px;
-  background: #d45d5d;
   border-radius: 10px;
 `;
 

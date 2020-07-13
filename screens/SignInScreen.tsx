@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components/native";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
 import { SafeAreaView, Alert } from "react-native";
 import AsyncStorage from "@react-native-community/async-storage";
 import { BackIcon } from "../components/Icons";
@@ -47,16 +51,14 @@ function SignInScreen({ navigation }: SignInProps) {
   return (
     <SafeAreaView style={{ backgroundColor: "#191b23", flex: 1 }}>
       <Container>
-        <TouchableOpacity
+        <BackView
           onPress={() => {
             navigation.goBack();
           }}
         >
-          <BackView>
-            <BackIcon />
-            <BackText>Back</BackText>
-          </BackView>
-        </TouchableOpacity>
+          <BackIcon />
+        </BackView>
+
         <GreetingView>
           <Title>Yay, you're back!</Title>
           <Subtitle>Sign in with your credentials and start jamming</Subtitle>
@@ -114,16 +116,13 @@ const GreetingView = styled.View`
   margin-top: 51px;
 `;
 
-const BackView = styled.View`
+const BackView = styled.TouchableOpacity`
+  width: ${wp("20%")}px;
+  height: ${hp("3%")}px;
   margin-top: 43px;
-  margin-left: 9px;
+  margin-left: 18px;
   flex-direction: row;
   align-items: center;
-`;
-
-const BackText = styled.Text`
-  color: #ffffff;
-  margin-left: 3px;
 `;
 
 const Creds = styled.Text`

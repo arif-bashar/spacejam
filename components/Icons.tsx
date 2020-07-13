@@ -67,23 +67,46 @@ export const AddButton = () => (
     />
   </Svg>
 );
-
-export const HomeIcon = () => (
-  <Svg width={23} height={24} viewBox="0 0 23 24" fill="none">
+export const TabAddIcon = () => (
+  <Svg width={71} height={71} viewBox="0 0 71 71" fill="none">
+    <Rect x={5} y={5} width={61} height={61} rx={30.5} fill="#191B23" />
+    <Rect
+      x={10.39}
+      y={10.39}
+      width={50.219}
+      height={50.219}
+      rx={25.11}
+      fill="#E08700"
+    />
     <Path
-      fillRule="evenodd"
-      clipRule="evenodd"
-      d="M0 11.814c0-.298.011-.593.034-.885h7.043a1.77 1.77 0 100-3.538H.88C2.614 3.235 6.716.314 11.5.314c6.351 0 11.5 5.148 11.5 11.5 0 .601-.046 1.192-.135 1.769h-7.827a1.77 1.77 0 100 3.538h6.667A11.499 11.499 0 0111.5 23.314c-6.351 0-11.5-5.149-11.5-11.5zM15.039 9.16a1.77 1.77 0 10-3.539 0 1.77 1.77 0 003.539 0z"
-      fill="#fff"
+      d="M35.5 25.398v20.204M25.398 35.5h20.204"
+      stroke="#fff"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
   </Svg>
 );
 
-export const SearchIcon = () => (
-  <Svg width={26} height={26} viewBox="0 0 26 26" fill="none">
+export const HomeIcon = (props: { color: string }) => (
+  <Svg width={23} height={24} viewBox="0 0 23 24" fill="none" {...props}>
     <Path
-      d="M16.792 15.167h-.856l-.303-.293a7.01 7.01 0 001.7-4.582 7.041 7.041 0 10-7.041 7.041 7.01 7.01 0 004.582-1.7l.293.303v.856l5.416 5.405 1.615-1.614-5.406-5.416zm-6.5 0a4.868 4.868 0 01-4.875-4.875 4.868 4.868 0 014.875-4.875 4.868 4.868 0 014.875 4.875 4.868 4.868 0 01-4.875 4.875z"
-      fill="#fff"
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M0 11.814c0-.298.011-.593.034-.885h7.043a1.77 1.77 0 100-3.538H.88C2.614 3.235 6.716.314 11.5.314c6.351 0 11.5 5.148 11.5 11.5 0 .601-.046 1.192-.135 1.769h-7.827a1.77 1.77 0 100 3.538h6.667A11.499 11.499 0 0111.5 23.314c-6.351 0-11.5-5.149-11.5-11.5zM15.039 9.16a1.77 1.77 0 10-3.539 0 1.77 1.77 0 003.539 0z"
+      fill={props.color}
+    />
+  </Svg>
+);
+
+export const SearchIcon = (props: { color: string }) => (
+  <Svg width={24} height={24} viewBox="0 0 24 24" fill="none" {...props}>
+    <Path
+      d="M11 19a8 8 0 100-16 8 8 0 000 16zM21 21l-4.35-4.35"
+      stroke={props.color}
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
   </Svg>
 );
@@ -101,8 +124,11 @@ export const TabProfileIcon = () => (
 export const BackIcon = () => (
   <Svg width={24} height={24} viewBox="0 0 24 24" fill="none">
     <Path
-      d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59z"
-      fill="#fff"
+      d="M19 12H5M12 19l-7-7 7-7"
+      stroke="#697295"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
   </Svg>
 );
