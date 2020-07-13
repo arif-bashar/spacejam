@@ -17,6 +17,7 @@ import { HomeProps } from "../StackNavigatorTypes";
 import firebase from "../components/Firebase";
 import { RootState } from "../slices/rootReducer";
 import { signOutAction } from "../slices/authReducer";
+import { AddSpaceModal } from "../components/AddSpaceModal";
 
 let safeMargin: number;
 
@@ -139,6 +140,7 @@ export function HomeScreen({ navigation, route }: HomeProps) {
   return (
     <SafeAreaView style={{ backgroundColor: "#191b23", flex: 1 }}>
       <ScrollView>
+
         <Container>
           <TitleBar style={{ marginTop: safeMargin, marginBottom: 57 }}>
             <IconBar>
@@ -198,6 +200,14 @@ export function HomeScreen({ navigation, route }: HomeProps) {
             <AddButton />
           </TouchableOpacity>
         </ButtonContainer>
+        <ModalContainer>
+          <AddSpaceModal 
+            title="Create a space"
+            description="Creating a space allows you to be in control of the music queue and open your space to other users."
+            inputField="Space Name"
+            buttonName="Create Space"
+          />
+        </ModalContainer>
       </ScrollView>
     </SafeAreaView>
   );
@@ -208,6 +218,11 @@ const Container = styled.View`
   width: 100%;
   padding-left: 20px;
   padding-right: 20px;
+`;
+
+const ModalContainer = styled.View`
+  width: 100%;
+  height: 25%
 `;
 
 const TitleBar = styled.View``;
