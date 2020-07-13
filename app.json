@@ -17,6 +17,9 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
+    },
+    "androidNavigationBar": {
+      "backgroundColor": "#242733"
     }
   }
 }
