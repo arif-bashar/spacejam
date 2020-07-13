@@ -15,7 +15,7 @@ import {
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import Animated from "react-native-reanimated";
-import { Logo, AddButton, SignOutIcon } from "../components/Icons";
+import { Logo, SignOutIcon } from "../components/Icons";
 import { Space } from "../components/Space";
 import { Space2 } from "../components/Space2";
 import { HomeProps } from "../StackNavigatorTypes";
