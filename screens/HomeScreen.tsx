@@ -10,7 +10,12 @@ import {
 } from "react-native";
 import AsyncStorage from "@react-native-community/async-storage";
 import styled from "styled-components/native";
-import { Logo, ProfileIcon, AddButton } from "../components/Icons";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
+import Animated from "react-native-reanimated";
+import { Logo, AddButton, SignOutIcon } from "../components/Icons";
 import { Space } from "../components/Space";
 import { Space2 } from "../components/Space2";
 import { HomeProps } from "../StackNavigatorTypes";
@@ -18,6 +23,8 @@ import firebase from "../components/Firebase";
 import { RootState } from "../slices/rootReducer";
 import { signOutAction } from "../slices/authReducer";
 import { AddSpaceModal } from "../components/AddSpaceModal";
+import AddOption from "../components/AddOption";
+import { onAddPress } from "../slices/addSpaceReducer";
 
 let safeMargin: number;
 
@@ -35,9 +42,9 @@ export function HomeScreen({ navigation, route }: HomeProps) {
   const [userName, setUserName] = useState("");
   //const { userID } = useSelector((state: RootState) => state.auth);
   //console.log(userID);
-  
+
   const ID = () => {
-    return '_' + Math.random().toString(36).substr(2, 9);
+    return "_" + Math.random().toString(36).substr(2, 9);
   };
 
   // under construction
@@ -45,38 +52,51 @@ export function HomeScreen({ navigation, route }: HomeProps) {
     try {
       const userID = await AsyncStorage.getItem("userID");
       if (userID != null) {
-        let user = db.collection("users").doc(userID).collection("rooms").doc("Dma59lD2obvJvjpyQ9xC");
+        let user = db
+          .collection("users")
+          .doc(userID)
+          .collection("rooms")
+          .doc("Dma59lD2obvJvjpyQ9xC");
         const doc = await user.get();
-        if(doc.exists){
+        if (doc.exists) {
           console.log(doc.data());
           let data = doc.data();
-          if(data != undefined){
-          //  firstName = data.firstName;
+          if (data != undefined) {
+            //  firstName = data.firstName;
             console.log(userName);
           }
         } else {
           console.log("No document");
         }
-        
-        await db.collection("users").doc(userID).collection("rooms").add({
-          roomName: userName+"'s Room",
-          roomId: 12345678910,
-          inviteCode: 123,
-          host: userName,
-        })
+
+        await db
+          .collection("users")
+          .doc(userID)
+          .collection("rooms")
+          .add({
+            roomName: userName + "'s Room",
+            roomId: 12345678910,
+            inviteCode: 123,
+            host: userName,
+          });
       }
-    }catch(error) {
+    } catch (error) {
       console.log("Error getting document: ", error);
-    };
+    }
   };
 
   const deleteRoom = async () => {
     try {
-      const userID = await AsyncStorage.getItem("userID"); 
+      const userID = await AsyncStorage.getItem("userID");
       if (userID != null) {
-        await db.collection("users").doc(userID).collection("rooms").doc("Dma59lD2obvJvjpyQ9xC").delete();
+        await db
+          .collection("users")
+          .doc(userID)
+          .collection("rooms")
+          .doc("Dma59lD2obvJvjpyQ9xC")
+          .delete();
       }
-    }catch(error) {
+    } catch (error) {
       console.log("Error deleting document: ", error);
     }
   };
@@ -85,11 +105,16 @@ export function HomeScreen({ navigation, route }: HomeProps) {
     try {
       const userID = await AsyncStorage.getItem("userID");
       if (userID != null) {
-        await db.collection("users").doc(userID).collection("rooms").doc("D7YrJK82c3cIoJzVFhZ3").update({
-          roomName: "Arif's Car"
-        })
+        await db
+          .collection("users")
+          .doc(userID)
+          .collection("rooms")
+          .doc("D7YrJK82c3cIoJzVFhZ3")
+          .update({
+            roomName: "Arif's Car",
+          });
       }
-    }catch(error) {
+    } catch (error) {
       console.log("Error updating document: ", error);
     }
   };
@@ -98,16 +123,22 @@ export function HomeScreen({ navigation, route }: HomeProps) {
     try {
       const userID = await AsyncStorage.getItem("userID");
       if (userID != null) {
-        const doc = await db.collection("users").doc(userID).collection("rooms").get().then(function(querySnapshot) {
-          querySnapshot.forEach(function(doc) {
-            console.log(doc.id, " => ", doc.data());
-          })
-        })
+        const doc = await db
+          .collection("users")
+          .doc(userID)
+          .collection("rooms")
+          .get()
+          .then(function (querySnapshot) {
+            querySnapshot.forEach(function (doc) {
+              console.log(doc.id, " => ", doc.data());
+            });
+          });
       }
-    }catch(error) {
+    } catch (error) {
       console.log("Error getting rooms: ", error);
     }
   };
+  const { show } = useSelector((state: RootState) => state.addSpace);
 
   useEffect(() => {
     const getUserName = async () => {
@@ -139,76 +170,72 @@ export function HomeScreen({ navigation, route }: HomeProps) {
 
   return (
     <SafeAreaView style={{ backgroundColor: "#191b23", flex: 1 }}>
-      <ScrollView>
-
-        <Container>
-          <TitleBar style={{ marginTop: safeMargin, marginBottom: 57 }}>
-            <IconBar>
-              <Logo />
-              <TouchableOpacity onPress={() => onSignOut()}>
-                <ProfileIcon style={{ marginTop: 20 }} />
-              </TouchableOpacity>
-            </IconBar>
-            <WelcomeView>
-              <WelcomeText>Welcome back, </WelcomeText>
-              <Name>{userName}</Name>
-            </WelcomeView>
-          </TitleBar>
-          <TouchableOpacity>
-            <Space
-              num="01"
-              spaceName="Josiah's Car"
-              spacePattern={require("../assets/spacePattern.png")}
-            />
-          </TouchableOpacity>
-        </Container>
-
-        <ScrollView
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
-          style={{ marginLeft: 20 }}
-        >
-          <SpaceContainer>
-            <TouchableOpacity>
-              <Space2
-                color="#FFCF73"
-                num="02"
-                spaceName="George's Stinky Room"
-                spacePattern={require("../assets/spacePattern.png")}
-              />
+      <Container>
+        <TitleBar style={{ marginTop: safeMargin, marginBottom: 57 }}>
+          <IconBar>
+            <Logo />
+            <TouchableOpacity onPress={() => onSignOut()}>
+              <SignOutIcon style={{ marginTop: 20 }} />
             </TouchableOpacity>
-            <TouchableOpacity>
-              <Space2
-                color="#A9BAFF"
-                num="03"
-                spaceName="Eli's Headphones"
-                spacePattern={require("../assets/spacePattern.png")}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Space2
-                color="#BB9BFF"
-                num="04"
-                spaceName="Nibro's Playlist"
-                spacePattern={require("../assets/spacePattern.png")}
-              />
-            </TouchableOpacity>
-          </SpaceContainer>
-        </ScrollView>
-        <ButtonContainer>
-          <TouchableOpacity onPress={() => getRooms()} >
-            <AddButton />
-          </TouchableOpacity>
-        </ButtonContainer>
-        <ModalContainer>
-          <AddSpaceModal 
-            title="Create a space"
-            description="Creating a space allows you to be in control of the music queue and open your space to other users."
-            inputField="Space Name"
-            buttonName="Create Space"
+          </IconBar>
+          <WelcomeView>
+            <WelcomeText>Welcome back, </WelcomeText>
+            <Name>{userName}</Name>
+          </WelcomeView>
+        </TitleBar>
+        <TouchableOpacity>
+          <Space
+            num="01"
+            spaceName="Josiah's Car"
+            spacePattern={require("../assets/spacePattern.png")}
           />
-        </ModalContainer>
+        </TouchableOpacity>
+      </Container>
+
+      <ScrollView
+        horizontal={true}
+        showsHorizontalScrollIndicator={false}
+        style={{
+          marginLeft: 20,
+          flexGrow: 0,
+        }}
+      >
+        <SpaceContainer>
+          <Space2
+            color="#FFCF73"
+            num="02"
+            spaceName="George's Stinky Room"
+            spacePattern={require("../assets/spacePattern.png")}
+          />
+          <Space2
+            color="#A9BAFF"
+            num="03"
+            spaceName="Eli's Headphones"
+            spacePattern={require("../assets/spacePattern.png")}
+          />
+          <Space2
+            color="#BB9BFF"
+            num="04"
+            spaceName="Nibro's Playlist"
+            spacePattern={require("../assets/spacePattern.png")}
+          />
+        </SpaceContainer>
       </ScrollView>
+      <AddOptionContainer
+        style={{ opacity: show ? 0 : 1, zIndex: show ? 0 : 5 }}
+      >
+        <AddOption title="Create a space" desc="Just for your friendos" />
+        <AddOption title="Join a space" desc="Just for your friendos" />
+      </AddOptionContainer>
+
+      {/* <ModalContainer>
+        <AddSpaceModal
+          title="Create a space"
+          description="Creating a space allows you to be in control of the music queue and open your space to other users."
+          inputField="Space Name"
+          buttonName="Create Space"
+        />
+      </ModalContainer> */}
     </SafeAreaView>
   );
 }
@@ -222,7 +249,7 @@ const Container = styled.View`
 
 const ModalContainer = styled.View`
   width: 100%;
-  height: 25%
+  height: 25%;
 `;
 
 const TitleBar = styled.View``;
@@ -246,16 +273,16 @@ const Name = styled.Text`
   color: #e08700;
 `;
 
-const ButtonContainer = styled.View`
-  flex: 1;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  margin-top: 50px;
-`;
-
 const SpaceContainer = styled.View`
   flex-direction: row;
-  /* padding-left: 20px; */
+  height: 240px;
   padding-right: 13px;
+`;
+
+const AddOptionContainer = styled.View`
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  padding-left: 20px;
+  padding-right: 20px;
 `;

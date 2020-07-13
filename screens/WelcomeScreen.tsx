@@ -14,7 +14,7 @@ let safeMargin: number;
 if (Platform.OS == "ios") {
   safeMargin = 65;
 } else if ((Platform.OS = "android")) {
-  safeMargin = 110;
+  safeMargin = 0;
 }
 
 function WelcomeScreen({ navigation, route }: WelcomeProps) {
@@ -26,22 +26,23 @@ function WelcomeScreen({ navigation, route }: WelcomeProps) {
           resizeMode="contain"
         />
       </ArtifactView>
-      <LogoView style={{ marginTop: safeMargin, marginBottom: 450 }}>
+      <LogoView>
         <Logo
           source={require("../assets/welcome-logo.png")}
           resizeMode="contain"
         />
       </LogoView>
-      <TouchableOpacity
-        onPress={() => {
-          firebase.auth().signOut();
-          navigation.navigate("SignIn");
-        }}
-      >
-        <ButtonContainer>
+
+      <ButtonContainer>
+        <TouchableOpacity
+          onPress={() => {
+            firebase.auth().signOut();
+            navigation.navigate("SignIn");
+          }}
+        >
           <SignButton title="Sign In" />
-        </ButtonContainer>
-      </TouchableOpacity>
+        </TouchableOpacity>
+      </ButtonContainer>
       <RegisterView>
         <Context>Don't have an account?</Context>
         <TouchableOpacity
@@ -74,8 +75,9 @@ const GridArtifacts = styled.Image`
 `;
 
 const LogoView = styled.View`
+  position: absolute;
   align-items: center;
-  margin-top: 65px;
+  top: 112px;
   width: 100%;
   height: 94px;
 `;
@@ -86,10 +88,12 @@ const Logo = styled.Image`
 `;
 
 const ButtonContainer = styled.View`
+  position: absolute;
+  bottom: 170px;
   height: 55px;
+  width: 100%;
   padding-left: 15px;
   padding-right: 15px;
-  /* margin-top: 450px; */
   z-index: 1;
 `;
 
@@ -109,10 +113,10 @@ const ShapeArtifacts = styled.Image`
 `;
 
 const RegisterView = styled.View`
-  justify-content: center;
-  align-items: center;
   flex-direction: row;
-  margin-top: 15px;
+  position: absolute;
+  left: 25%;
+  bottom: 130px;
   z-index: 1;
 `;
 

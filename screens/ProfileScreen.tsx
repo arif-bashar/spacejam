@@ -1,18 +1,12 @@
 import * as React from "react";
 import styled from "styled-components/native";
 
-class ProfileScreen extends React.Component {
-  static navigationOptions = {
-    headerShown: false,
-  };
-
-  render() {
-    return (
-      <Container>
-        <Title>Hi, this is the profile screen</Title>
-      </Container>
-    );
-  }
+function ProfileScreen() {
+  return (
+    <Container>
+      <Title>Hi, this is the profile screen</Title>
+    </Container>
+  );
 }
 
 export default ProfileScreen;
