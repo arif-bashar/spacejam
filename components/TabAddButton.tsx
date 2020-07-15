@@ -4,18 +4,36 @@ import { AddIcon, TabAddIcon } from "./Icons";
 import { useDispatch, useSelector } from "react-redux";
 import { onAddPress } from "../slices/addSpaceReducer";
 import { RootState } from "../slices/rootReducer";
-import { BottomTabBarButtonProps } from "@react-navigation/bottom-tabs/lib/typescript/src/types";
 import {
   TouchableHighlight,
   TouchableOpacity,
 } from "react-native-gesture-handler";
+import { useNavigation } from "@react-navigation/native";
+import {
+  Value,
+  useCode,
+  Clock,
+  Extrapolate,
+  interpolate,
+  startClock,
+  set,
+  not,
+  cond,
+  eq,
+  add,
+} from "react-native-reanimated";
 
 function TabAddButton() {
   const dispatch = useDispatch();
   const { show } = useSelector((state: RootState) => state.addSpace);
 
+  const onButtonPress = () => {
+    dispatch(onAddPress());
+    // startAnimation.setValue(0);
+  };
+
   return (
-    <Container onPress={() => dispatch(onAddPress())}>
+    <Container onPress={() => onButtonPress()}>
       <TabAddIcon />
     </Container>
   );
