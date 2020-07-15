@@ -15,17 +15,22 @@ import {
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import Animated from "react-native-reanimated";
+import { createStackNavigator } from '@react-navigation/stack';
+import { NavigationContainer } from "@react-navigation/native";
 import { Logo, SignOutIcon } from "../components/Icons";
 import { Space } from "../components/Space";
 import { Space2 } from "../components/Space2";
-import { HomeProps } from "../StackNavigatorTypes";
+import { HomeProps, HomeBaseProps } from "../StackNavigatorTypes";
 import firebase from "../components/Firebase";
 import { RootState } from "../slices/rootReducer";
 import { signOutAction } from "../slices/authReducer";
 import { AddSpaceModal } from "../components/AddSpaceModal";
 import AddOption from "../components/AddOption";
 import { onAddPress } from "../slices/addSpaceReducer";
+import { StackParams } from "../StackNavigatorTypes";
+import PlayerScreen from "./PlayerScreen";
 
+const Stack = createStackNavigator<StackParams>();
 let safeMargin: number;
 
 StatusBar.setBarStyle("light-content");
@@ -36,7 +41,7 @@ if (Platform.OS == "ios") {
   safeMargin = 40;
 }
 
-export function HomeScreen({ navigation, route }: HomeProps) {
+function HomeBase({ navigation, route }: HomeBaseProps) {
   const db = firebase.firestore();
   const dispatch = useDispatch();
   const [userName, setUserName] = useState("");
@@ -183,7 +188,7 @@ export function HomeScreen({ navigation, route }: HomeProps) {
             <Name>{userName}</Name>
           </WelcomeView>
         </TitleBar>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('Player')}>
           <Space
             num="01"
             spaceName="Josiah's Car"
@@ -237,6 +242,22 @@ export function HomeScreen({ navigation, route }: HomeProps) {
         />
       </ModalContainer> */}
     </SafeAreaView>
+  );
+}
+
+export function HomeScreen({ navigation, route }: HomeProps) {
+  return (
+    <NavigationContainer independent={true}>
+      <Stack.Navigator
+        screenOptions={({ route }) => ({
+          headerShown: false,
+          gestureEnabled: false,
+        })}
+      >
+        <Stack.Screen name="Home" component={HomeBase} />
+        <Stack.Screen name="Player" component={PlayerScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 

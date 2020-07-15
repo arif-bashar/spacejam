@@ -1,18 +1,18 @@
 import * as React from "react";
 import styled from "styled-components/native";
+import { PlayerProps } from "../StackNavigatorTypes";
+import { Button } from "react-native";
 
-class PlayerScreen extends React.Component {
-    static navigationOptions = {
-        headerShown: false,
-    };
-
-    render() {
-        return (
-            <Container>
-                <Title>Hi, this is the music player screen</Title>
-            </Container>
-        );
-    }
+function PlayerScreen({ navigation, route }: PlayerProps) {
+    return (
+        <Container>
+            <Title>Hi, this is the music player screen</Title>
+            <Button
+                title="Go Home"
+                onPress={() => navigation.navigate('Home')}
+            />
+        </Container>
+    );
 }
 
 export default PlayerScreen;
