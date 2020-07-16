@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Dimensions } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import {
   Platform,
@@ -25,6 +26,7 @@ import { signOutAction } from "../slices/authReducer";
 import { AddSpaceModal } from "../components/AddSpaceModal";
 import AddOption from "../components/AddOption";
 import { onAddPress } from "../slices/addSpaceReducer";
+import { BlurView } from "expo-blur";
 
 let safeMargin: number;
 
@@ -40,6 +42,8 @@ export function HomeScreen({ navigation, route }: HomeProps) {
   const db = firebase.firestore();
   const dispatch = useDispatch();
   const [userName, setUserName] = useState("");
+  const { show } = useSelector((state: RootState) => state.addSpace);
+
   //const { userID } = useSelector((state: RootState) => state.auth);
   //console.log(userID);
 
@@ -138,7 +142,6 @@ export function HomeScreen({ navigation, route }: HomeProps) {
       console.log("Error getting rooms: ", error);
     }
   };
-  const { show } = useSelector((state: RootState) => state.addSpace);
 
   useEffect(() => {
     const getUserName = async () => {
@@ -221,12 +224,33 @@ export function HomeScreen({ navigation, route }: HomeProps) {
           />
         </SpaceContainer>
       </ScrollView>
-      <AddOptionContainer
-        style={{ opacity: show ? 0 : 1, zIndex: show ? 0 : 5 }}
+      {/* <AddOptionContainer
+        style={{ opacity: show ? 0 : 1, zIndex: show ? -1 : 1 }}
+      >
+        <BlurView intensity={show ? 0 : 100}>
+          <AddOption title="Create a space" desc="Just for your friendos" />
+          <AddOption title="Join a space" desc="Just for your friendos" />
+        </BlurView>
+      </AddOptionContainer> */}
+
+      <BlurView
+        intensity={show ? 0 : 100}
+        tint="dark"
+        style={{
+          opacity: show ? 0 : 1,
+          zIndex: show ? -1 : 1,
+          position: "absolute",
+          width: "100%",
+          height: "100%",
+          paddingTop: Dimensions.get("window").height - 300,
+          paddingLeft: 20,
+          paddingRight: 20,
+          // backgroundColor: "rgba(25, 27, 35, 0.8)",
+        }}
       >
         <AddOption title="Create a space" desc="Just for your friendos" />
         <AddOption title="Join a space" desc="Just for your friendos" />
-      </AddOptionContainer>
+      </BlurView>
 
       {/* <ModalContainer>
         <AddSpaceModal
@@ -282,7 +306,10 @@ const SpaceContainer = styled.View`
 const AddOptionContainer = styled.View`
   position: absolute;
   width: 100%;
-  bottom: 0;
+  height: 100%;
+  /* bottom: 50px; */
+  padding-top: ${Dimensions.get("window").height - 300}px;
   padding-left: 20px;
   padding-right: 20px;
+  background: rgba(25, 27, 35, 0.8);
 `;

@@ -37,7 +37,8 @@
     "react-redux": "^7.2.0",
     "react-redux-firebase": "^3.6.0",
     "redux-firestore": "^0.13.0",
-    "styled-components": "^5.1.0"
+    "styled-components": "^5.1.0",
+    "expo-blur": "~8.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",

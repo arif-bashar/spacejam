@@ -2,15 +2,23 @@ import * as React from "react";
 import styled from "styled-components/native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { NextIcon } from "./Icons";
+import { useDispatch } from "react-redux";
+import { onAddPress } from "../slices/addSpaceReducer";
 
 type AddProps = {
   title: string;
   desc: string;
+  visible?: () => {};
 };
 
 const AddOption: React.FC<AddProps> = (props) => {
+  const dispatch = useDispatch();
+
   return (
-    <TouchableOpacity style={{ marginBottom: 10 }}>
+    <TouchableOpacity
+      onPress={() => dispatch(onAddPress())}
+      style={{ marginBottom: 10 }}
+    >
       <Container>
         <Title>{props.title}</Title>
         <Description>{props.desc}</Description>
