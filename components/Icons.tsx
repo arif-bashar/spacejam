@@ -69,6 +69,7 @@ export const AddButton = () => (
     />
   </Svg>
 );
+
 export const TabAddIcon = () => (
   <Svg width={71} height={71} viewBox="0 0 71 71" fill="none">
     <Rect x={5} y={5} width={61} height={61} rx={30.5} fill="#191B23" />
@@ -82,6 +83,18 @@ export const TabAddIcon = () => (
     />
     <Path
       d="M35.5 25.398v20.204M25.398 35.5h20.204"
+      stroke="#fff"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </Svg>
+);
+
+export const AddIcon = () => (
+  <Svg width={23} height={23} viewBox="0 0 23 23" fill="none">
+    <Path
+      d="M11.5 1.398v20.204M1.398 11.5h20.204"
       stroke="#fff"
       strokeWidth={2}
       strokeLinecap="round"
