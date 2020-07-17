@@ -248,8 +248,8 @@ export function HomeScreen({ navigation, route }: HomeProps) {
           // backgroundColor: "rgba(25, 27, 35, 0.8)",
         }}
       >
-        <AddOption title="Create a space" desc="Just for your friendos" />
-        <AddOption title="Join a space" desc="Just for your friendos" />
+        <AddOption title="Create a space" desc="Just for your friendos" id="create"/>
+        <AddOption title="Join a space" desc="Just for your friendos" id="join"/>
       </BlurView>
 
       {/* <ModalContainer>

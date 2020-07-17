@@ -2,32 +2,68 @@ import * as React from "react";
 import styled from "styled-components/native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { NextIcon } from "./Icons";
-import { useDispatch } from "react-redux";
-import { onAddPress } from "../slices/addSpaceReducer";
+import { useDispatch, useSelector } from "react-redux";
+import { onAddPress, onCreatePress, onJoinPress } from "../slices/addSpaceReducer";
+import { RootState } from "../slices/rootReducer";
+import { AddSpaceModal } from "./AddSpaceModal";
 
 type AddProps = {
   title: string;
   desc: string;
-  visible?: () => {};
+  id: string;
 };
 
 const AddOption: React.FC<AddProps> = (props) => {
   const dispatch = useDispatch();
+  const { createShow, joinShow } = useSelector((state: RootState) => state.addSpace);
 
-  return (
-    <TouchableOpacity
-      onPress={() => dispatch(onAddPress())}
-      style={{ marginBottom: 10 }}
-    >
-      <Container>
-        <Title>{props.title}</Title>
-        <Description>{props.desc}</Description>
-        <IconView>
-          <NextIcon />
-        </IconView>
-      </Container>
-    </TouchableOpacity>
-  );
+  if (createShow) {
+    return (
+      <ModalContainer>
+        <AddSpaceModal
+          title="Create a space"
+          description="Creating a space allows you to be in control of the music queue and open your space to other users."
+          inputField="Space Name"
+          buttonName="Create Space"
+        />
+      </ModalContainer>
+    )
+  } else if (joinShow) {
+    return (
+    <ModalContainer>
+      <AddSpaceModal
+        title="Join a space"
+        description="Joining a space allows you to be queue songs to the particular space. Ask a host for an invite code."
+        inputField="Space Name"
+        buttonName="Invite Code"
+      />
+    </ModalContainer>
+    )
+  } else {
+    return (
+      <TouchableOpacity
+        onPress={() => {
+          if (props.id == "create") {
+            dispatch(onCreatePress());
+            console.log("create");
+          }
+          else if (props.id == "join") {
+            dispatch(onJoinPress());
+            console.log("join");
+          }
+        }}
+        style={{ marginBottom: 10 }}
+      >
+        <Container>
+          <Title>{props.title}</Title>
+          <Description>{props.desc}</Description>
+          <IconView>
+            <NextIcon />
+          </IconView>
+        </Container>
+      </TouchableOpacity>
+    );
+  }
 };
 
 export default AddOption;
@@ -60,4 +96,9 @@ const IconView = styled.View`
   top: 0px;
   bottom: 0px;
   right: 27px;
+`;
+
+const ModalContainer = styled.View`
+  width: 100%;
+  height: 25%;
 `;
