@@ -1,7 +1,7 @@
 import * as React from "react";
 import styled from "styled-components/native";
 import { PlayerProps } from "../StackNavigatorTypes";
-import { BackIcon, NextIcon } from "../components/Icons";
+import { BackIcon, GearIcon, PauseIcon, PlayIcon, RepeatIcon, SkipBackIcon, SkipForwardIcon } from "../components/Icons";
 import { Platform, SafeAreaView, StatusBar, TouchableOpacity } from "react-native";
 
 let safeMargin: number;
@@ -14,12 +14,22 @@ if (Platform.OS == "ios") {
   safeMargin = 40;
 }
 
+function PlayMusic(props: any): any {
+  const isPlaying = props.isPlaying;
+  if (isPlaying) {
+    return <PauseIcon />
+  }
+  else {
+    return <PlayIcon />
+  }
+}
+
 function PlayerScreen({ navigation, route }: PlayerProps) {
   const image = { uri: 'https://consequenceofsound.net/wp-content/uploads/2019/01/hozier-wasteland-baby-cover-album-artwork.jpg?quality=80' };
   const roomName = "Josiah's Car";
   const songName = "Almost (Sweet Music)"
   const artistName = "Hozier";
-
+  let isPlaying = false;
 
   return (
     <FullScreenContainer>
@@ -29,19 +39,29 @@ function PlayerScreen({ navigation, route }: PlayerProps) {
             <TouchableOpacity onPress={() => navigation.navigate('Home')}>
               <BackIcon />
             </TouchableOpacity>
-            <Title>{roomName}</Title>
-            <StyledButton title="Settings" onPress={() => console.log('Pressed Settings.')} />
+            <RoomName>{roomName}</RoomName>
+            <TouchableOpacity onPress={() => console.log('Pressed Settings.')}>
+              <GearIcon />
+            </TouchableOpacity>
           </IconBar>
           <StyledView style={{ marginBottom: 40 }}>
             <TrackInfo>
-              <Title>{songName}</Title>
-              <Title>{artistName}</Title>
+              <SongName>{songName}</SongName>
+              <ArtistName>{artistName}</ArtistName>
             </TrackInfo>
             <IconBar>
-              <StyledButton title="Last Song" onPress={() => console.log('Pressed Last Song.')} />
-              <StyledButton title="Play" onPress={() => console.log('Pressed Play.')} />
-              <StyledButton title="Next Song" onPress={() => console.log('Pressed Next Song.')} />
-              <StyledButton title="Loop Song" onPress={() => console.log('Pressed Loop Song.')} />
+              <TouchableOpacity onPress={() => console.log('Pressed Last Song.')}>
+                <SkipBackIcon />
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => { isPlaying = !isPlaying; console.log('isPlaying: ' + String(isPlaying)); }}>
+                <PlayMusic isPlaying={isPlaying} />
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => console.log('Pressed Next Song.')}>
+                <SkipForwardIcon />
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => console.log('Pressed Loop Song.')}>
+                <RepeatIcon />
+              </TouchableOpacity>
             </IconBar>
           </StyledView>
         </InnerContainer>
@@ -72,8 +92,21 @@ const InnerContainer = styled.SafeAreaView`
   justifyContent: space-between;
 `;
 
-const Title = styled.Text`
-  color: #ffffff;
+const RoomName = styled.Text`
+  color: #fff;
+  font-weight: bold;
+  fontSize: 18px;
+`;
+
+const SongName = styled.Text`
+  color: #fff;
+  font-weight: bold;
+  fontSize: 20px;
+`;
+
+const ArtistName = styled.Text`
+color: #fff;
+fontSize: 16px;
 `;
 
 const IconBar = styled.View`
@@ -86,5 +119,5 @@ const StyledButton = styled.Button``;
 const StyledView = styled.View``;
 
 const TrackInfo = styled.View`
-  marginBottom: 20;
+  marginBottom: 20px;
 `;
