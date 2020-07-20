@@ -34,8 +34,8 @@ const AddOption: React.FC<AddProps> = (props) => {
       <AddSpaceModal
         title="Join a space"
         description="Joining a space allows you to be queue songs to the particular space. Ask a host for an invite code."
-        inputField="Space Name"
-        buttonName="Invite Code"
+        inputField="Invite Code"
+        buttonName="Join Space"
       />
     </ModalContainer>
     )
