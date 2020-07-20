@@ -176,6 +176,12 @@ function HomeBase({ navigation, route }: HomeBaseProps) {
     }
   };
 
+  const onEnterPlayer = () => {
+    dispatch(onAddPress());
+    navigation.navigate('Player');
+    // startAnimation.setValue(0);
+  };
+
   return (
     <SafeAreaView style={{ backgroundColor: "#191b23", flex: 1 }}>
       <Container>
@@ -191,7 +197,7 @@ function HomeBase({ navigation, route }: HomeBaseProps) {
             <Name>{userName}</Name>
           </WelcomeView>
         </TitleBar>
-        <TouchableOpacity onPress={() => navigation.navigate('Player')}>
+        <TouchableOpacity onPress={() => onEnterPlayer()}>
           <Space
             num="01"
             spaceName="Josiah's Car"
@@ -265,7 +271,7 @@ function HomeBase({ navigation, route }: HomeBaseProps) {
           buttonName="Create Space"
         />
       </ModalContainer> */}
-    </SafeAreaView>
+    </SafeAreaView >
   );
 }
 
