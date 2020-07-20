@@ -1,5 +1,6 @@
 import * as React from "react";
 import Svg, { G, Rect, Path, Circle, Defs, ClipPath } from "react-native-svg";
+import { View } from 'react-native';
 
 export const Logo = () => (
   <Svg width={73} height={73} viewBox="0 0 73 73" fill="none">
@@ -237,16 +238,26 @@ export const RepeatIcon = () => (
 
 export const PlayIcon = () => (
   <Svg
-    width={24}
-    height={24}
-    viewBox="0 0 24 24"
-    fill="#fff"
-    stroke="#fff"
-    strokeWidth={2}
-    strokeLinecap="round"
-    strokeLinejoin="round"
+    width={71}
+    height={71}
+    viewBox="0 0 71 71"
   >
-    <Path d="M5 3l14 9-14 9V3z" />
+    <Rect
+      x={10.39}
+      y={10.39}
+      width={50.219}
+      height={50.219}
+      rx={12.5}
+      fill="#E08700"
+    />
+    <Path
+      x={25.3}
+      y={23.4}
+      fill="#fff"
+      stroke="#fff"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round" d="M5 3l14 9-14 9V3z" />
   </Svg>
 );
 

@@ -3,6 +3,7 @@ import styled from "styled-components/native";
 import { PlayerProps } from "../StackNavigatorTypes";
 import { BackIcon, GearIcon, PauseIcon, PlayIcon, RepeatIcon, SkipBackIcon, SkipForwardIcon } from "../components/Icons";
 import { Platform, SafeAreaView, StatusBar, TouchableOpacity } from "react-native";
+import { Slider } from 'react-native';
 
 let safeMargin: number;
 
@@ -49,6 +50,11 @@ function PlayerScreen({ navigation, route }: PlayerProps) {
               <SongName>{songName}</SongName>
               <ArtistName>{artistName}</ArtistName>
             </TrackInfo>
+            <Slider style={{ width: 200, height: 40 }}
+              minimumValue={0}
+              maximumValue={1}
+              minimumTrackTintColor="#FFFFFF"
+              maximumTrackTintColor="#000000" />
             <IconBar>
               <TouchableOpacity onPress={() => console.log('Pressed Last Song.')}>
                 <SkipBackIcon />
@@ -112,6 +118,7 @@ fontSize: 16px;
 const IconBar = styled.View`
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
 `;
 
 const StyledButton = styled.Button``;
