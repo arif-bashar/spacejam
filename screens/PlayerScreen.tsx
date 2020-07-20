@@ -56,15 +56,18 @@ function PlayerScreen({ navigation, route }: PlayerProps) {
               minimumTrackTintColor="#FFFFFF"
               maximumTrackTintColor="#000000" />
             <IconBar>
-              <TouchableOpacity onPress={() => console.log('Pressed Last Song.')}>
-                <SkipBackIcon />
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => { isPlaying = !isPlaying; console.log('isPlaying: ' + String(isPlaying)); }}>
-                <PlayMusic isPlaying={isPlaying} />
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => console.log('Pressed Next Song.')}>
-                <SkipForwardIcon />
-              </TouchableOpacity>
+              <StyledView style={{ width: 24, height: 24 }} />
+              <StyledView style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                <TouchableOpacity onPress={() => console.log('Pressed Last Song.')}>
+                  <SkipBackIcon />
+                </TouchableOpacity>
+                <TouchableOpacity style={{ paddingLeft: 24, paddingRight: 24 }} onPress={() => { isPlaying = !isPlaying; console.log('isPlaying: ' + String(isPlaying)); }}>
+                  <PlayMusic isPlaying={isPlaying} />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => console.log('Pressed Next Song.')}>
+                  <SkipForwardIcon />
+                </TouchableOpacity>
+              </StyledView>
               <TouchableOpacity onPress={() => console.log('Pressed Loop Song.')}>
                 <RepeatIcon />
               </TouchableOpacity>
