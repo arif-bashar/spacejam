@@ -21,15 +21,12 @@ import { NavigationContainer } from "@react-navigation/native";
 import { Logo, SignOutIcon } from "../components/Icons";
 import { Space } from "../components/Space";
 import { Space2 } from "../components/Space2";
-import { HomeProps, HomeBaseProps } from "../StackNavigatorTypes";
+import { HomeProps } from "../StackNavigatorTypes";
 import firebase from "../components/Firebase";
 import { RootState } from "../slices/rootReducer";
 import { signOutAction } from "../slices/authReducer";
-import { AddSpaceModal } from "../components/AddSpaceModal";
 import AddOption from "../components/AddOption";
-import { onAddPress } from "../slices/addSpaceReducer";
 import { StackParams } from "../StackNavigatorTypes";
-import PlayerScreen from "./PlayerScreen";
 import { BlurView } from "expo-blur";
 
 const Stack = createStackNavigator<StackParams>();
@@ -43,7 +40,7 @@ if (Platform.OS == "ios") {
   safeMargin = 40;
 }
 
-function HomeBase({ navigation, route }: HomeBaseProps) {
+export function HomeScreen({ navigation, route }: HomeProps) {
   const db = firebase.firestore();
   const dispatch = useDispatch();
   const [userName, setUserName] = useState("");
@@ -177,7 +174,6 @@ function HomeBase({ navigation, route }: HomeBaseProps) {
   };
 
   const onEnterPlayer = () => {
-    dispatch(onAddPress());
     navigation.navigate('Player');
     // startAnimation.setValue(0);
   };
@@ -272,22 +268,6 @@ function HomeBase({ navigation, route }: HomeBaseProps) {
         />
       </ModalContainer> */}
     </SafeAreaView >
-  );
-}
-
-export function HomeScreen({ navigation, route }: HomeProps) {
-  return (
-    <NavigationContainer independent={true}>
-      <Stack.Navigator
-        screenOptions={({ route }) => ({
-          headerShown: false,
-          gestureEnabled: false,
-        })}
-      >
-        <Stack.Screen name="Home" component={HomeBase} />
-        <Stack.Screen name="Player" component={PlayerScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
   );
 }
 

@@ -4,9 +4,6 @@ import { PlayerProps } from "../StackNavigatorTypes";
 import { BackIcon, GearIcon, PauseIcon, PlayIcon, RepeatIcon, SkipBackIcon, SkipForwardIcon } from "../components/Icons";
 import { Platform, SafeAreaView, StatusBar, TouchableOpacity } from "react-native";
 import { Slider } from 'react-native';
-import { useSelector, useDispatch } from "react-redux";
-import { onAddPress } from "../slices/addSpaceReducer";
-import { RootState } from "../slices/rootReducer";
 
 let safeMargin: number;
 
@@ -33,13 +30,10 @@ function PlayerScreen({ navigation, route }: PlayerProps) {
   const roomName = "Josiah's Car";
   const songName = "Almost (Sweet Music)"
   const artistName = "Hozier";
-  const dispatch = useDispatch();
-  const { show } = useSelector((state: RootState) => state.addSpace);
   let isPlaying = false;
 
   const onExitPlayer = () => {
-    dispatch(onAddPress());
-    navigation.navigate('Home');
+    navigation.goBack();
     // startAnimation.setValue(0);
   };
 
