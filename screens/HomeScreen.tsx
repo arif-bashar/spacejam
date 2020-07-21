@@ -27,6 +27,7 @@ import { AddSpaceModal } from "../components/AddSpaceModal";
 import AddOption from "../components/AddOption";
 import { onAddPress } from "../slices/addSpaceReducer";
 import { BlurView } from "expo-blur";
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 
 let safeMargin: number;
 
@@ -42,7 +43,7 @@ export function HomeScreen({ navigation, route }: HomeProps) {
   const db = firebase.firestore();
   const dispatch = useDispatch();
   const [userName, setUserName] = useState("");
-  const { show } = useSelector((state: RootState) => state.addSpace);
+  const { optionShow } = useSelector((state: RootState) => state.addSpace);
 
   //const { userID } = useSelector((state: RootState) => state.auth);
   //console.log(userID);
@@ -173,7 +174,7 @@ export function HomeScreen({ navigation, route }: HomeProps) {
 
   return (
     <SafeAreaView style={{ backgroundColor: "#191b23", flex: 1 }}>
-      <Container>
+      <TopContainer>
         <TitleBar style={{ marginTop: safeMargin, marginBottom: 57 }}>
           <IconBar>
             <Logo />
@@ -186,71 +187,61 @@ export function HomeScreen({ navigation, route }: HomeProps) {
             <Name>{userName}</Name>
           </WelcomeView>
         </TitleBar>
-        <TouchableOpacity>
-          <Space
-            num="01"
-            spaceName="Josiah's Car"
-            spacePattern={require("../assets/spacePattern.png")}
-          />
-        </TouchableOpacity>
-      </Container>
+      </TopContainer>
 
-      <ScrollView
-        horizontal={true}
-        showsHorizontalScrollIndicator={false}
-        style={{
-          marginLeft: 20,
-          flexGrow: 0,
-        }}
-      >
-        <SpaceContainer>
-          <Space2
-            color="#FFCF73"
-            num="02"
-            spaceName="George's Stinky Room"
-            spacePattern={require("../assets/spacePattern.png")}
-          />
-          <Space2
-            color="#A9BAFF"
-            num="03"
-            spaceName="Eli's Headphones"
-            spacePattern={require("../assets/spacePattern.png")}
-          />
-          <Space2
-            color="#BB9BFF"
-            num="04"
-            spaceName="Nibro's Playlist"
-            spacePattern={require("../assets/spacePattern.png")}
-          />
-        </SpaceContainer>
-      </ScrollView>
-      {/* <AddOptionContainer
-        style={{ opacity: show ? 0 : 1, zIndex: show ? -1 : 1 }}
-      >
-        <BlurView intensity={show ? 0 : 100}>
-          <AddOption title="Create a space" desc="Just for your friendos" />
-          <AddOption title="Join a space" desc="Just for your friendos" />
-        </BlurView>
-      </AddOptionContainer> */}
+      <SpaceContainer>
+        <Space
+          num="01"
+          spaceName="Josiah's Car"
+          spacePattern={require("../assets/spacePattern.png")}
+        />
 
-      <BlurView
-        intensity={show ? 0 : 100}
-        tint="dark"
-        style={{
-          opacity: show ? 0 : 1,
-          zIndex: show ? -1 : 1,
-          position: "absolute",
-          width: "100%",
-          height: "100%",
-          paddingTop: Dimensions.get("window").height - 300,
-          paddingLeft: 20,
-          paddingRight: 20,
-          // backgroundColor: "rgba(25, 27, 35, 0.8)",
-        }}
-      >
-        <AddOption title="Create a space" desc="Just for your friendos" />
-        <AddOption title="Join a space" desc="Just for your friendos" />
-      </BlurView>
+        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+          <SpaceScrollContainer>
+            <Space2
+              color="#FFCF73"
+              num="02"
+              spaceName="George's Stinky Room"
+              spacePattern={require("../assets/spacePattern.png")}
+            />
+            <Space2
+              color="#A9BAFF"
+              num="03"
+              spaceName="Eli's Headphones"
+              spacePattern={require("../assets/spacePattern.png")}
+            />
+            <Space2
+              color="#BB9BFF"
+              num="04"
+              spaceName="Nibro's Playlist"
+              spacePattern={require("../assets/spacePattern.png")}
+            />
+          </SpaceScrollContainer>
+        </ScrollView>
+      </SpaceContainer>
+
+      {/* Control logic for add space options upon clicking add button */}
+      {optionShow ? (
+        <>
+          <AddOptionContainer style={{ opacity: optionShow ? 1 : 0 }}>
+            <TouchableWithoutFeedback
+              style={{
+                position: "relative",
+                justifyContent: "flex-end",
+                width: "100%",
+                height: "100%",
+                paddingLeft: 20,
+                paddingRight: 20,
+                opacity: optionShow ? 1 : 0,
+              }}
+              onPress={() => dispatch(onAddPress())}
+            >
+              <AddOption title="Create a space" desc="Just for your friendos" />
+              <AddOption title="Join a space" desc="Just for your friendos" />
+            </TouchableWithoutFeedback>
+          </AddOptionContainer>
+        </>
+      ) : null}
 
       {/* <ModalContainer>
         <AddSpaceModal
@@ -264,7 +255,7 @@ export function HomeScreen({ navigation, route }: HomeProps) {
   );
 }
 
-const Container = styled.View`
+const TopContainer = styled.View`
   background: #191b23;
   width: 100%;
   padding-left: 20px;
@@ -298,18 +289,18 @@ const Name = styled.Text`
 `;
 
 const SpaceContainer = styled.View`
+  padding-left: 20px;
+  padding-right: 20px;
+`;
+
+const SpaceScrollContainer = styled.View`
   flex-direction: row;
   height: 240px;
-  padding-right: 13px;
 `;
 
 const AddOptionContainer = styled.View`
   position: absolute;
   width: 100%;
   height: 100%;
-  /* bottom: 50px; */
-  padding-top: ${Dimensions.get("window").height - 300}px;
-  padding-left: 20px;
-  padding-right: 20px;
   background: rgba(25, 27, 35, 0.8);
 `;

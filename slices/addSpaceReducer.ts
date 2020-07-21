@@ -1,11 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 type currentState = {
-  show: boolean;
+  optionShow: boolean;
 };
 
 let initialState: currentState = {
-  show: true,
+  optionShow: false,
 };
 
 const addSpaceSlice = createSlice({
@@ -13,7 +13,7 @@ const addSpaceSlice = createSlice({
   initialState,
   reducers: {
     onAddPress(state) {
-      state.show = !state.show;
+      state.optionShow = !state.optionShow;
     },
   },
 });
