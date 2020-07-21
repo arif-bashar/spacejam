@@ -194,8 +194,8 @@ export const SkipBackIcon = () => (
     width={24}
     height={24}
     viewBox="0 0 24 24"
-    fill="#697295"
-    stroke="#697295"
+    fill="#5A5C64"
+    stroke="#5A5C64"
     strokeWidth={2}
     strokeLinecap="round"
     strokeLinejoin="round"
@@ -209,8 +209,8 @@ export const SkipForwardIcon = () => (
     width={24}
     height={24}
     viewBox="0 0 24 24"
-    fill="#697295"
-    stroke="#697295"
+    fill="#5A5C64"
+    stroke="#5A5C64"
     strokeWidth={2}
     strokeLinecap="round"
     strokeLinejoin="round"
@@ -225,7 +225,7 @@ export const RepeatIcon = () => (
     height={24}
     viewBox="0 0 24 24"
     fill="none"
-    stroke="#697295"
+    stroke="#5A5C64"
     strokeWidth={2}
     strokeLinecap="round"
     strokeLinejoin="round"
@@ -263,15 +263,25 @@ export const PlayIcon = () => (
 
 export const PauseIcon = () => (
   <Svg
-    width={24}
-    height={24}
-    viewBox="0 0 24 24"
-    fill="#fff"
-    stroke="#fff"
-    strokeWidth={2}
-    strokeLinecap="round"
-    strokeLinejoin="round"
+    width={71}
+    height={71}
+    viewBox="0 0 71 71"
   >
-    <Path d="M6 4h4v16H6zM14 4h4v16h-4z" />
+    <Rect
+      x={10.39}
+      y={10.39}
+      width={50.219}
+      height={50.219}
+      rx={12.5}
+      fill="#E08700"
+    />
+    <Path
+      x={25.3}
+      y={23.4}
+      fill="#fff"
+      stroke="#fff"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round" d="M6 4h4v16H6zM14 4h4v16h-4z" />
   </Svg>
 );

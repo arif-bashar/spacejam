@@ -2,10 +2,11 @@ import * as React from "react";
 import styled from "styled-components/native";
 import { PlayerProps } from "../StackNavigatorTypes";
 import { BackIcon, GearIcon, PauseIcon, PlayIcon, RepeatIcon, SkipBackIcon, SkipForwardIcon } from "../components/Icons";
-import { Platform, SafeAreaView, StatusBar, TouchableOpacity } from "react-native";
+import { Dimensions, Platform, SafeAreaView, StatusBar, Text, TouchableOpacity } from "react-native";
 import { Slider } from 'react-native';
 
 let safeMargin: number;
+const screenWidth = Math.round(Dimensions.get('window').width);
 
 StatusBar.setBarStyle("light-content");
 
@@ -30,11 +31,14 @@ function PlayerScreen({ navigation, route }: PlayerProps) {
   const roomName = "Josiah's Car";
   const songName = "Almost (Sweet Music)"
   const artistName = "Hozier";
+  const songLength = 217;
+
+  // TODO: Change below two variables to states in Redux
   let isPlaying = false;
+  let currentTimecode = 0;
 
   const onExitPlayer = () => {
     navigation.goBack();
-    // startAnimation.setValue(0);
   };
 
   return (
@@ -55,11 +59,19 @@ function PlayerScreen({ navigation, route }: PlayerProps) {
               <SongName>{songName}</SongName>
               <ArtistName>{artistName}</ArtistName>
             </TrackInfo>
-            <Slider style={{ width: 200, height: 40 }}
+            <Slider
+              style={{ marginBottom: 5 }}
+              thumbTintColor={'#E08700'}
               minimumValue={0}
-              maximumValue={1}
-              minimumTrackTintColor="#FFFFFF"
-              maximumTrackTintColor="#000000" />
+              maximumValue={songLength}
+              minimumTrackTintColor="#E08700"
+              maximumTrackTintColor="#5A5C64"
+              onValueChange={value => { currentTimecode = value; }}
+            />
+            <Timecodes>
+              <Text style={{ color: '#eee' }}>{Math.floor(currentTimecode / 60)}:{currentTimecode % 60}</Text>
+              <Text style={{ color: '#eee' }}>{Math.floor(songLength / 60)}:{songLength % 60}</Text>
+            </Timecodes>
             <IconBar>
               <StyledView style={{ width: 24, height: 24 }} />
               <StyledView style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -119,8 +131,9 @@ const SongName = styled.Text`
 `;
 
 const ArtistName = styled.Text`
-color: #fff;
-fontSize: 16px;
+  color: #fff;
+  fontSize: 16px;
+  marginBottom: 10px;
 `;
 
 const IconBar = styled.View`
@@ -129,10 +142,16 @@ const IconBar = styled.View`
   align-items: center;
 `;
 
-const StyledButton = styled.Button``;
-
 const StyledView = styled.View``;
 
 const TrackInfo = styled.View`
-  marginBottom: 20px;
+  marginLeft: 15px;
+`;
+
+const Timecodes = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  marginLeft: 15px;
+  marginRight: 15px;
 `;
