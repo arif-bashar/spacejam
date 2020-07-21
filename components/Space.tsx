@@ -1,6 +1,7 @@
 import * as React from "react";
 import styled from "styled-components/native";
 import { ImageSourcePropType } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 type SpaceProps = {
   num: string;
@@ -9,8 +10,15 @@ type SpaceProps = {
 };
 
 export const Space: React.FC<SpaceProps> = (props) => {
+  const navigation = useNavigation();
+
+  const onEnterPlayer = () => {
+    navigation.navigate("Player");
+    // startAnimation.setValue(0);
+  };
+
   return (
-    <Container>
+    <Container onPress={() => onEnterPlayer()}>
       <Number>{props.num}</Number>
       <SpaceName>{props.spaceName}</SpaceName>
       <SpacePattern source={props.spacePattern} />

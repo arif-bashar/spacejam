@@ -17,6 +17,8 @@ import {
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import Animated from "react-native-reanimated";
+import { createStackNavigator } from "@react-navigation/stack";
+import { NavigationContainer } from "@react-navigation/native";
 import { Logo, SignOutIcon } from "../components/Icons";
 import { Space } from "../components/Space";
 import { Space2 } from "../components/Space2";
@@ -24,16 +26,18 @@ import { HomeProps } from "../StackNavigatorTypes";
 import firebase from "../components/Firebase";
 import { RootState } from "../slices/rootReducer";
 import { signOutAction } from "../slices/authReducer";
-import { AddSpaceModal } from "../components/AddSpaceModal";
 import AddOption from "../components/AddOption";
+import { AddSpaceModal } from "../components/AddSpaceModal";
 import {
   onAddPress,
   onCreatePress,
   onJoinPress,
   onClosePress,
 } from "../slices/addSpaceReducer";
+import { StackParams } from "../StackNavigatorTypes";
 import { BlurView } from "expo-blur";
 
+const Stack = createStackNavigator<StackParams>();
 let safeMargin: number;
 
 StatusBar.setBarStyle("light-content");

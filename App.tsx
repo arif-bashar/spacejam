@@ -19,6 +19,7 @@ import { RootState } from "./slices/rootReducer";
 import SplashScreen from "./screens/SplashScreen";
 import TabAddButton from "./components/TabAddButton";
 import { View, Dimensions } from "react-native";
+import PlayerScreen from "./screens/PlayerScreen";
 
 const Stack = createStackNavigator<StackParams>();
 
@@ -73,8 +74,11 @@ export default function App() {
             <Stack.Screen name="SignIn" component={SignInScreen} />
           </>
         ) : (
-          <Stack.Screen name="Home" component={HomeTabs} />
-        )}
+            <>
+              <Stack.Screen name="Home" component={HomeTabs} />
+              <Stack.Screen name="Player" component={PlayerScreen} />
+            </>
+          )}
       </Stack.Navigator>
     </NavigationContainer>
   );

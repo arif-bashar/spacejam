@@ -1,5 +1,6 @@
 import * as React from "react";
 import Svg, { G, Rect, Path, Circle, Defs, ClipPath } from "react-native-svg";
+import { View } from "react-native";
 
 export const Logo = () => (
   <Svg width={73} height={73} viewBox="0 0 73 73" fill="none">
@@ -140,7 +141,7 @@ export const BackIcon = () => (
   <Svg width={24} height={24} viewBox="0 0 24 24" fill="none">
     <Path
       d="M19 12H5M12 19l-7-7 7-7"
-      stroke="#697295"
+      stroke="#fff"
       strokeWidth={2}
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -168,6 +169,115 @@ export const XIcon = () => (
       strokeWidth={2}
       strokeLinecap="round"
       strokeLinejoin="round"
+    />
+  </Svg>
+);
+
+export const GearIcon = () => (
+  <Svg
+    width={24}
+    height={24}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="#fff"
+    strokeWidth={2}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <Circle cx={12} cy={12} r={3} />
+    <Path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z" />
+  </Svg>
+);
+
+export const SkipBackIcon = () => (
+  <Svg
+    width={24}
+    height={24}
+    viewBox="0 0 24 24"
+    fill="#5A5C64"
+    stroke="#5A5C64"
+    strokeWidth={2}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <Path d="M19 20L9 12l10-8v16zM5 19V5" />
+  </Svg>
+);
+
+export const SkipForwardIcon = () => (
+  <Svg
+    width={24}
+    height={24}
+    viewBox="0 0 24 24"
+    fill="#5A5C64"
+    stroke="#5A5C64"
+    strokeWidth={2}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <Path d="M5 4l10 8-10 8V4zM19 5v14" />
+  </Svg>
+);
+
+export const RepeatIcon = () => (
+  <Svg
+    width={24}
+    height={24}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="#5A5C64"
+    strokeWidth={2}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <Path d="M17 1l4 4-4 4" />
+    <Path d="M3 11V9a4 4 0 014-4h14M7 23l-4-4 4-4" />
+    <Path d="M21 13v2a4 4 0 01-4 4H3" />
+  </Svg>
+);
+
+export const PlayIcon = () => (
+  <Svg width={71} height={71} viewBox="0 0 71 71">
+    <Rect
+      x={10.39}
+      y={10.39}
+      width={50.219}
+      height={50.219}
+      rx={12.5}
+      fill="#E08700"
+    />
+    <Path
+      x={25.3}
+      y={23.4}
+      fill="#fff"
+      stroke="#fff"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M5 3l14 9-14 9V3z"
+    />
+  </Svg>
+);
+
+export const PauseIcon = () => (
+  <Svg width={71} height={71} viewBox="0 0 71 71">
+    <Rect
+      x={10.39}
+      y={10.39}
+      width={50.219}
+      height={50.219}
+      rx={12.5}
+      fill="#E08700"
+    />
+    <Path
+      x={25.3}
+      y={23.4}
+      fill="#fff"
+      stroke="#fff"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M6 4h4v16H6zM14 4h4v16h-4z"
     />
   </Svg>
 );
