@@ -5,6 +5,7 @@ import {
   Platform,
   StatusBar,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   ScrollView,
   SafeAreaView,
   Alert,
@@ -25,7 +26,12 @@ import { RootState } from "../slices/rootReducer";
 import { signOutAction } from "../slices/authReducer";
 import { AddSpaceModal } from "../components/AddSpaceModal";
 import AddOption from "../components/AddOption";
-import { onAddPress } from "../slices/addSpaceReducer";
+import {
+  onAddPress,
+  onCreatePress,
+  onJoinPress,
+  onClosePress,
+} from "../slices/addSpaceReducer";
 import { BlurView } from "expo-blur";
 
 let safeMargin: number;
@@ -42,7 +48,9 @@ export function HomeScreen({ navigation, route }: HomeProps) {
   const db = firebase.firestore();
   const dispatch = useDispatch();
   const [userName, setUserName] = useState("");
-  const { show } = useSelector((state: RootState) => state.addSpace);
+  const { optionShow, createShow, joinShow } = useSelector(
+    (state: RootState) => state.addSpace
+  );
 
   //const { userID } = useSelector((state: RootState) => state.auth);
   //console.log(userID);
@@ -173,7 +181,7 @@ export function HomeScreen({ navigation, route }: HomeProps) {
 
   return (
     <SafeAreaView style={{ backgroundColor: "#191b23", flex: 1 }}>
-      <Container>
+      <TopContainer>
         <TitleBar style={{ marginTop: safeMargin, marginBottom: 57 }}>
           <IconBar>
             <Logo />
@@ -186,85 +194,100 @@ export function HomeScreen({ navigation, route }: HomeProps) {
             <Name>{userName}</Name>
           </WelcomeView>
         </TitleBar>
-        <TouchableOpacity>
-          <Space
-            num="01"
-            spaceName="Josiah's Car"
-            spacePattern={require("../assets/spacePattern.png")}
-          />
-        </TouchableOpacity>
-      </Container>
+      </TopContainer>
 
-      <ScrollView
-        horizontal={true}
-        showsHorizontalScrollIndicator={false}
-        style={{
-          marginLeft: 20,
-          flexGrow: 0,
-        }}
-      >
-        <SpaceContainer>
-          <Space2
-            color="#FFCF73"
-            num="02"
-            spaceName="George's Stinky Room"
-            spacePattern={require("../assets/spacePattern.png")}
-          />
-          <Space2
-            color="#A9BAFF"
-            num="03"
-            spaceName="Eli's Headphones"
-            spacePattern={require("../assets/spacePattern.png")}
-          />
-          <Space2
-            color="#BB9BFF"
-            num="04"
-            spaceName="Nibro's Playlist"
-            spacePattern={require("../assets/spacePattern.png")}
-          />
-        </SpaceContainer>
-      </ScrollView>
-      {/* <AddOptionContainer
-        style={{ opacity: show ? 0 : 1, zIndex: show ? -1 : 1 }}
-      >
-        <BlurView intensity={show ? 0 : 100}>
-          <AddOption title="Create a space" desc="Just for your friendos" />
-          <AddOption title="Join a space" desc="Just for your friendos" />
-        </BlurView>
-      </AddOptionContainer> */}
-
-      <BlurView
-        intensity={show ? 0 : 100}
-        tint="dark"
-        style={{
-          opacity: show ? 0 : 1,
-          zIndex: show ? -1 : 1,
-          position: "absolute",
-          width: "100%",
-          height: "100%",
-          paddingTop: Dimensions.get("window").height - 300,
-          paddingLeft: 20,
-          paddingRight: 20,
-          // backgroundColor: "rgba(25, 27, 35, 0.8)",
-        }}
-      >
-        <AddOption title="Create a space" desc="Just for your friendos" id="create"/>
-        <AddOption title="Join a space" desc="Just for your friendos" id="join"/>
-      </BlurView>
-
-      {/* <ModalContainer>
-        <AddSpaceModal
-          title="Create a space"
-          description="Creating a space allows you to be in control of the music queue and open your space to other users."
-          inputField="Space Name"
-          buttonName="Create Space"
+      <SpaceContainer>
+        <Space
+          num="01"
+          spaceName="Josiah's Car"
+          spacePattern={require("../assets/spacePattern.png")}
         />
-      </ModalContainer> */}
+
+        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+          <SpaceScrollContainer>
+            <Space2
+              color="#FFCF73"
+              num="02"
+              spaceName="George's Stinky Room"
+              spacePattern={require("../assets/spacePattern.png")}
+            />
+            <Space2
+              color="#A9BAFF"
+              num="03"
+              spaceName="Eli's Headphones"
+              spacePattern={require("../assets/spacePattern.png")}
+            />
+            <Space2
+              color="#BB9BFF"
+              num="04"
+              spaceName="Nibro's Playlist"
+              spacePattern={require("../assets/spacePattern.png")}
+            />
+          </SpaceScrollContainer>
+        </ScrollView>
+      </SpaceContainer>
+
+      {/* Main control logic for add space options upon clicking add button*/}
+      {
+        /* Renders create and join option buttons if true */
+        optionShow ? (
+          <>
+            <TouchableWithoutFeedback onPress={() => dispatch(onAddPress())}>
+              <AddOptionContainer
+                style={{
+                  opacity: optionShow ? 1 : 0,
+                  paddingLeft: 20,
+                  paddingRight: 20,
+                }}
+              >
+                <AddOption
+                  id="create"
+                  title="Create a space"
+                  desc="Just for your friendos"
+                />
+                <AddOption
+                  id="join"
+                  title="Join a space"
+                  desc="Just for your friendos"
+                />
+              </AddOptionContainer>
+            </TouchableWithoutFeedback>
+          </>
+        ) : /* Renders create modal if true */
+        createShow ? (
+          <>
+            <TouchableWithoutFeedback onPress={() => dispatch(onClosePress())}>
+              <AddOptionContainer style={{ opacity: createShow ? 1 : 0 }}>
+                <AddSpaceModal
+                  title="Create a space"
+                  description="Creating a space allows you to be in control of the music queue and open your space to other users."
+                  inputField="Space Name"
+                  buttonName="Create Space"
+                />
+              </AddOptionContainer>
+            </TouchableWithoutFeedback>
+          </>
+        ) : /* Renders join modal if true */
+        joinShow ? (
+          <>
+            <TouchableWithoutFeedback onPress={() => dispatch(onClosePress())}>
+              <AddOptionContainer style={{ opacity: joinShow ? 1 : 0 }}>
+                <AddSpaceModal
+                  title="Join a space"
+                  description="Joining a space allows you to queue songs to the particular space. Ask a host for an invite code."
+                  inputField="Space Name"
+                  buttonName="Join Space"
+                />
+              </AddOptionContainer>
+            </TouchableWithoutFeedback>
+          </>
+        ) : null
+      }
     </SafeAreaView>
   );
 }
 
-const Container = styled.View`
+const TopContainer = styled.View`
   background: #191b23;
   width: 100%;
   padding-left: 20px;
@@ -273,7 +296,6 @@ const Container = styled.View`
 
 const ModalContainer = styled.View`
   width: 100%;
-  height: 25%;
 `;
 
 const TitleBar = styled.View``;
@@ -298,18 +320,19 @@ const Name = styled.Text`
 `;
 
 const SpaceContainer = styled.View`
+  padding-left: 20px;
+  padding-right: 20px;
+`;
+
+const SpaceScrollContainer = styled.View`
   flex-direction: row;
   height: 240px;
-  padding-right: 13px;
 `;
 
 const AddOptionContainer = styled.View`
   position: absolute;
   width: 100%;
   height: 100%;
-  /* bottom: 50px; */
-  padding-top: ${Dimensions.get("window").height - 300}px;
-  padding-left: 20px;
-  padding-right: 20px;
   background: rgba(25, 27, 35, 0.8);
+  justify-content: flex-end;
 `;

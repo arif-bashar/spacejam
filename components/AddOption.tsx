@@ -1,9 +1,13 @@
 import * as React from "react";
 import styled from "styled-components/native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { TouchableOpacity } from "react-native";
 import { NextIcon } from "./Icons";
 import { useDispatch, useSelector } from "react-redux";
-import { onAddPress, onCreatePress, onJoinPress } from "../slices/addSpaceReducer";
+import {
+  onAddPress,
+  onCreatePress,
+  onJoinPress,
+} from "../slices/addSpaceReducer";
 import { RootState } from "../slices/rootReducer";
 import { AddSpaceModal } from "./AddSpaceModal";
 
@@ -15,55 +19,32 @@ type AddProps = {
 
 const AddOption: React.FC<AddProps> = (props) => {
   const dispatch = useDispatch();
-  const { createShow, joinShow } = useSelector((state: RootState) => state.addSpace);
+  const { createShow, joinShow } = useSelector(
+    (state: RootState) => state.addSpace
+  );
 
-  if (createShow) {
-    return (
-      <ModalContainer>
-        <AddSpaceModal
-          title="Create a space"
-          description="Creating a space allows you to be in control of the music queue and open your space to other users."
-          inputField="Space Name"
-          buttonName="Create Space"
-        />
-      </ModalContainer>
-    )
-  } else if (joinShow) {
-    return (
-    <ModalContainer>
-      <AddSpaceModal
-        title="Join a space"
-        description="Joining a space allows you to be queue songs to the particular space. Ask a host for an invite code."
-        inputField="Invite Code"
-        buttonName="Join Space"
-      />
-    </ModalContainer>
-    )
-  } else {
-    return (
-      <TouchableOpacity
-        onPress={() => {
-          if (props.id == "create") {
-            dispatch(onCreatePress());
-            console.log("create");
-          }
-          else if (props.id == "join") {
-            dispatch(onJoinPress());
-            console.log("join");
-          }
-        }}
-        style={{ marginBottom: 10 }}
-      >
-        <Container>
-          <Title>{props.title}</Title>
-          <Description>{props.desc}</Description>
-          <IconView>
-            <NextIcon />
-          </IconView>
-        </Container>
-      </TouchableOpacity>
-    );
-  }
+  return (
+    <TouchableOpacity
+      onPress={() => {
+        if (props.id == "create") {
+          dispatch(onCreatePress());
+          console.log("create");
+        } else if (props.id == "join") {
+          dispatch(onJoinPress());
+          console.log("join");
+        }
+      }}
+      style={{ marginBottom: 10 }}
+    >
+      <Container>
+        <Title>{props.title}</Title>
+        <Description>{props.desc}</Description>
+        <IconView>
+          <NextIcon />
+        </IconView>
+      </Container>
+    </TouchableOpacity>
+  );
 };
 
 export default AddOption;

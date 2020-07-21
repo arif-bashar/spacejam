@@ -18,7 +18,7 @@ export const Space: React.FC<SpaceProps> = (props) => {
   );
 };
 
-const Container = styled.View`
+const Container = styled.TouchableOpacity`
   margin-bottom: 8px;
   width: 100%;
   height: 140px;

@@ -14,7 +14,9 @@ import { View, Dimensions } from "react-native";
 const Tab = createBottomTabNavigator();
 
 function HomeTabs() {
-  const { show } = useSelector((state: RootState) => state.addSpace);
+  const { optionShow, createShow, joinShow } = useSelector(
+    (state: RootState) => state.addSpace
+  );
 
   return (
     <Tab.Navigator
@@ -33,7 +35,7 @@ function HomeTabs() {
         options={{
           tabBarIcon: ({ focused }) =>
             focused ? <HomeIcon color="#fff" /> : <HomeIcon color="#5A5C64" />,
-          tabBarVisible: show ? true : false,
+          tabBarVisible: optionShow || createShow || joinShow ? false : true,
         }}
       />
       <Tab.Screen
@@ -49,7 +51,7 @@ function HomeTabs() {
                 top: -35,
                 width: 71,
                 height: 71,
-                opacity: show ? 1 : 0,
+                opacity: optionShow || createShow || joinShow ? 0 : 1,
               }}
             >
               <TabAddButton />
