@@ -79,7 +79,7 @@ function PlayerScreen({ navigation, route }: PlayerProps) {
               <GearIcon />
             </TouchableOpacity>
           </IconBar>
-          <StyledView style={{ marginBottom: 40 }}>
+          <StyledView style={{ marginBottom: 35 }}>
             <TrackInfo>
               <SongName>{songName}</SongName>
               <ArtistName>{artistName}</ArtistName>
@@ -99,7 +99,7 @@ function PlayerScreen({ navigation, route }: PlayerProps) {
               <Text style={{ color: '#ddd' }}>{formatTimecode(currentTimecode)}</Text>
               <Text style={{ color: '#ddd' }}>{formatTimecode(songLength)}</Text>
             </Timecodes>
-            <IconBar>
+            <IconBar style={{ marginLeft: 15, marginRight: 15 }}>
               <StyledView style={{ width: 24, height: 24 }} />
               <StyledView
                 style={{
