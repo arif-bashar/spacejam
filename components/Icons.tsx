@@ -270,8 +270,8 @@ export const PauseIcon = () => (
       fill="#E08700"
     />
     <Path
-      x={25.3}
-      y={23.4}
+      x={23.5}
+      y={24}
       fill="#fff"
       stroke="#fff"
       strokeWidth={2}

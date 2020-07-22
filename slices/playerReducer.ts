@@ -1,22 +1,29 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 type currentState = {
-    show: boolean;
+    isPlaying: boolean;
+    currentTimecode: number;
 };
 
 let initialState: currentState = {
-    show: true,
+    isPlaying: false,
+    currentTimecode: 0
 };
 
 const playerSlice = createSlice({
-    name: "enterPlayer",
+    name: "player",
     initialState,
     reducers: {
-        onEnterPlayer(state) {
-            state.show = !state.show;
+        onChangeTimecode(
+            state,
+            action: PayloadAction<{ timecode: number }>) {
+            state.currentTimecode = action.payload.timecode;
         },
+        onPlayPress(state) {
+            state.isPlaying = !state.isPlaying;
+        }
     },
 });
 
-export const { onEnterPlayer } = playerSlice.actions;
+export const { onChangeTimecode, onPlayPress } = playerSlice.actions;
 export default playerSlice.reducer;

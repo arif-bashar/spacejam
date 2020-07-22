@@ -5,6 +5,12 @@ import { BackIcon, GearIcon, PauseIcon, PlayIcon, RepeatIcon, SkipBackIcon, Skip
 import { Dimensions, Platform, SafeAreaView, StatusBar, Text, TouchableOpacity } from "react-native";
 import { Slider } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { RootState } from "../slices/rootReducer";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  onChangeTimecode,
+  onPlayPress
+} from "../slices/playerReducer";
 
 let safeMargin: number;
 const screenWidth = Math.round(Dimensions.get('window').width);
@@ -28,6 +34,11 @@ function PlayMusic(props: any): any {
 }
 
 function PlayerScreen({ navigation, route }: PlayerProps) {
+  const { isPlaying, currentTimecode } = useSelector(
+    (state: RootState) => state.player
+  );
+  const dispatch = useDispatch();
+
   const image = {
     uri:
       "https://consequenceofsound.net/wp-content/uploads/2019/01/hozier-wasteland-baby-cover-album-artwork.jpg?quality=80",
@@ -37,13 +48,9 @@ function PlayerScreen({ navigation, route }: PlayerProps) {
   const artistName = "Hozier";
   const songLength = 217;
 
-  // TODO: Change below two variables to states in Redux
-  let isPlaying = false;
-  let currentTimecode = 0;
-
   const formatTimecode = (totalSeconds: number) => {
     let minutes = Math.floor(totalSeconds / 60);
-    let seconds = totalSeconds % 60;
+    let seconds = Math.floor(totalSeconds % 60);
     let timecode = `${String(minutes)}:`;
     if (seconds < 10) timecode = timecode + `0${String(seconds)}`;
     else timecode = timecode + String(seconds)
@@ -91,8 +98,8 @@ function PlayerScreen({ navigation, route }: PlayerProps) {
               maximumValue={songLength}
               minimumTrackTintColor="#E08700"
               maximumTrackTintColor="#5A5C64"
-              onValueChange={(value) => {
-                currentTimecode = value;
+              onValueChange={(value: number) => {
+                dispatch(onChangeTimecode({ timecode: value }));
               }}
             />
             <Timecodes>
@@ -117,7 +124,7 @@ function PlayerScreen({ navigation, route }: PlayerProps) {
                 <TouchableOpacity
                   style={{ paddingLeft: 24, paddingRight: 24 }}
                   onPress={() => {
-                    isPlaying = !isPlaying;
+                    dispatch(onPlayPress());
                     console.log("isPlaying: " + String(isPlaying));
                   }}
                 >
