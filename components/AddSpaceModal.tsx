@@ -33,9 +33,7 @@ export const AddSpaceModal: React.FC<Field> = (props) => {
         />
       </InputView>
       <TouchableOpacity>
-        <SignInView>
-          <SignButton title={props.buttonName} />
-        </SignInView>
+        <SignButton title={props.buttonName} />
       </TouchableOpacity>
     </Container>
   );
@@ -86,5 +84,3 @@ const InputField = styled.TextInput`
   color: #697295;
   font-size: 14px;
 `;
-
-const SignInView = styled.View``;

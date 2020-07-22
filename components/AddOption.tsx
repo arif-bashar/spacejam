@@ -19,19 +19,14 @@ type AddProps = {
 
 const AddOption: React.FC<AddProps> = (props) => {
   const dispatch = useDispatch();
-  const { createShow, joinShow } = useSelector(
-    (state: RootState) => state.addSpace
-  );
 
   return (
     <TouchableOpacity
       onPress={() => {
         if (props.id == "create") {
           dispatch(onCreatePress());
-          console.log("create");
         } else if (props.id == "join") {
           dispatch(onJoinPress());
-          console.log("join");
         }
       }}
       style={{ marginBottom: 10 }}
