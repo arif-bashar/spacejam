@@ -1,27 +1,14 @@
 import * as React from "react";
 import styled from "styled-components/native";
 import { PlayerProps } from "../StackNavigatorTypes";
-import {
-  BackIcon,
-  GearIcon,
-  PauseIcon,
-  PlayIcon,
-  RepeatIcon,
-  SkipBackIcon,
-  SkipForwardIcon,
-} from "../components/Icons";
-import {
-  Dimensions,
-  Platform,
-  SafeAreaView,
-  StatusBar,
-  Text,
-  TouchableOpacity,
-} from "react-native";
-import { Slider } from "react-native";
+import { BackIcon, GearIcon, PauseIcon, PlayIcon, RepeatIcon, SkipBackIcon, SkipForwardIcon } from "../components/Icons";
+import { Dimensions, Platform, SafeAreaView, StatusBar, Text, TouchableOpacity } from "react-native";
+import { Slider } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 
 let safeMargin: number;
-const screenWidth = Math.round(Dimensions.get("window").width);
+const screenWidth = Math.round(Dimensions.get('window').width);
+const screenHeight = Math.round(Dimensions.get('window').height);
 
 StatusBar.setBarStyle("light-content");
 
@@ -54,13 +41,34 @@ function PlayerScreen({ navigation, route }: PlayerProps) {
   let isPlaying = false;
   let currentTimecode = 0;
 
+  const formatTimecode = (totalSeconds: number) => {
+    let minutes = Math.floor(totalSeconds / 60);
+    let seconds = totalSeconds % 60;
+    let timecode = `${String(minutes)}:`;
+    if (seconds < 10) timecode = timecode + `0${String(seconds)}`;
+    else timecode = timecode + String(seconds)
+    return timecode;
+  }
+
   const onExitPlayer = () => {
     navigation.goBack();
   };
 
   return (
     <FullScreenContainer>
-      <BGImage source={image} resizeMode="cover">
+      <BGImage source={image}>
+        <LinearGradient
+          colors={['rgba(36, 39, 51, .2)', 'rgba(36, 39, 51, 1)']}
+          start={[.5, 0]}
+          end={[.5, .8]}
+          style={{
+            position: 'absolute',
+            left: 0,
+            right: 0,
+            top: 0,
+            height: screenHeight,
+          }}
+        />
         <InnerContainer>
           <IconBar style={{ marginTop: safeMargin }}>
             <TouchableOpacity onPress={() => onExitPlayer()}>
@@ -88,12 +96,8 @@ function PlayerScreen({ navigation, route }: PlayerProps) {
               }}
             />
             <Timecodes>
-              <Text style={{ color: "#eee" }}>
-                {Math.floor(currentTimecode / 60)}:{currentTimecode % 60}
-              </Text>
-              <Text style={{ color: "#eee" }}>
-                {Math.floor(songLength / 60)}:{songLength % 60}
-              </Text>
+              <Text style={{ color: '#ddd' }}>{formatTimecode(currentTimecode)}</Text>
+              <Text style={{ color: '#ddd' }}>{formatTimecode(songLength)}</Text>
             </Timecodes>
             <IconBar>
               <StyledView style={{ width: 24, height: 24 }} />
@@ -186,7 +190,7 @@ const IconBar = styled.View`
 const StyledView = styled.View``;
 
 const TrackInfo = styled.View`
-  margin-left: 15px;
+  marginLeft: 10px;
 `;
 
 const Timecodes = styled.View`
