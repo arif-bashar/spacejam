@@ -194,8 +194,8 @@ export const SkipBackIcon = () => (
     width={24}
     height={24}
     viewBox="0 0 24 24"
-    fill="#5A5C64"
-    stroke="#5A5C64"
+    fill="#2B2F3E"
+    stroke="#2B2F3E"
     strokeWidth={2}
     strokeLinecap="round"
     strokeLinejoin="round"
@@ -209,8 +209,8 @@ export const SkipForwardIcon = () => (
     width={24}
     height={24}
     viewBox="0 0 24 24"
-    fill="#5A5C64"
-    stroke="#5A5C64"
+    fill="#2B2F3E"
+    stroke="#2B2F3E"
     strokeWidth={2}
     strokeLinecap="round"
     strokeLinejoin="round"
@@ -225,7 +225,7 @@ export const RepeatIcon = () => (
     height={24}
     viewBox="0 0 24 24"
     fill="none"
-    stroke="#5A5C64"
+    stroke="#2B2F3E"
     strokeWidth={2}
     strokeLinecap="round"
     strokeLinejoin="round"
@@ -271,7 +271,7 @@ export const PauseIcon = () => (
     />
     <Path
       x={23.5}
-      y={24}
+      y={23.5}
       fill="#fff"
       stroke="#fff"
       strokeWidth={2}

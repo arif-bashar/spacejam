@@ -2,7 +2,7 @@ import * as React from "react";
 import styled from "styled-components/native";
 import { PlayerProps } from "../StackNavigatorTypes";
 import { BackIcon, GearIcon, PauseIcon, PlayIcon, RepeatIcon, SkipBackIcon, SkipForwardIcon } from "../components/Icons";
-import { Dimensions, Platform, SafeAreaView, StatusBar, Text, TouchableOpacity } from "react-native";
+import { Dimensions, Platform, ScrollView, StatusBar, Text, TouchableOpacity, View } from "react-native";
 import { Slider } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { RootState } from "../slices/rootReducer";
@@ -86,7 +86,7 @@ function PlayerScreen({ navigation, route }: PlayerProps) {
               <GearIcon />
             </TouchableOpacity>
           </IconBar>
-          <StyledView style={{ marginBottom: 35 }}>
+          <View>
             <TrackInfo>
               <SongName>{songName}</SongName>
               <ArtistName>{artistName}</ArtistName>
@@ -98,6 +98,7 @@ function PlayerScreen({ navigation, route }: PlayerProps) {
               maximumValue={songLength}
               minimumTrackTintColor="#E08700"
               maximumTrackTintColor="#5A5C64"
+              step={.25}
               onValueChange={(value: number) => {
                 dispatch(onChangeTimecode({ timecode: value }));
               }}
@@ -106,9 +107,9 @@ function PlayerScreen({ navigation, route }: PlayerProps) {
               <Text style={{ color: '#ddd' }}>{formatTimecode(currentTimecode)}</Text>
               <Text style={{ color: '#ddd' }}>{formatTimecode(songLength)}</Text>
             </Timecodes>
-            <IconBar style={{ marginLeft: 15, marginRight: 15 }}>
-              <StyledView style={{ width: 24, height: 24 }} />
-              <StyledView
+            <IconBar style={{ marginLeft: 15, marginRight: 15, marginBottom: 15 }}>
+              <View style={{ width: 24, height: 24 }} />
+              <View
                 style={{
                   display: "flex",
                   flexDirection: "row",
@@ -135,14 +136,15 @@ function PlayerScreen({ navigation, route }: PlayerProps) {
                 >
                   <SkipForwardIcon />
                 </TouchableOpacity>
-              </StyledView>
+              </View>
               <TouchableOpacity
                 onPress={() => console.log("Pressed Loop Song.")}
               >
                 <RepeatIcon />
               </TouchableOpacity>
             </IconBar>
-          </StyledView>
+            <View style={{ height: screenHeight * .08, backgroundColor: '#2B2F3E', borderTopLeftRadius: 10, borderTopRightRadius: 10 }} />
+          </View>
         </InnerContainer>
       </BGImage>
     </FullScreenContainer>
@@ -193,8 +195,6 @@ const IconBar = styled.View`
   justify-content: space-between;
   align-items: center;
 `;
-
-const StyledView = styled.View``;
 
 const TrackInfo = styled.View`
   marginLeft: 10px;
