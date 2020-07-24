@@ -1,20 +1,33 @@
 import * as React from "react";
 import styled from "styled-components/native";
 import { PlayerProps } from "../StackNavigatorTypes";
-import { BackIcon, GearIcon, PauseIcon, PlayIcon, RepeatIcon, SkipBackIcon, SkipForwardIcon } from "../components/Icons";
-import { Dimensions, Platform, ScrollView, StatusBar, Text, TouchableOpacity, View } from "react-native";
-import { Slider } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import {
+  BackIcon,
+  GearIcon,
+  PauseIcon,
+  PlayIcon,
+  RepeatIcon,
+  SkipBackIcon,
+  SkipForwardIcon,
+} from "../components/Icons";
+import {
+  Dimensions,
+  Platform,
+  ScrollView,
+  StatusBar,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { Slider } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import { RootState } from "../slices/rootReducer";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  onChangeTimecode,
-  onPlayPress
-} from "../slices/playerReducer";
+import { onChangeTimecode, onPlayPress } from "../slices/playerReducer";
 
 let safeMargin: number;
-const screenWidth = Math.round(Dimensions.get('window').width);
-const screenHeight = Math.round(Dimensions.get('window').height);
+const screenWidth = Math.round(Dimensions.get("window").width);
+const screenHeight = Math.round(Dimensions.get("window").height);
 
 StatusBar.setBarStyle("light-content");
 
@@ -53,9 +66,9 @@ function PlayerScreen({ navigation, route }: PlayerProps) {
     let seconds = Math.floor(totalSeconds % 60);
     let timecode = `${String(minutes)}:`;
     if (seconds < 10) timecode = timecode + `0${String(seconds)}`;
-    else timecode = timecode + String(seconds)
+    else timecode = timecode + String(seconds);
     return timecode;
-  }
+  };
 
   const onExitPlayer = () => {
     navigation.goBack();
@@ -65,11 +78,11 @@ function PlayerScreen({ navigation, route }: PlayerProps) {
     <FullScreenContainer>
       <BGImage source={image}>
         <LinearGradient
-          colors={['rgba(36, 39, 51, .2)', 'rgba(36, 39, 51, 1)']}
-          start={[.5, 0]}
-          end={[.5, .8]}
+          colors={["rgba(25, 27, 35, 0)", "rgba(25, 27, 35, 1)"]}
+          start={[0.5, 0]}
+          end={[0.5, 0.8]}
           style={{
-            position: 'absolute',
+            position: "absolute",
             left: 0,
             right: 0,
             top: 0,
@@ -98,16 +111,22 @@ function PlayerScreen({ navigation, route }: PlayerProps) {
               maximumValue={songLength}
               minimumTrackTintColor="#E08700"
               maximumTrackTintColor="#5A5C64"
-              step={.25}
+              step={0.25}
               onValueChange={(value: number) => {
                 dispatch(onChangeTimecode({ timecode: value }));
               }}
             />
             <Timecodes>
-              <Text style={{ color: '#ddd' }}>{formatTimecode(currentTimecode)}</Text>
-              <Text style={{ color: '#ddd' }}>{formatTimecode(songLength)}</Text>
+              <Text style={{ color: "#ddd" }}>
+                {formatTimecode(currentTimecode)}
+              </Text>
+              <Text style={{ color: "#ddd" }}>
+                {formatTimecode(songLength)}
+              </Text>
             </Timecodes>
-            <IconBar style={{ marginLeft: 15, marginRight: 15, marginBottom: 15 }}>
+            <IconBar
+              style={{ marginLeft: 15, marginRight: 15, marginBottom: 15 }}
+            >
               <View style={{ width: 24, height: 24 }} />
               <View
                 style={{
@@ -143,10 +162,19 @@ function PlayerScreen({ navigation, route }: PlayerProps) {
                 <RepeatIcon />
               </TouchableOpacity>
             </IconBar>
-            <View style={{ height: screenHeight * .08, backgroundColor: '#2B2F3E', borderTopLeftRadius: 10, borderTopRightRadius: 10 }} />
           </View>
         </InnerContainer>
       </BGImage>
+      <View
+        style={{
+          height: screenHeight * 0.08,
+          backgroundColor: "#232631",
+          borderTopLeftRadius: 10,
+          borderTopRightRadius: 10,
+          marginLeft: 20,
+          marginRight: 20,
+        }}
+      />
     </FullScreenContainer>
   );
 }
@@ -159,7 +187,7 @@ const BGImage = styled.ImageBackground`
   align-items: center;
 `;
 
-const FullScreenContainer = styled.SafeAreaView`
+const FullScreenContainer = styled.View`
   background: #191b23;
   flex: 1;
   flex-direction: column;
@@ -197,7 +225,7 @@ const IconBar = styled.View`
 `;
 
 const TrackInfo = styled.View`
-  marginLeft: 10px;
+  margin-left: 10px;
 `;
 
 const Timecodes = styled.View`
