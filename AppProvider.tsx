@@ -8,7 +8,7 @@ export default function AppProvider() {
   return (
     <Provider store={store}>
       <ReactReduxFirebaseProvider {...rrfProps}>
-      <App />
+        <App />
       </ReactReduxFirebaseProvider>
     </Provider>
   );

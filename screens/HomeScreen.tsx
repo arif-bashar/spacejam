@@ -8,7 +8,6 @@ import {
   TouchableWithoutFeedback,
   ScrollView,
   SafeAreaView,
-  Alert,
 } from "react-native";
 import AsyncStorage from "@react-native-community/async-storage";
 import styled from "styled-components/native";
@@ -16,16 +15,15 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
-import Animated from "react-native-reanimated";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 import { Logo, SignOutIcon } from "../components/Icons";
 import { Space } from "../components/Space";
 import { Space2 } from "../components/Space2";
 import { HomeProps } from "../StackNavigatorTypes";
-import firebase from "../components/Firebase";
+import { useFirestore, useFirebase } from "react-redux-firebase";
 import { RootState } from "../slices/rootReducer";
-import { signOutAction } from "../slices/authReducer";
+import { signOut } from "../slices/authReducer";
 import AddOption from "../components/AddOption";
 import { AddSpaceModal } from "../components/AddSpaceModal";
 import {
@@ -34,10 +32,7 @@ import {
   onJoinPress,
   onClosePress,
 } from "../slices/addSpaceReducer";
-import { StackParams } from "../StackNavigatorTypes";
-import { BlurView } from "expo-blur";
 
-const Stack = createStackNavigator<StackParams>();
 let safeMargin: number;
 
 StatusBar.setBarStyle("light-content");
@@ -49,15 +44,15 @@ if (Platform.OS == "ios") {
 }
 
 export function HomeScreen({ navigation, route }: HomeProps) {
-  const db = firebase.firestore();
+  const firebase = useFirebase();
+  const db = useFirestore();
   const dispatch = useDispatch();
-  const [userName, setUserName] = useState("");
+  const [firstName, setFirstName] = useState("");
   const { optionShow, createShow, joinShow } = useSelector(
     (state: RootState) => state.addSpace
   );
+  const userID = firebase.auth().currentUser?.uid;
 
-  //const { userID } = useSelector((state: RootState) => state.auth);
-  //console.log(userID);
 
   const ID = () => {
     return "_" + Math.random().toString(36).substr(2, 9);
@@ -79,7 +74,7 @@ export function HomeScreen({ navigation, route }: HomeProps) {
           let data = doc.data();
           if (data != undefined) {
             //  firstName = data.firstName;
-            console.log(userName);
+            console.log(firstName);
           }
         } else {
           console.log("No document");
@@ -90,10 +85,10 @@ export function HomeScreen({ navigation, route }: HomeProps) {
           .doc(userID)
           .collection("rooms")
           .add({
-            roomName: userName + "'s Room",
+            roomName: firstName + "'s Room",
             roomId: 12345678910,
             inviteCode: 123,
-            host: userName,
+            host: firstName,
           });
       }
     } catch (error) {
@@ -155,33 +150,23 @@ export function HomeScreen({ navigation, route }: HomeProps) {
     }
   };
 
-  useEffect(() => {
-    const getUserName = async () => {
-      const id = await AsyncStorage.getItem("userID");
-      if (id != null) {
-        const doc = await db.collection("users").doc(id).get();
-        if (doc.exists) {
-          const data = doc.data();
-          if (data != undefined) {
-            setUserName(data.firstName);
-          }
-        }
-      }
-    };
-
-    getUserName();
-  }, []);
-
-  const onSignOut = async () => {
+  const getUserName = async () => {
     try {
-      await firebase.auth().signOut();
-      await AsyncStorage.removeItem("userToken");
-      await AsyncStorage.removeItem("userID");
-      dispatch(signOutAction());
+      const doc = await db.collection("users").doc(userID).get();
+      const data = doc.data();
+      if (data != undefined) {
+        const name = data.firstName;
+        setFirstName(name);
+      }
     } catch (error) {
-      console.log("Unable to remove user's name and token", error);
+      console.log("In HomeScreen.tsx:", error);
     }
   };
+
+  // On ComponentDidMount, get user's name and their spaces
+  useEffect(() => {
+    getUserName();
+  }, []);
 
   return (
     <SafeAreaView style={{ backgroundColor: "#191b23", flex: 1 }}>
@@ -189,13 +174,13 @@ export function HomeScreen({ navigation, route }: HomeProps) {
         <TitleBar style={{ marginTop: safeMargin, marginBottom: 57 }}>
           <IconBar>
             <Logo />
-            <TouchableOpacity onPress={() => onSignOut()}>
+            <TouchableOpacity onPress={() => dispatch(signOut())}>
               <SignOutIcon style={{ marginTop: 20 }} />
             </TouchableOpacity>
           </IconBar>
           <WelcomeView>
             <WelcomeText>Welcome back, </WelcomeText>
-            <Name>{userName}</Name>
+            <Name>{firstName}</Name>
           </WelcomeView>
         </TitleBar>
       </TopContainer>

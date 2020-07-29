@@ -1,55 +1,37 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
-import { HomeScreen } from "./screens/HomeScreen";
-import SearchScreen from "./screens/SearchScreen";
-import ProfileScreen from "./screens/ProfileScreen";
-import { HomeIcon, SearchIcon } from "./components/Icons";
 import HomeTabs from "./components/HomeTabs";
 import WelcomeScreen from "./screens/WelcomeScreen";
 import SignInScreen from "./screens/SignInScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 import { useDispatch, useSelector } from "react-redux";
 import { StackParams } from "./StackNavigatorTypes";
-import AsyncStorage from "@react-native-community/async-storage";
-import firebase from "./components/Firebase";
-import { getTokenAction } from "./slices/authReducer";
 import { RootState } from "./slices/rootReducer";
 import SplashScreen from "./screens/SplashScreen";
-import TabAddButton from "./components/TabAddButton";
-import { View, Dimensions } from "react-native";
 import PlayerScreen from "./screens/PlayerScreen";
+import { useFirebase } from "react-redux-firebase";
 
 const Stack = createStackNavigator<StackParams>();
 
 export default function App() {
-  const db = firebase.firestore();
-  let userName;
-  let userID;
+  const firebase = useFirebase();
+  const [signedIn, setSignedIn] = useState(false);
+  const { isSignOut } = useSelector((state: RootState) => state.auth);
 
-  const dispatch = useDispatch();
-  const { userToken, isSignOut } = useSelector(
-    (state: RootState) => state.auth
-  );
+  const checkAuth = () => {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        setSignedIn(true);
+        console.log("signed in");
+      } else {
+        setSignedIn(false);
+      }
+    });
+  };
 
   useEffect(() => {
-    console.log("Getting token in App.tsx");
-    const getUserToken = async () => {
-      let token;
-      let id;
-
-      try {
-        token = await AsyncStorage.getItem("userToken");
-        id = await AsyncStorage.getItem("userID");
-      } catch (error) {
-        console.log("Unable to fetch userToken", error);
-      }
-
-      dispatch(getTokenAction({ userToken: token, userID: id }));
-    };
-
-    getUserToken();
+    checkAuth();
   }, []);
 
   return (
@@ -61,7 +43,7 @@ export default function App() {
           gestureEnabled: route.name == "Home" ? false : true,
         })}
       >
-        {userToken == null ? (
+        {signedIn == false ? (
           <>
             <Stack.Screen
               name="Welcome"
@@ -74,11 +56,11 @@ export default function App() {
             <Stack.Screen name="SignIn" component={SignInScreen} />
           </>
         ) : (
-            <>
-              <Stack.Screen name="Home" component={HomeTabs} />
-              <Stack.Screen name="Player" component={PlayerScreen} />
-            </>
-          )}
+          <>
+            <Stack.Screen name="Home" component={HomeTabs} />
+            <Stack.Screen name="Player" component={PlayerScreen} />
+          </>
+        )}
       </Stack.Navigator>
     </NavigationContainer>
   );
