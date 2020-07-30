@@ -130,24 +130,17 @@ export function HomeScreen({ navigation, route }: HomeProps) {
 
   const getRooms = async () => {
     try {
-      console.log("roooooooooooooooooooooooooooooooooooooooooooms")
-      const userID = await AsyncStorage.getItem("userID");
-      if (userID != null) {
-        const querySnapshot = await db
+        await db
           .collection("users")
           .doc(userID)
           .collection("rooms")
           .get()
-        querySnapshot.forEach((doc) => {
-          console.log(doc.id, " => ", doc.data());
-        })
-          // .then(function (querySnapshot) {
-          //   querySnapshot.forEach(function (doc) {
-          //     console.log(doc.id, " => ", doc.data());
-          //   });
-          // });
-      }
-    } catch (error) {
+          .then(function (querySnapshot) {
+            querySnapshot.forEach(function (doc) {
+              console.log(doc.id, " => ", doc.data());
+            });
+          });
+      } catch (error) {
       console.log("Error getting rooms: ", error);
     }
   };
