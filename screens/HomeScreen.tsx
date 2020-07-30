@@ -130,18 +130,22 @@ export function HomeScreen({ navigation, route }: HomeProps) {
 
   const getRooms = async () => {
     try {
+      console.log("roooooooooooooooooooooooooooooooooooooooooooms")
       const userID = await AsyncStorage.getItem("userID");
       if (userID != null) {
-        const doc = await db
+        const querySnapshot = await db
           .collection("users")
           .doc(userID)
           .collection("rooms")
           .get()
-          .then(function (querySnapshot) {
-            querySnapshot.forEach(function (doc) {
-              console.log(doc.id, " => ", doc.data());
-            });
-          });
+        querySnapshot.forEach((doc) => {
+          console.log(doc.id, " => ", doc.data());
+        })
+          // .then(function (querySnapshot) {
+          //   querySnapshot.forEach(function (doc) {
+          //     console.log(doc.id, " => ", doc.data());
+          //   });
+          // });
       }
     } catch (error) {
       console.log("Error getting rooms: ", error);
@@ -164,6 +168,7 @@ export function HomeScreen({ navigation, route }: HomeProps) {
   // On ComponentDidMount, get user's name and their spaces
   useEffect(() => {
     getUserName();
+    getRooms();
   }, []);
 
   return (
