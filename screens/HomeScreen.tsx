@@ -15,8 +15,6 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
-import { createStackNavigator } from "@react-navigation/stack";
-import { NavigationContainer } from "@react-navigation/native";
 import { Logo, SignOutIcon } from "../components/Icons";
 import { Space } from "../components/Space";
 import { Space2 } from "../components/Space2";
@@ -252,6 +250,7 @@ export function HomeScreen({ navigation, route }: HomeProps) {
                   description="Creating a space allows you to be in control of the music queue and open your space to other users."
                   inputField="Space Name"
                   buttonName="Create Space"
+                  userID={userID!}
                 />
               </AddOptionContainer>
             </TouchableWithoutFeedback>
@@ -266,6 +265,7 @@ export function HomeScreen({ navigation, route }: HomeProps) {
                   description="Joining a space allows you to queue songs to the particular space. Ask a host for an invite code."
                   inputField="Space Name"
                   buttonName="Join Space"
+                  userID={userID!}
                 />
               </AddOptionContainer>
             </TouchableWithoutFeedback>

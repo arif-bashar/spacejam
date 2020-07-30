@@ -1,4 +1,6 @@
-import { createSlice, PayloadAction, createStore } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import { getFirebase } from "react-redux-firebase";
+import shortid from "shortid";
 
 type currentState = {
   optionShow: boolean;
@@ -11,6 +13,28 @@ let initialState: currentState = {
   createShow: false,
   joinShow: false,
 };
+
+type roomProps = {
+  roomName: string,
+  host: string,
+}
+
+export const onCreateRoom = createAsyncThunk(
+  "addSpace/createRoom",
+  async (user: roomProps) => {
+    try {
+      const firebase = getFirebase();
+      const firestore = firebase.firestore();
+      await firestore.collection("users").doc(user.host).collection("rooms").add({
+        roomName: user.roomName,
+        host: user.host,
+        inviteCode: shortid.generate(),
+      })
+    } catch(error) {
+      return error;
+    }
+  }
+);
 
 const addSpaceSlice = createSlice({
   name: "addSpace",
@@ -32,6 +56,11 @@ const addSpaceSlice = createSlice({
       state.createShow = false;
     },
   },
+  extraReducers: (builder) => {
+    builder.addCase(onCreateRoom.fulfilled, (state, action) => {
+      
+    })
+  }
 });
 
 export const {
