@@ -5,7 +5,7 @@ import { SignButton } from "../components/SignButton";
 import { TouchableOpacity } from "react-native";
 import { XIcon } from "../components/Icons";
 import { useDispatch } from "react-redux";
-import { onClosePress, onCreateRoom } from "../slices/addSpaceReducer";
+import { onClosePress, onCreateRoom, fetchRooms } from "../slices/addSpaceReducer";
 import { useFirestore } from "react-redux-firebase";
 
 type Field = {
@@ -42,6 +42,7 @@ export const AddSpaceModal: React.FC<Field> = (props) => {
             roomName: roomName,
             host: props.userID,
           }));
+          dispatch(fetchRooms(props.userID))
         }
         dispatch(onClosePress());
       }}>
