@@ -7,8 +7,8 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   ScrollView,
-  SafeAreaView,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import AsyncStorage from "@react-native-community/async-storage";
 import styled from "styled-components/native";
 import {
@@ -19,7 +19,11 @@ import { Logo, SignOutIcon } from "../components/Icons";
 import { Space } from "../components/Space";
 import { Space2 } from "../components/Space2";
 import { HomeProps } from "../StackNavigatorTypes";
-import { useFirestore, useFirebase } from "react-redux-firebase";
+import {
+  useFirestore,
+  useFirebase,
+  useFirestoreConnect,
+} from "react-redux-firebase";
 import { RootState } from "../slices/rootReducer";
 import { signOut } from "../slices/authReducer";
 import AddOption from "../components/AddOption";
@@ -29,6 +33,7 @@ import {
   onCreatePress,
   onJoinPress,
   onClosePress,
+  fetchRooms,
 } from "../slices/addSpaceReducer";
 import { DocumentData } from "@firebase/firestore-types";
 
@@ -47,53 +52,12 @@ export function HomeScreen({ navigation, route }: HomeProps) {
   const db = useFirestore();
   const dispatch = useDispatch();
   const [firstName, setFirstName] = useState("");
-  const { optionShow, createShow, joinShow } = useSelector(
+  const { optionShow, createShow, joinShow, rooms } = useSelector(
     (state: RootState) => state.addSpace
   );
   const userID = firebase.auth().currentUser?.uid;
-  let rooms: DocumentData[];
 
-  const ID = () => {
-    return "_" + Math.random().toString(36).substr(2, 9);
-  };
-
-  // under construction
-  const addRoom = async () => {
-    try {
-      const userID = await AsyncStorage.getItem("userID");
-      if (userID != null) {
-        let user = db
-          .collection("users")
-          .doc(userID)
-          .collection("rooms")
-          .doc("Dma59lD2obvJvjpyQ9xC");
-        const doc = await user.get();
-        if (doc.exists) {
-          console.log(doc.data());
-          let data = doc.data();
-          if (data != undefined) {
-            //  firstName = data.firstName;
-            console.log(firstName);
-          }
-        } else {
-          console.log("No document");
-        }
-
-        await db
-          .collection("users")
-          .doc(userID)
-          .collection("rooms")
-          .add({
-            roomName: firstName + "'s Room",
-            roomId: 12345678910,
-            inviteCode: 123,
-            host: firstName,
-          });
-      }
-    } catch (error) {
-      console.log("Error getting document: ", error);
-    }
-  };
+  console.log("in homescreen", rooms);
 
   const deleteRoom = async () => {
     try {
@@ -129,24 +93,20 @@ export function HomeScreen({ navigation, route }: HomeProps) {
     }
   };
 
-  const getRooms = async () => {
-    try {
-      if (userID != null) {
-        const querySnapshot = await db
-          .collection("users")
-          .doc(userID)
-          .collection("rooms")
-          .get()
-        querySnapshot.forEach((doc) => {
-          console.log(doc.id, " => ", doc.data());
-          rooms.push(doc.data());
-        })
-      }
-      console.log(rooms[0].roomName); 
-    } catch (error) {
-      console.log("Error getting rooms: ", error);
-    }
-  };
+  // const getRooms = async () => {
+  //   try {
+  //     const querySnapshot = await db
+  //       .collection("users")
+  //       .doc(userID)
+  //       .collection("rooms")
+  //       .get();
+  //     querySnapshot.forEach((doc) => {
+  //       rooms.push(doc.data());
+  //     });
+  //   } catch (error) {
+  //     console.log("Error getting rooms: ", error);
+  //   }
+  // };
 
   const getUserName = async () => {
     try {
@@ -164,12 +124,13 @@ export function HomeScreen({ navigation, route }: HomeProps) {
   // On ComponentDidMount, get user's name and their spaces
   useEffect(() => {
     getUserName();
-    getRooms();
+    // dispatch(fetchRooms(userID!));
+    // getRooms();
   }, []);
 
   useEffect(() => {
-    
-  })
+    dispatch(fetchRooms(userID!));
+  }, [dispatch]);
 
   return (
     <SafeAreaView style={{ backgroundColor: "#191b23", flex: 1 }}>
@@ -215,6 +176,17 @@ export function HomeScreen({ navigation, route }: HomeProps) {
               spaceName="Nibro's Playlist"
               spacePattern={require("../assets/spacePattern.png")}
             />
+            {rooms.map((room, i) => {
+              return (
+                <Space2
+                  key={i}
+                  color="#FFCF73"
+                  num="05"
+                  spaceName={room.roomName}
+                  spacePattern={require("../assets/spacePattern.png")}
+                />
+              );
+            })}
           </SpaceScrollContainer>
         </ScrollView>
       </SpaceContainer>

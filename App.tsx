@@ -11,6 +11,7 @@ import { RootState } from "./slices/rootReducer";
 import SplashScreen from "./screens/SplashScreen";
 import PlayerScreen from "./screens/PlayerScreen";
 import { useFirebase } from "react-redux-firebase";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 const Stack = createStackNavigator<StackParams>();
 
@@ -35,33 +36,35 @@ export default function App() {
   }, []);
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator
-        // initialRouteName="Welcome"
-        screenOptions={({ route }) => ({
-          headerShown: false,
-          gestureEnabled: route.name == "Home" ? false : true,
-        })}
-      >
-        {signedIn == false ? (
-          <>
-            <Stack.Screen
-              name="Welcome"
-              component={WelcomeScreen}
-              options={{
-                animationTypeForReplace: isSignOut ? "pop" : "push",
-              }}
-            />
-            <Stack.Screen name="Register" component={RegisterScreen} />
-            <Stack.Screen name="SignIn" component={SignInScreen} />
-          </>
-        ) : (
-          <>
-            <Stack.Screen name="Home" component={HomeTabs} />
-            <Stack.Screen name="Player" component={PlayerScreen} />
-          </>
-        )}
-      </Stack.Navigator>
-    </NavigationContainer>
+    <SafeAreaProvider>
+      <NavigationContainer>
+        <Stack.Navigator
+          // initialRouteName="Welcome"
+          screenOptions={({ route }) => ({
+            headerShown: false,
+            gestureEnabled: route.name == "Home" ? false : true,
+          })}
+        >
+          {signedIn == false ? (
+            <>
+              <Stack.Screen
+                name="Welcome"
+                component={WelcomeScreen}
+                options={{
+                  animationTypeForReplace: isSignOut ? "pop" : "push",
+                }}
+              />
+              <Stack.Screen name="Register" component={RegisterScreen} />
+              <Stack.Screen name="SignIn" component={SignInScreen} />
+            </>
+          ) : (
+            <>
+              <Stack.Screen name="Home" component={HomeTabs} />
+              <Stack.Screen name="Player" component={PlayerScreen} />
+            </>
+          )}
+        </Stack.Navigator>
+      </NavigationContainer>
+    </SafeAreaProvider>
   );
 }
