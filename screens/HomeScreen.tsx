@@ -30,6 +30,7 @@ import {
   onJoinPress,
   onClosePress,
 } from "../slices/addSpaceReducer";
+import { DocumentData } from "@firebase/firestore-types";
 
 let safeMargin: number;
 
@@ -50,7 +51,7 @@ export function HomeScreen({ navigation, route }: HomeProps) {
     (state: RootState) => state.addSpace
   );
   const userID = firebase.auth().currentUser?.uid;
-
+  let rooms: DocumentData[];
 
   const ID = () => {
     return "_" + Math.random().toString(36).substr(2, 9);
@@ -130,8 +131,6 @@ export function HomeScreen({ navigation, route }: HomeProps) {
 
   const getRooms = async () => {
     try {
-      console.log("roooooooooooooooooooooooooooooooooooooooooooms")
-      const userID = await AsyncStorage.getItem("userID");
       if (userID != null) {
         const querySnapshot = await db
           .collection("users")
@@ -140,13 +139,10 @@ export function HomeScreen({ navigation, route }: HomeProps) {
           .get()
         querySnapshot.forEach((doc) => {
           console.log(doc.id, " => ", doc.data());
+          rooms.push(doc.data());
         })
-          // .then(function (querySnapshot) {
-          //   querySnapshot.forEach(function (doc) {
-          //     console.log(doc.id, " => ", doc.data());
-          //   });
-          // });
       }
+      console.log(rooms[0].roomName); 
     } catch (error) {
       console.log("Error getting rooms: ", error);
     }
@@ -170,6 +166,10 @@ export function HomeScreen({ navigation, route }: HomeProps) {
     getUserName();
     getRooms();
   }, []);
+
+  useEffect(() => {
+    
+  })
 
   return (
     <SafeAreaView style={{ backgroundColor: "#191b23", flex: 1 }}>
