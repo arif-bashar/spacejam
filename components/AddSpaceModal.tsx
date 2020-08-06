@@ -5,18 +5,22 @@ import { SignButton } from "../components/SignButton";
 import { TouchableOpacity } from "react-native";
 import { XIcon } from "../components/Icons";
 import { useDispatch } from "react-redux";
-import { onClosePress } from "../slices/addSpaceReducer";
+import { onClosePress, onCreateRoom, fetchRooms } from "../slices/addSpaceReducer";
+import { useFirestore } from "react-redux-firebase";
 
 type Field = {
   title: string;
   description: string;
   inputField: string;
   buttonName: string;
+  userID: string;
 };
 
 export const AddSpaceModal: React.FC<Field> = (props) => {
-  const [roomName, setRoomName] = useState("");
   const dispatch = useDispatch();
+  const firestore = useFirestore();
+  const [roomName, setRoomName] = useState("");
+
 
   return (
     <Container>
@@ -32,8 +36,17 @@ export const AddSpaceModal: React.FC<Field> = (props) => {
           placeholderTextColor="#697295"
         />
       </InputView>
-      <TouchableOpacity>
-        <SignButton title={props.buttonName} />
+      <TouchableOpacity onPress={() => {
+        if (props.buttonName == "Create Space") {
+          dispatch(onCreateRoom({
+            roomName: roomName,
+            host: props.userID,
+          }));
+          dispatch(fetchRooms(props.userID))
+        }
+        dispatch(onClosePress());
+      }}>
+          <SignButton title={props.buttonName} />
       </TouchableOpacity>
     </Container>
   );

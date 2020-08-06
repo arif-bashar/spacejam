@@ -1,7 +1,17 @@
-import { firebaseConfig } from "./../firebaseConfig";
-import * as firebase from "firebase";
+import * as firebase from "firebase/app"
 import "firebase/firestore";
+import "firebase/auth";
+import { firebaseConfig } from "./../firebaseConfig";
+
 
 firebase.initializeApp(firebaseConfig);
+firebase.firestore();
 
+/**
+ * Get firestore timestamp
+ * @type {() => firebase.firestore.FieldValue}
+ */
+
+ export const timestamp = firebase.firestore.FieldValue.serverTimestamp;
+ 
 export default firebase;

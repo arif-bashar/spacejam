@@ -13,15 +13,21 @@ import {
 import {
   Dimensions,
   Platform,
-  SafeAreaView,
+  ScrollView,
   StatusBar,
   Text,
   TouchableOpacity,
+  View,
 } from "react-native";
 import { Slider } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
+import { RootState } from "../slices/rootReducer";
+import { useDispatch, useSelector } from "react-redux";
+import { onChangeTimecode, onPlayPress } from "../slices/playerReducer";
 
 let safeMargin: number;
 const screenWidth = Math.round(Dimensions.get("window").width);
+const screenHeight = Math.round(Dimensions.get("window").height);
 
 StatusBar.setBarStyle("light-content");
 
@@ -41,6 +47,11 @@ function PlayMusic(props: any): any {
 }
 
 function PlayerScreen({ navigation, route }: PlayerProps) {
+  const { isPlaying, currentTimecode } = useSelector(
+    (state: RootState) => state.player
+  );
+  const dispatch = useDispatch();
+
   const image = {
     uri:
       "https://consequenceofsound.net/wp-content/uploads/2019/01/hozier-wasteland-baby-cover-album-artwork.jpg?quality=80",
@@ -50,9 +61,14 @@ function PlayerScreen({ navigation, route }: PlayerProps) {
   const artistName = "Hozier";
   const songLength = 217;
 
-  // TODO: Change below two variables to states in Redux
-  let isPlaying = false;
-  let currentTimecode = 0;
+  const formatTimecode = (totalSeconds: number) => {
+    let minutes = Math.floor(totalSeconds / 60);
+    let seconds = Math.floor(totalSeconds % 60);
+    let timecode = `${String(minutes)}:`;
+    if (seconds < 10) timecode = timecode + `0${String(seconds)}`;
+    else timecode = timecode + String(seconds);
+    return timecode;
+  };
 
   const onExitPlayer = () => {
     navigation.goBack();
@@ -60,7 +76,19 @@ function PlayerScreen({ navigation, route }: PlayerProps) {
 
   return (
     <FullScreenContainer>
-      <BGImage source={image} resizeMode="cover">
+      <BGImage source={image}>
+        <LinearGradient
+          colors={["rgba(25, 27, 35, 0)", "rgba(25, 27, 35, 1)"]}
+          start={[0.5, 0]}
+          end={[0.5, 0.8]}
+          style={{
+            position: "absolute",
+            left: 0,
+            right: 0,
+            top: 0,
+            height: screenHeight,
+          }}
+        />
         <InnerContainer>
           <IconBar style={{ marginTop: safeMargin }}>
             <TouchableOpacity onPress={() => onExitPlayer()}>
@@ -71,7 +99,7 @@ function PlayerScreen({ navigation, route }: PlayerProps) {
               <GearIcon />
             </TouchableOpacity>
           </IconBar>
-          <StyledView style={{ marginBottom: 40 }}>
+          <View>
             <TrackInfo>
               <SongName>{songName}</SongName>
               <ArtistName>{artistName}</ArtistName>
@@ -83,21 +111,24 @@ function PlayerScreen({ navigation, route }: PlayerProps) {
               maximumValue={songLength}
               minimumTrackTintColor="#E08700"
               maximumTrackTintColor="#5A5C64"
-              onValueChange={(value) => {
-                currentTimecode = value;
+              step={0.25}
+              onValueChange={(value: number) => {
+                dispatch(onChangeTimecode({ timecode: value }));
               }}
             />
             <Timecodes>
-              <Text style={{ color: "#eee" }}>
-                {Math.floor(currentTimecode / 60)}:{currentTimecode % 60}
+              <Text style={{ color: "#ddd" }}>
+                {formatTimecode(currentTimecode)}
               </Text>
-              <Text style={{ color: "#eee" }}>
-                {Math.floor(songLength / 60)}:{songLength % 60}
+              <Text style={{ color: "#ddd" }}>
+                {formatTimecode(songLength)}
               </Text>
             </Timecodes>
-            <IconBar>
-              <StyledView style={{ width: 24, height: 24 }} />
-              <StyledView
+            <IconBar
+              style={{ marginLeft: 15, marginRight: 15, marginBottom: 15 }}
+            >
+              <View style={{ width: 24, height: 24 }} />
+              <View
                 style={{
                   display: "flex",
                   flexDirection: "row",
@@ -113,7 +144,7 @@ function PlayerScreen({ navigation, route }: PlayerProps) {
                 <TouchableOpacity
                   style={{ paddingLeft: 24, paddingRight: 24 }}
                   onPress={() => {
-                    isPlaying = !isPlaying;
+                    dispatch(onPlayPress());
                     console.log("isPlaying: " + String(isPlaying));
                   }}
                 >
@@ -124,16 +155,26 @@ function PlayerScreen({ navigation, route }: PlayerProps) {
                 >
                   <SkipForwardIcon />
                 </TouchableOpacity>
-              </StyledView>
+              </View>
               <TouchableOpacity
                 onPress={() => console.log("Pressed Loop Song.")}
               >
                 <RepeatIcon />
               </TouchableOpacity>
             </IconBar>
-          </StyledView>
+          </View>
         </InnerContainer>
       </BGImage>
+      <View
+        style={{
+          height: screenHeight * 0.08,
+          backgroundColor: "#232631",
+          borderTopLeftRadius: 10,
+          borderTopRightRadius: 10,
+          marginLeft: 20,
+          marginRight: 20,
+        }}
+      />
     </FullScreenContainer>
   );
 }
@@ -146,7 +187,7 @@ const BGImage = styled.ImageBackground`
   align-items: center;
 `;
 
-const FullScreenContainer = styled.SafeAreaView`
+const FullScreenContainer = styled.View`
   background: #191b23;
   flex: 1;
   flex-direction: column;
@@ -183,10 +224,8 @@ const IconBar = styled.View`
   align-items: center;
 `;
 
-const StyledView = styled.View``;
-
 const TrackInfo = styled.View`
-  margin-left: 15px;
+  margin-left: 10px;
 `;
 
 const Timecodes = styled.View`

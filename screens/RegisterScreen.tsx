@@ -1,18 +1,13 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import AsyncStorage from "@react-native-community/async-storage";
+import { useDispatch } from "react-redux";
 import styled from "styled-components/native";
 import { SafeAreaView, TouchableOpacity, Alert } from "react-native";
 import { BackIcon } from "../components/Icons";
 import { SignButton } from "../components/SignButton";
 import { RegisterProps } from "../StackNavigatorTypes";
-import firebase from "../components/Firebase";
-import { RootState } from "../slices/rootReducer";
-import { signInAction } from "../slices/authReducer";
+import { register } from "../slices/authReducer";
 
 function RegisterScreen({ navigation }: RegisterProps) {
-  const db = firebase.firestore();
-
   // Redux dispatcher and selection from state
   const dispatch = useDispatch();
 
@@ -21,35 +16,6 @@ function RegisterScreen({ navigation }: RegisterProps) {
   const [lastName, setLastName] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPass, setConfirmPass] = useState("");
-
-  const onRegister = async () => {
-    try {
-      const credentials = await firebase
-        .auth()
-        .createUserWithEmailAndPassword(email, password);
-      const id = credentials.user?.uid;
-      const token = await credentials.user?.getIdToken();
-
-      if (token != undefined && id != undefined) {
-        await db.collection("users").doc(id).set({
-          email: email,
-          firstName: firstName,
-          lastName: lastName,
-        });
-
-        await AsyncStorage.setItem("userToken", token);
-        await AsyncStorage.setItem("userID", id);
-        console.log(
-          "In RegisterScreen, token is saved in storage and is",
-          token
-        );
-        dispatch(signInAction({ userToken: token, userID: id }));
-      }
-    } catch (error) {
-      if (error.message) Alert.alert("Error", error.message);
-      else console.log(error);
-    }
-  };
 
   return (
     <SafeAreaView style={{ backgroundColor: "#191b23", flex: 1 }}>
@@ -105,7 +71,18 @@ function RegisterScreen({ navigation }: RegisterProps) {
             placeholderTextColor="#697295"
           />
         </InputView>
-        <TouchableOpacity onPress={() => onRegister()}>
+        <TouchableOpacity
+          onPress={() =>
+            dispatch(
+              register({
+                email: email,
+                password: password,
+                firstName: firstName,
+                lastName: lastName,
+              })
+            )
+          }
+        >
           <SignInView>
             <SignButton title="Register" />
           </SignInView>
