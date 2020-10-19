@@ -1,4 +1,12 @@
-# spacejam
+# Spacejam
+A music sharing mobile application that allows users to create rooms and invite other users. Members of the room can queue music that will play through the host's speaker device. Likewise, members can also hear playback of the music on their own devices, but it will be synced with the host's current timestamp. This mobile application is being built in React Native with a Firebase backend and Redux for state management, following Redux Toolkit guidelines.
+
+# Preview
+<img src="previews/preview1.png">
+<img src="previews/preview2.png">
+<img src="previews/preview3.png">
+
+
 
 SpaceJam MVP Notes (May 21, 2020)
 ____________________________________
