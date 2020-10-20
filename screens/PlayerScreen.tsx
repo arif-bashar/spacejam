@@ -24,6 +24,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { RootState } from "../slices/rootReducer";
 import { useDispatch, useSelector } from "react-redux";
 import { onChangeTimecode, onPlayPress } from "../slices/playerReducer";
+import TrackPlayer from "react-native-track-player";
 
 let safeMargin: number;
 const screenWidth = Math.round(Dimensions.get("window").width);
@@ -60,6 +61,23 @@ function PlayerScreen({ navigation, route }: PlayerProps) {
   const songName = "Almost (Sweet Music)";
   const artistName = "Hozier";
   const songLength = 217;
+
+  const start = async () => {
+    // Set up the player
+    await TrackPlayer.setupPlayer();
+
+    // Add a track to the queue
+    await TrackPlayer.add({
+        id: 'trackId',
+        url: require('../assets/Perfect_Morning.mp3'),
+        title: 'Almost (Sweet Music)',
+        artist: 'Hozier',
+        artwork: require('../assets/splash.png')
+    });
+
+    // Start playing it
+    await TrackPlayer.play();
+  };
 
   const formatTimecode = (totalSeconds: number) => {
     let minutes = Math.floor(totalSeconds / 60);
@@ -144,6 +162,7 @@ function PlayerScreen({ navigation, route }: PlayerProps) {
                 <TouchableOpacity
                   style={{ paddingLeft: 24, paddingRight: 24 }}
                   onPress={() => {
+                    start();
                     dispatch(onPlayPress());
                     console.log("isPlaying: " + String(isPlaying));
                   }}
